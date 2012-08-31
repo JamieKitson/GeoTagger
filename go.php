@@ -34,7 +34,7 @@ $last = (strtotime($p['datetaken']) - /* 24 */ 10 * 60) * 1000;
 // print_r($fc);
 
 $count = 0;
-while (($count < 2) && ($first - $last < 24 * 60 * 60 * 1000))
+while ($count < 2) 
 {
 
   echo date('c', $last / 1000)."<br>\n";
@@ -50,6 +50,10 @@ if ($xmlresponse !== FALSE)
 {
   $locks = json_decode($xmlresponse);
   $count = count($locks->data->items);
+}
+elseif ($first - $last > 24 * 60 * 60 * 1000)
+{
+  break 2;
 }
 
 $first += 5 * 60 * 1000;
