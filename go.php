@@ -56,7 +56,7 @@ $context = stream_context_create($opts);
  $photo = 0;
  $xmlresponse = true;
  $count = 100;
- while (($count > 0) && ($xmlresponse !== FALSE))
+ while (($count > 1) && ($xmlresponse !== FALSE))
 {
 $url = 'https://www.googleapis.com/latitude/v1/location?oauth_token='.$_COOKIE[GOOGLE_TOKEN]."&granularity=best&max-results=1000&max-time=$first&min-time=$last";
 
@@ -72,7 +72,7 @@ if ($xmlresponse !== FALSE)
   if (property_exists($locks->data, 'items'))
   {
     $count = count($locks->data->items);
-    $first = end($locks->data->items)->timestampMs - 1000;
+    $first = end($locks->data->items)->timestampMs;
 //    echo date('c', $first / 1000)." FIRST<br>\n";
   }
   else
