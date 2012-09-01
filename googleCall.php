@@ -15,14 +15,14 @@ function googleCall($params)
   $url = 'https://www.googleapis.com/latitude/v1/location?oauth_token='.$_COOKIE[GOOGLE_TOKEN].
         "&granularity=best&$params"; // max-results=1000&max-time=$first&min-time=$last";
 
-  $xmlresponse = gzdecode(file_get_contents($url, false, $context));
-  $locks = json_decode($xmlresponse);
+  $xmlresponse = @file_get_contents($url, false, $context);
 
   $count = 0;
-  $lcoks = false;
+  $locks = false;
   if ($xmlresponse !== FALSE)
   {
-    $locks = json_decode($xmlresponse);
+    $unzipped = gzdecode($xmlresponse);
+    $locks = json_decode($unzipped);
     if (property_exists($locks->data, 'items'))
     {
       $count = count($locks->data->items);
