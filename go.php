@@ -14,14 +14,14 @@ $fp = array(
     'sort' => 'date-taken-desc',
     'has_geo' => 0,
     'user_id' => 'me',
-    'per_page' => 50,
+    'per_page' => 10,
     'method'   => 'flickr.photos.search',
     'extras'   => 'date_taken,geo'
     
     );
-echo date('c')." BEFORE FLICKR<br>\n";
+//echo date('c')." BEFORE FLICKR<br>\n";
 $fc = unserialize(flickrCall($fp));
-echo date('c')." AFTER FLICKR<br>\n";
+//echo date('c')." AFTER FLICKR<br>\n";
 
 flush();
 
@@ -40,7 +40,7 @@ usort($photos, function($a, $b) {
   }); 
 //print_r($photos);
 
-echo date('c')." AFTER FLICKR<br>\n";
+//echo date('c')." AFTER FLICKR<br>\n";
 
 $first = ($photos[0]['udatetaken'] + 24 * 60 * 60) * 1000;
 $last = (end($photos)['udatetaken'] - 24 * 60 * 60) * 1000;
@@ -51,9 +51,9 @@ $last = (end($photos)['udatetaken'] - 24 * 60 * 60) * 1000;
  while (($count > 1) && ($locks !== FALSE))
 {
 
-echo date('c')." BEFORE GOOGLE<br>\n";
+//echo date('c')." BEFORE GOOGLE<br>\n";
   list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last");
-echo date('c')." $count AFTER GOOGLE<br>\n";
+//echo date('c')." $count AFTER GOOGLE<br>\n";
 
 flush();
 
@@ -86,12 +86,29 @@ while (($d = $photos[$photo]['udatetaken']) > $first / 1000)
     continue;
   }
 //  echo date('c', $locks->data->items[$geo - 1]->timestampMs / 1000)."<br>\n";
-  geoLine($locks->data->items[$geo - 1]);
+
+  $prior = $locks->data->items[$geo - 1];
+  $next = $locks->data->items[$geo];
+
+  geoLine($prior);
   $id = $photos[$photo]['id'];
-  echo $photos[$photo]['datetaken']." <a href=\"http://flickr.com/photos/jamiekitson/$id\">$id</a><br>\n";
+  $title = utf8_decode($photos[$photo]['title']);
+  if ($title == "")
+    $title = $id;
+  echo $photos[$photo]['datetaken']." <a href=\"http://flickr.com/photos/jamiekitson/$id\">$title</a> $photo<br>\n";
 //    $photos[$photo]['latitude']." ".$photos[$photo]['longitude']."<br>\n";
 //  echo date('c', $locks->data->items[$geo]->timestampMs / 1000)."<br>\n"."<br>\n";
-  geoLine($locks->data->items[$geo]);
+  geoLine($next);
+
+  $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
+  $dLat = $prior->latitude - $next->latitude;
+  $dLong = $prior->longitude - $next->longitude;
+
+  $multi = ($photos[$photo]['udatetaken'] - $prior->timestampMs / 1000) / $dTime; 
+  $lat = $multi * $dLat + $prior->latitude;
+  $long = $multi * $dLong + $prior->longitude;
+  latLine($lat, $long);
+
   echo "<br>\n";
   $photo++;
   flush();
@@ -109,7 +126,14 @@ function geoLine($loc)
 {
   $lat = $loc->latitude;
   $long = $loc->longitude;
-  echo date('c', $loc->timestampMs / 1000)." <a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">$lat $long</a><br>\n";
+  echo date('c', $loc->timestampMs / 1000)." ";
+  latLine($lat, $long);
+}
+
+function latLine($lat, $long)
+{
+  echo "<a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">$lat $long</a><br>\n";
+
 }
 
 ?>
