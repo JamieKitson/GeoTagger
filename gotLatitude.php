@@ -34,6 +34,6 @@ $accesstoken= $response->access_token;
  
 setcookie(GOOGLE_TOKEN, $accesstoken);
 
-header("Location: index.php");
+header("Location: index.php#auth");
 
 ?>
