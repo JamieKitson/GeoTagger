@@ -1,20 +1,54 @@
 <html>
 <head>
 
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-   <script>
-     $(document).ready(function(){
-       $("#region").change(function(event){
-         loadTimezones();
-       });
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
 
-function loadTimezones()
+      $("#region").val(getCookie('region', 'Europe'));
+
+      function loadTimezones() {
+        $("#timezone").load("timezones/" + $("#region").val(), function() { 
+          $("#timezone").val(getCookie('timezone', 'London')); 
+        });
+      }
+
+      loadTimezones();
+
+      $("#region").change(function(event){
+        setCookie('region', $("#region").val(), 100);
+        loadTimezones();
+      });
+
+      $("#timezone").change(function(event){
+        setCookie('timezone', $("#timezone").val(), 100);
+      });
+
+    });
+
+function setCookie(c_name,value,exdays)
 {
-$("#timezone").load("timezones/" + $("#region").val());
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  document.cookie=c_name + "=" + c_value;
 }
-         loadTimezones();
-     });
 
+function getCookie(c_name, def)
+{
+  var i,x,y,ARRcookies=document.cookie.split(";");
+  for (i=0;i<ARRcookies.length;i++)
+  {
+    x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+    y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+    x=x.replace(/^\s+|\s+$/g,"");
+    if (x==c_name)
+      {
+      return unescape(y);
+      }
+    }
+  return def;
+}
 
    </script>
 
@@ -30,50 +64,12 @@ $("#timezone").load("timezones/" + $("#region").val());
 <option>Antarctica</option>
 <option>Asia</option>
 <option>Atlantic</option>
-<option selected="selected">Europe</option>
+<option>Europe</option>
 <option>Indian</option>
 <option>Pacific</option>
 </select>
 
 <select id="timezone">
-</select>
-
-<?php
-
-static $regions = array(
-    'Africa' => DateTimeZone::AFRICA,
-    'America' => DateTimeZone::AMERICA,
-    'Antarctica' => DateTimeZone::ANTARCTICA,
-    'Asia' => DateTimeZone::ASIA,
-    'Atlantic' => DateTimeZone::ATLANTIC,
-    'Europe' => DateTimeZone::EUROPE,
-    'Indian' => DateTimeZone::INDIAN,
-    'Pacific' => DateTimeZone::PACIFIC
-);
-/*
-echo '<select id="region">';
-$region_cookie = array_key_exists('region', $_COOKIE) ? $_COOKIE['region'] : 'Europe';
-foreach ($regions as $name => $mask) {
-echo "<option";
-if ($name == $region_cookie)
-        echo ' selected="selected" ';
-echo ">$name</option>\n";
-}
-echo "<select>";
-/* /
-foreach ($regions as $name => $mask) {
-    $s = "";
-    foreach( DateTimeZone::listIdentifiers($mask) as $bah)
-        $s .= '<option value="'.$bah.'">'.str_replace("_", " ", substr($bah, strpos($bah, '/') + 1))."</option>\n";
-    file_put_contents("timezones/$name", $s);
-}
-// */
-//print_r($tzlist);
-
-?>
-
-<select id="second-choice">
-        <option>Please choose from above</option>
 </select>
 
 <?php
