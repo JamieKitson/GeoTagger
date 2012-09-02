@@ -68,7 +68,7 @@ there to help you in case anything should go wrong and cannot be disabled. You
 can add search criteria in step 3 such as tags, sets, etc. By default this app
 will not write data back to Flickr but will show you what it will try to do and
 why.
-
+<form action="go.php">
 <h1>1. Set your timezone</h1>
 <a href="http://www.flickr.com/services/api/misc.dates.html">Flickr does not
 record the timezone</a> that your camera is set to, so to maximise accuracy it
@@ -137,15 +137,18 @@ sort=date-posted-asc
 <textarea rows=5 cols=40 id="criteria"></textarea>
 
 <h1>4. Go</h1>
+This app will tag a maximum 500 photos at a time.
+<label>Number of pictures to tag<input type="text" name="count" value="10"></label><br>
 <label><input type="checkbox" name="write" value="true">Write data to Flickr</label><br>
 
 <?php
 
 if ($flickr && $latitude)
-  echo '<a href="go.php">Go</a>';
+  echo '<input type="submit" value="Go">';
 
 
 ?>
+</form>
 </body>
 </html>
 
