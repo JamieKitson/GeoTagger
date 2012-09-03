@@ -31,27 +31,26 @@
       });
 
       $('form').submit(function() {
-//        alert($(this).serialize());
 
-$.ajax({
-  url: "go.php?" + $(this).serialize(),
-  context: document.body
-}).done(function( data ) { 
-//alert(data);
-  $('#result').append(data);
-});
-
+        $.ajax({
+          url: "go.php?" + $(this).serialize(),
+          context: document.body
+        }).done(function( data ) { 
+          $('#result').append(data);
+        });
 
         return false;
       });
 
-/*      function saveValue(id) {
+      /*
+      function saveValue(id) {
         setCookie(id, $("#" + id).val(), 100);
       }
 
       function getValue(id, def) {
         getCookie(id, $("#" + id).val(), def);
-      } */
+      } 
+      */
 
     });
 
