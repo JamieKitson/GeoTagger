@@ -1,3 +1,17 @@
+<?php
+
+// Might need to alter header
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+include('flickrCall.php');
+include('googleCall.php');
+
+$flickr = testFlickr();
+$latitude = testLatitude();
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,12 +45,14 @@
       });
 
       $('form').submit(function() {
+        $('#gobtn').attr('disabled', 'disabled');
 
         $.ajax({
           url: "go.php?" + $(this).serialize(),
           context: document.body
         }).done(function( data ) { 
           $('#result').append(data);
+          $('#gobtn').removeAttr('disabled');
         });
 
         return false;
@@ -132,15 +148,6 @@ regularly.
 <p>
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
-include('flickrCall.php');
-include('googleCall.php');
-
-$flickr = testFlickr();
-$latitude = testLatitude();
-
 if (!$flickr)
   echo '<a class="btn btn-primary" href="getFlickr.php">Authorise Flickr</a>'."\n";
 
@@ -185,7 +192,7 @@ This app will geo-tag a maximum 500 photos at a time and will not write the data
 </p>
 
 <p>
-<input type="submit" value="Go" class="btn btn-primary btn-large"<?php
+<input type="submit" value="Go" class="btn btn-primary btn-large" id="gobtn"<?php
 
 if (!($flickr && $latitude))
   echo ' disabled="disabled" ';
