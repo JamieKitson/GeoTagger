@@ -33,13 +33,14 @@ $response = json_decode($result);
 
 if (property_exists($response, 'access_token'))
 {
-  $accesstoken = $response->access_token;  
+  $accesstoken = $response->access_token;
+  echo $accesstoken;
   setcookie(GOOGLE_TOKEN, $accesstoken);
   header("Location: index.php#auth");
 }
 else
 {
-  echo "Error getting Google token: $response";
+  echo "Error getting Google token: ".$response->error;
 }
 
 ?>
