@@ -7,7 +7,7 @@ include('flickrCall.php');
 include('googleCall.php');
 
 if (!(testFlickr() && testLatitude()))
-  exit "Please authenticate both Flickr and Google.";
+  exit("Please re-authenticate.");
 
 $fp = array(
     
@@ -36,10 +36,12 @@ flush();
 
 $photos = $fc['photos']['photo'];
 
+date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
 foreach($photos as &$p)
 {
   $p['udatetaken'] = strtotime($p['datetaken']);
 }
+date_default_timezone_set('Europe/London');
 
 //print_r($photos);
 usort($photos, function($a, $b) { 
@@ -120,7 +122,7 @@ while (($d = $photos[$photo]['udatetaken']) > $first / 1000)
   $multi = ($photos[$photo]['udatetaken'] - $prior->timestampMs / 1000) / $dTime; 
   $lat = $multi * $dLat + $prior->latitude;
   $long = $multi * $dLong + $prior->longitude;
-  latLine($lat, $long, strtotime($photos[$photo]['datetaken']));
+  latLine($lat, $long, $photos[$photo]['udatetaken']);
 
   echo "</tr>\n";
   $photo++;
@@ -146,9 +148,10 @@ function geoLine($loc)
 
 function latLine($lat, $long, $desc)
 {
+  date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
   $desc = date('M d H:i', $desc);
+  date_default_timezone_set('Europe/London');
   echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">$desc</a></td>\n";
-
 }
 
 ?>
