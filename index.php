@@ -195,7 +195,11 @@ if (!($flickr && $latitude))
 
 <h1 class="page-header">5. Results</h1>
 <p>
-The results will be presented here as a table, mainly of links. 
+The results will be presented here as a table, mainly of links. The Prior and
+Next links display the times closest to the time that the photo was taken and
+link to those two points on Google Maps. The Best Guess column shows the time
+at which the photo was taken and links to the point on Google Maps where the
+photo will be geo-tagged.
 </p>
 <div id="result"></div>
 
