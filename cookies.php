@@ -30,9 +30,9 @@ function cookiesSet($cookies)
 
 function baseHttpPath()
 {
-  $uri = substr($_SERVER['REQUEST_URI'], 0, -strlen($_SERVER['QUERY_STRING']) - 1);
+  $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
   $p = strrpos($uri, '/');
-  return 'http://'.$_SERVER['HTTP_HOST'].substr($uri, 0, $p + 1);
+  return 'http://'.$_SERVER['HTTP_HOST'].substr($uri, 0, $p).'/';
 }
 
 ?>
