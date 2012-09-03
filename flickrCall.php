@@ -1,6 +1,6 @@
 <?php
 
-include('cookies.php');
+include_once('cookies.php');
 
 function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
 {

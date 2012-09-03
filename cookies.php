@@ -28,4 +28,11 @@ function cookiesSet($cookies)
   return $res;
 }
 
+function baseHttpPath()
+{
+  $uri = substr($_SERVER['REQUEST_URI'], 0, -strlen($_SERVER['QUERY_STRING']) - 1);
+  $p = strrpos($uri, '/');
+  return 'http://'.$_SERVER['HTTP_HOST'].substr($uri, 0, $p + 1);
+}
+
 ?>

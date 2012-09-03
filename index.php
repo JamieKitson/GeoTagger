@@ -111,7 +111,6 @@ removed at any time by clicking the Disconnect button. The Goolge token has a
 fairly short life, so don't be suprised if you need to reauthenticate
 regularly.
 </p>
-<p>
 <?php
 
 error_reporting(E_ALL);
@@ -127,9 +126,7 @@ if (!$flickr)
   echo '<a class="btn btn-primary btn-large" href="getFlickr.php">Authorise Flickr</a>'."\n";
 
 if (!$latitude)
-  echo '<a class="btn btn-primary btn-large" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri=http://geo.kitten-x.com/gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>'."\n";
-
-echo "</p>";
+  echo '<a class="btn btn-primary btn-large" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>'."\n";
 
 if ($flickr || $latitude)
   echo '<a class="btn btn-primary btn-large" href="disconnect.php">Disconnect</a>'."\n";

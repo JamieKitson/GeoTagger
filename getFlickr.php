@@ -6,7 +6,7 @@ function getRequestToken()
 {
   clearCookies(array(FLICKR_SECRET, FLICKR_TOKEN));
   $params = Array();
-  $params['oauth_callback'] = 'http://geo.kitten-x.com/gotFlickr.php';
+  $params['oauth_callback'] = baseHttpPath().'gotFlickr.php';
   $rsp = flickrCall($params, 'oauth/request_token');
   echo $rsp;
   parse_str($rsp, $q);

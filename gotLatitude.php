@@ -9,7 +9,7 @@ $fields=array(
   'code'          => $_GET["code"],  
   'client_id'     => '60961182481.apps.googleusercontent.com',  
   'client_secret' => $secret, 
-  'redirect_uri'  => 'http://geo.kitten-x.com/gotLatitude.php',  
+  'redirect_uri'  => baseHttpPath().'gotLatitude.php',  
   'grant_type'    => 'authorization_code'  
 );  
   
@@ -18,7 +18,7 @@ foreach($fields as $key => $value)
   $encoded[] = $key.'='.urlencode($value); 
 }  
 
-$fields_string=implode('&', $encoded);
+$fields_string = implode('&', $encoded);
 
 $ch = curl_init();  
 curl_setopt($ch, CURLOPT_URL, 'https://accounts.google.com/o/oauth2/token');  
@@ -29,11 +29,17 @@ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 $result = curl_exec($ch);  
 curl_close($ch);  
 
-$response=  json_decode($result);  
-$accesstoken= $response->access_token;  
- 
-setcookie(GOOGLE_TOKEN, $accesstoken);
+$response = json_decode($result);
 
-header("Location: index.php#auth");
+if (property_exists($response, 'access_token'))
+{
+  $accesstoken = $response->access_token;  
+  setcookie(GOOGLE_TOKEN, $accesstoken);
+  header("Location: index.php#auth");
+}
+else
+{
+  echo "Error getting Google token: $response";
+}
 
 ?>
