@@ -7,7 +7,7 @@ include('flickrCall.php');
 include('googleCall.php');
 
 if (!(testFlickr() && testLatitude()))
-  header("Location: index.php");
+  exit "Please authenticate both Flickr and Google.";
 
 $fp = array(
     
