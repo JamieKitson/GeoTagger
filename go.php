@@ -115,13 +115,9 @@ while (($d = $photos[$photo]['udatetaken']) > $first / 1000)
     $title = $id;
   
   echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/jamiekitson/$id\">$title</a></td>\n";
+  geoLine($next);
   geoLine($prior);
   
-//  echo $photos[$photo]['datetaken']." <a href=\"http://flickr.com/photos/jamiekitson/$id\">$title</a> $photo<br>\n";
-//    $photos[$photo]['latitude']." ".$photos[$photo]['longitude']."<br>\n";
-//  echo date('c', $locks->data->items[$geo]->timestampMs / 1000)."<br>\n"."<br>\n";
-  geoLine($next);
-
   $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
   $dLat = $prior->latitude - $next->latitude;
   $dLong = $prior->longitude - $next->longitude;
