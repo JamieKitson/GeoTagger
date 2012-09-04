@@ -59,7 +59,8 @@ $first = ($photos[0]['udatetaken'] + 24 * 60 * 60) * 1000;
 $last = (end($photos)['udatetaken'] - 24 * 60 * 60) * 1000;
 
 echo '<table class="table">';
-echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th><th>Best Guess</th></tr>";
+echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th><th>Best Guess</th>".
+  "<th>Tag</th><th>Geo</th></tr>";
  $photo = 0;
  $locks= true;
  $count = 100;
@@ -129,6 +130,33 @@ while (($d = $photos[$photo]['udatetaken']) > $first / 1000)
   $lat = $multi * $dLat + $prior->latitude;
   $long = $multi * $dLong + $prior->longitude;
   latLine($lat, $long, $photos[$photo]['udatetaken']);
+
+  if (array_key_exists('write', $_GET) && ($_GET['write'] == true))
+  {
+    $rsp = flickrCall(array(
+          'method' => 'flickr.photos.addTags', 
+          'photo_id' => $id, 
+          'tags' => 'geotaggedfromlatitude'));
+    $p = unserialize($rsp);
+    if ($p['stat'] == 'ok')
+    {
+      echo "<td>Y</td>";
+      $rsp = flickrCall(array(
+            'method' => 'flickr.photos.geo.setLocation', 
+            'photo_id' => $id, 
+            'lat' => $lat, 
+            'lon' => $long));
+      $p = unserialize($rsp);
+      if ($p['stat'] == 'ok')
+        echo "<td>Y</td>";
+      else
+        echo "<td>".$p['message']."</td>";
+    }
+    else
+      echo "<td>".$p['message']."</td><td>N</td>";
+  }
+  else
+    echo "<td>N</td><td>N</td>";
 
   echo "</tr>\n";
   $photo++;

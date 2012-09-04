@@ -218,7 +218,9 @@ The results will be presented here as a table, mainly of links. The Prior and
 Next links display the times closest to the time that the photo was taken and
 link to those two points on Google Maps. The Best Guess column shows the time
 at which the photo was taken and links to the point on Google Maps where the
-photo will be geo-tagged.
+photo will be geo-tagged. The final two columns show whether writing to Flickr
+has been successful and any error messages if not. If the tag fails to write
+the location will not be attempted.
 </p>
 <div id="result"></div>
 
