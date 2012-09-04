@@ -28,9 +28,7 @@ $fp['has_geo'] = 0;
 $fp['method'] = 'flickr.photos.search';
 $fp['extras'] = 'date_taken,geo';
 
-//echo date('c')." BEFORE FLICKR<br>\n";
 $fc = unserialize(flickrCall($fp));
-//echo date('c')." AFTER FLICKR<br>\n";
 
 // The flickrCall above will use the local time zone, 
 // but from now on we should use the user's time zone
@@ -45,15 +43,11 @@ foreach($photos as &$p)
   $p['udatetaken'] = strtotime($p['datetaken']);
 }
 
-//print_r($photos);
 usort($photos, function($a, $b) { 
     if ($a['udatetaken'] == $b['udatetaken']) 
       return 0; 
     return ($a['udatetaken'] < $b['udatetaken']) ? 1 : -1; 
   }); 
-//print_r($photos);
-
-//echo date('c')." AFTER FLICKR<br>\n";
 
 $first = ($photos[0]['udatetaken'] + 24 * 60 * 60) * 1000;
 $last = (end($photos)['udatetaken'] - 24 * 60 * 60) * 1000;
@@ -67,9 +61,7 @@ $count = 100;
 while (($count > 1) && ($locks !== FALSE))
 {
 
-//echo date('c')." BEFORE GOOGLE<br>\n";
   list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last");
-//echo date('c')." $count AFTER GOOGLE<br>\n";
 
   flush();
 
@@ -83,8 +75,6 @@ while (($count > 1) && ($locks !== FALSE))
       formatDate($last / 1000).' to '.formatDate($first / 1000).'.</div>';
     break;
   }
-  //  print_r($locks);
-  //  $count = 0;
 
   // go through photos
   $geo = 0;
@@ -97,17 +87,6 @@ while (($count > 1) && ($locks !== FALSE))
     // all geo points are before photo
     if ($d < $locks->data->items[$geo]->timestampMs / 1000)
       break;
-    // if we have a photo before any geo data we can't do anything about it
-    if ($geo == 0)
-    {
-      echo "No data for photo ".$photos[$photo]['datetaken']." ".$photos[$photo]['id']."<br>\n";
-      $photo++;
-      continue;
-    }
-  //  echo date('c', $locks->data->items[$geo - 1]->timestampMs / 1000)."<br>\n";
-
-    $prior = $locks->data->items[$geo - 1];
-    $next = $locks->data->items[$geo];
 
     $id = $photos[$photo]['id'];
     $title = /*utf8_decode(*/$photos[$photo]['title'];//);
@@ -115,6 +94,18 @@ while (($count > 1) && ($locks !== FALSE))
       $title = $id;
     
     echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/jamiekitson/$id\">$title</a></td>\n";
+
+    // if we have a photo before any geo data we can't do anything about it
+    if ($geo == 0)
+    {
+      echo "<td>No data for photo ".$photos[$photo]['datetaken']." ".$photos[$photo]['id']."</td></tr>\n";
+      $photo++;
+      continue;
+    }
+
+    $prior = $locks->data->items[$geo - 1];
+    $next = $locks->data->items[$geo];
+
     geoLine($next);
     geoLine($prior);
     
