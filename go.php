@@ -7,7 +7,7 @@ include('flickrCall.php');
 include('googleCall.php');
 
 if (!(testFlickr() && testLatitude()))
-  exit("Please re-authenticate.");
+  exit('<div class="alert alert-error">Please <a href="index.php">re-authenticate</a>.</div>');
 
 $fp = array(
     
@@ -32,16 +32,18 @@ $fp['extras'] = 'date_taken,geo';
 $fc = unserialize(flickrCall($fp));
 //echo date('c')." AFTER FLICKR<br>\n";
 
+// The flickrCall above will use the local time zone, 
+// but from now on we should use the user's time zone
+date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
+
 flush();
 
 $photos = $fc['photos']['photo'];
 
-date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
 foreach($photos as &$p)
 {
   $p['udatetaken'] = strtotime($p['datetaken']);
 }
-date_default_timezone_set('Europe/London');
 
 //print_r($photos);
 usort($photos, function($a, $b) { 
@@ -75,7 +77,11 @@ if ($count > 0)
     $first = end($locks->data->items)->timestampMs;
   }
   else
+{
+    echo '</table><div class="alert alert-error">No data returned from latitude for '.
+      formatDate($last / 1000).' to '.formatDate($first / 1000).'.</div>';
     break;
+}
 //  print_r($locks);
 //  $count = 0;
 
@@ -146,12 +152,14 @@ function geoLine($loc)
   latLine($lat, $long, $loc->timestampMs / 1000);
 }
 
+function formatDate($adate)
+{
+  return date('d M Y H:i', $adate);
+}
+
 function latLine($lat, $long, $desc)
 {
-  date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
-  $desc = date('M d H:i', $desc);
-  date_default_timezone_set('Europe/London');
-  echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">$desc</a></td>\n";
+  echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">".formatDate($desc)."</a></td>\n";
 }
 
 ?>
