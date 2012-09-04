@@ -47,17 +47,23 @@ $latitude = testLatitude();
       $('form').submit(function() {
 
         $('#gobtn').attr('disabled', 'disabled');
-
+        $('#current').removeAttr("id");
+        $('#loading').show();
         $.ajax({
           url: "go.php?" + $(this).serialize(),
           context: document.body
         }).done(function( data ) { 
           $('#result').append(data);
           $('#gobtn').removeAttr('disabled');
-          if ($('#result').has('table').is('table'))
+          $('#loading').hide();
+          if ($('#result table').length)
+          {
             window.onbeforeunload = function(e) { 
               return 'Leaving this page will clear your results table.'; 
-          };
+            };
+          }
+          $('#result table:last-child').attr("id", "current");
+          document.getElementById('current').scrollIntoView();
         });
 
         return false;
@@ -210,6 +216,7 @@ if (!($flickr && $latitude))
   echo ' disabled="disabled" ';
 
 ?>>
+<img src="loading.gif" id="loading" style="display: none">
 </p>
 
 <h1 class="page-header">5. Results</h1>
