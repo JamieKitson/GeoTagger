@@ -128,8 +128,10 @@ being one of the few that does.
 <option>Africa</option>
 <option>America</option>
 <option>Antarctica</option>
+<option>Arctic</option>
 <option>Asia</option>
 <option>Atlantic</option>
+<option>Australia</option>
 <option>Europe</option>
 <option>Indian</option>
 <option>Pacific</option>
