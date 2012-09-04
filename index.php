@@ -45,6 +45,7 @@ $latitude = testLatitude();
       });
 
       $('form').submit(function() {
+
         $('#gobtn').attr('disabled', 'disabled');
 
         $.ajax({
@@ -53,10 +54,15 @@ $latitude = testLatitude();
         }).done(function( data ) { 
           $('#result').append(data);
           $('#gobtn').removeAttr('disabled');
+          if ($('#result').has('table').is('table'))
+            window.onbeforeunload = function(e) { 
+              return 'Leaving this page will clear your results table.'; 
+          };
         });
 
         return false;
       });
+
 
       /*
       function saveValue(id) {
@@ -118,7 +124,7 @@ why.
 <a href="http://www.flickr.com/services/api/misc.dates.html">Flickr does not
 record the time zone</a> that your camera is set to, so to maximise accuracy it
 is very important to get the time zone right. Choosing your exact location
-allows us to hopefully handle daylight saving. Note that this should match you
+allows us to hopefully handle daylight saving correctly. Note that this should match you
 camera setting, not just where you happen to be right now. Yes, I could attempt
 to get the time zone from the EXIF data, but from a brief and unscientific 
 survey it seems that this doesn't show up in Flickr for many cameras, my D7000
@@ -170,7 +176,7 @@ to restrict the photos that will be geo-tagged. This will probably be
 by <code>tags</code>. Put each criteria on its own line and separate name and value with an
 equals sign as in the example below. You can also change the 
 <code><a href="http://www.flickr.com/services/api/flickr.photos.search.html#yui_3_5_1_1_1346613172850_475">sort</a></code>
-order, for example if you wanted to start by tagging your oldest photos first, rather than your newest photos. 
+order, for example if you wanted to start by tagging your oldest photos first, rather than your newest photos, ie, defaults to <code>date-taken-desc</code>. 
 <code><a href="http://www.flickr.com/services/api/flickr.photos.search.html#yui_3_5_1_1_1346613172850_465">privacy_filter</a></code>
 could also be useful if you don't want to geo-tag public photos, see the
 previous link for possible values. Note that you cannot override <code>has_geo</code>, this
@@ -185,7 +191,11 @@ sort=date-posted-asc
 
 <h1 class="page-header" id="go">4. Go</h1>
 <p>
-This app will geo-tag a maximum 500 photos at a time and will not write the data back to Flickr unless you check the checkbox below.
+This app will geo-tag a maximum 500 photos at a time and will not write the
+data back to Flickr unless you check the checkbox below. This app can be quite
+slow, especially when writing back to Flickr. The biggest factor is the
+duration that the pictures were taken over, so for example 100 photos taken
+over an hour may be processed quicker than 10 photos taken over a week.
 </p>
 <p>
 <label class="control-label" for="count" id="lblCount">Number of pictures to tag: </label>
