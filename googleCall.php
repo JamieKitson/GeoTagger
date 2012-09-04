@@ -1,5 +1,7 @@
 <?PHP
 
+include_once('cookies.php');
+
 function googleCall($params)
 {
   $opts = array(
