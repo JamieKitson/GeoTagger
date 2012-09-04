@@ -93,7 +93,7 @@ while (($count > 1) && ($locks !== FALSE))
     if ($title == "")
       $title = $id;
     
-    echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/jamiekitson/$id\">$title</a></td>\n";
+    echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/".$photos[$photo]['owner']."/$id\">$title</a></td>\n";
 
     // if we have a photo before any geo data we can't do anything about it
     if ($geo == 0)
