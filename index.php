@@ -19,13 +19,16 @@ $latitude = testLatitude();
   <meta charset="UTF-8">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <style> #lblCount { display: inline } </style>
+  <style> 
+    #lblCount { display: inline } 
+    .criteria { width: 40em }
+  </style>
   <!-- script src="bootstrap/js/bootstrap.min.js"></script -->
   <script>
     $(document).ready(function(){
 
       $("#region").val(getCookie('region', 'Europe'));
-      $("#criteria").val(getCookie('criteria', ''));
+      $("textarea.criteria").val(getCookie('criteria', ''));
 
       function loadTimezones() {
         $("#timezone").load("timezones/" + $("#region").val(), function() { 
@@ -45,7 +48,7 @@ $latitude = testLatitude();
       });
 
       $('form').submit(function() {
-
+        setCookie('criteria', $("textarea.criteria").val(), 100);
         $('#gobtn').attr('disabled', 'disabled');
         $('#current').removeAttr("id");
         $('#loading').show();
@@ -189,17 +192,17 @@ previous link for possible values. Note that you cannot override <code>has_geo</
 app will never overwrite existing location data. Unfortunately
 <code>flickr.photos.search</code> does not seem to have a sets setting.
 <code>min_taken_date</code> and <code>max_taken_date</code> will be useful if you have gaps in your Latitude data.
-<pre>
+<pre class="criteria">
 tags=mongolia,mongolrally
 privacy_filter=4
 sort=date-taken-asc
 min_taken_date=2012-05-28
 </pre>
-<textarea rows=5 cols=40 name="criteria"></textarea>
+<textarea rows=5 class="criteria" name="criteria"></textarea>
 
 <h1 class="page-header" id="go">4. Go</h1>
 <p>
-This app will geo-tag a maximum 250 photos at a time and will not write the
+This app will geo-tag a maximum of 250 photos at a time and will not write the
 data back to Flickr unless you check the checkbox below. This app can be quite
 slow, especially when writing back to Flickr. The biggest factor is the
 duration that the pictures were taken over, so for example 100 photos taken
