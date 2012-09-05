@@ -104,7 +104,8 @@ while (($count > 0) && ($locks !== FALSE))
     // if we have a photo before any geo data we can't do anything about it
     if ($geo == 0)
     {
-      echo "<td>No data for photo ".$photos[$photo]['datetaken']." ".$photos[$photo]['id']."</td></tr>\n";
+      echo "<td colspan=5>No Latitude data for photo ".$photos[$photo]['datetaken']." ".
+        $photos[$photo]['id']."</td></tr>\n";
       $photo++;
       continue;
     }
