@@ -15,8 +15,9 @@ $latitude = testLatitude();
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Google Latitude to Flickr Geo-Tagger</title>
+  <title>Geo-Tag Flickr photos using Google Latitude data</title>
   <meta charset="UTF-8">
+  <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <style> 
@@ -254,6 +255,7 @@ Google authentication).
 <h1 class="page-header" id="source">7. Source code</h1>
 <a href="https://github.com/JamieKitson/GeoTagger">On GitHub</a>. This is also the place to 
 <a href="https://github.com/JamieKitson/GeoTagger/issues">report</a> bugs, corrections and feature requests.
+In the <a href="http://www.flickr.com/services/apps/72157631292787722/?action=screenshots_added">App Garden</a>.
 </form>
 </body>
 </html>
