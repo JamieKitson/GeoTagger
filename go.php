@@ -84,7 +84,7 @@ while (($count > 0) && ($locks !== FALSE))
 
   // go through photos
   $geo = 0;
-  while (($pDate = $photos[$photo]['udatetaken']) > $first / 1000)
+  while (($photo < count($photos)) && (($pDate = $photos[$photo]['udatetaken']) > $first / 1000))
   {
     while (($geo < count($locks->data->items)) && ($pDate < $locks->data->items[$geo]->timestampMs / 1000))
     {
@@ -101,12 +101,15 @@ while (($count > 0) && ($locks !== FALSE))
     
     echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/".$photos[$photo]['owner']."/$id\">$title</a></td>\n";
 
-    $prior = $locks->data->items[$geo - 1];
-    $next = $locks->data->items[$geo];
-    $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
+    if ($geo > 0)
+    {
+      $prior = $locks->data->items[$geo - 1];
+      $next = $locks->data->items[$geo];
+      $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
+    }
 
     // if we have a photo before any geo data we can't do anything about it
-    if ($geo == 0 || $dTime > 24 * 60 * 60)
+    if (($geo == 0) || ($dTime > 24 * 60 * 60))
     {
       echo '<td colspan=5>No Latitude data for '.formatDate($pDate)."</td></tr>\n";
       $photo++;
@@ -153,7 +156,6 @@ while (($count > 0) && ($locks !== FALSE))
       exit("</table>");
     }
   }
-
 }
 
 function statToMessage($rsp)
