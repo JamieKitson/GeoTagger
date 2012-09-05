@@ -47,8 +47,11 @@ $latitude = testLatitude();
         setCookie('timezone', $("#timezone").val(), 100);
       });
 
-      $('form').submit(function() {
+      $("textarea.criteria").focusout(function() {
         setCookie('criteria', $("textarea.criteria").val(), 100);
+      });
+
+      $('form').submit(function() {
         $('#gobtn').attr('disabled', 'disabled');
         $('#current').removeAttr("id");
         $('#loading').show();
