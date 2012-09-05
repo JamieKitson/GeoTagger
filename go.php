@@ -38,6 +38,15 @@ flush();
 
 $photos = $fc['photos']['photo'];
 
+if (count($photos) == 0)
+{
+  exit('<div class="alert alert-error">No Flickr photos found.</div>');
+}
+else
+{
+  touch('stats/'.str_replace('@', '_', $photos[0]['owner']));
+}
+
 foreach($photos as &$p)
 {
   $p['udatetaken'] = strtotime($p['datetaken']);
@@ -144,8 +153,7 @@ while (($count > 1) && ($locks !== FALSE))
     flush();
     if ($photo == count($photos))
     {
-      echo "</table>";
-      exit;
+      exit("</table>");
     }
   }
 
