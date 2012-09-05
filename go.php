@@ -84,14 +84,14 @@ while (($count > 0) && ($locks !== FALSE))
 
   // go through photos
   $geo = 0;
-  while (($d = $photos[$photo]['udatetaken']) > $first / 1000)
+  while (($pDate = $photos[$photo]['udatetaken']) > $first / 1000)
   {
-    while (($geo < count($locks->data->items)) && ($d < $locks->data->items[$geo]->timestampMs / 1000))
+    while (($geo < count($locks->data->items)) && ($pDate < $locks->data->items[$geo]->timestampMs / 1000))
     {
       $geo++;
     }
     // all geo points are before photo
-    if ($d < $locks->data->items[$geo]->timestampMs / 1000)
+    if ($pDate < $locks->data->items[$geo]->timestampMs / 1000)
       break;
 
     $id = $photos[$photo]['id'];
@@ -101,29 +101,28 @@ while (($count > 0) && ($locks !== FALSE))
     
     echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/".$photos[$photo]['owner']."/$id\">$title</a></td>\n";
 
+    $prior = $locks->data->items[$geo - 1];
+    $next = $locks->data->items[$geo];
+    $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
+
     // if we have a photo before any geo data we can't do anything about it
-    if ($geo == 0)
+    if ($geo == 0 || $dTime > 24 * 60 * 60)
     {
-      echo "<td colspan=5>No Latitude data for photo ".$photos[$photo]['datetaken']." ".
-        $photos[$photo]['id']."</td></tr>\n";
+      echo '<td colspan=5>No Latitude data for '.formatDate($pDate)."</td></tr>\n";
       $photo++;
       continue;
     }
 
-    $prior = $locks->data->items[$geo - 1];
-    $next = $locks->data->items[$geo];
-
     geoLine($next);
     geoLine($prior);
     
-    $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
     $dLat = $prior->latitude - $next->latitude;
     $dLong = $prior->longitude - $next->longitude;
 
-    $multi = ($photos[$photo]['udatetaken'] - $prior->timestampMs / 1000) / $dTime; 
+    $multi = ($pDate - $prior->timestampMs / 1000) / $dTime; 
     $lat = $multi * $dLat + $prior->latitude;
     $long = $multi * $dLong + $prior->longitude;
-    latLine($lat, $long, $photos[$photo]['udatetaken']);
+    latLine($lat, $long, $pDate);
 
     if (array_key_exists('write', $_GET) && ($_GET['write'] == true))
     {
