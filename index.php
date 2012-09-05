@@ -123,10 +123,10 @@ function getCookie(c_name, def)
 This app will attempt to automatically geo-tag your Flickr photos using your
 Google Latitude data. The exact location will be estimated by using the
 proportion of time passed between the two points either side of the time that
-the photo was taken. This app will never overwrite existing location data and
-will tag any photos that it geo-tags with <code>geotaggedfromlatitude</code>, this might see like spam, but is
-there to help you in case anything should go wrong and hence cannot be disabled. You
-can add search criteria in step 3 such as tags, sets, etc. By default this app
+the photo was taken, to a maximum of 24 hours. This app will never overwrite existing location data and
+will tag any photos that it geo-tags with <code>geotaggedfromlatitude</code>, this might seem like spam, but is
+there to help you in case anything should go wrong, and hence cannot be disabled. You
+can add search criteria in step 3 such as tags, dates, etc. By default this app
 will not write data back to Flickr but will show you what it will try to do and
 why.
 </p>
@@ -193,8 +193,9 @@ order, for example if you wanted to start by tagging your oldest photos first, r
 could also be useful if you don't want to geo-tag public photos, see the
 previous link for possible values. Note that you cannot override <code>has_geo</code>, this
 app will never overwrite existing location data. Unfortunately
-<code>flickr.photos.search</code> does not seem to have a sets setting.
-<code>min_taken_date</code> and <code>max_taken_date</code> will be useful if you have gaps in your Latitude data.
+<code>flickr.photos.search</code> does not seem to have a <code>sets</code> parameter.
+<code>min_taken_date</code> and <code>max_taken_date</code> will be useful if
+you have gaps in your Latitude data.
 <pre class="criteria">
 tags=mongolia,mongolrally
 privacy_filter=4
