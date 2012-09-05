@@ -118,7 +118,7 @@ This app will attempt to automatically geo-tag your Flickr photos using your
 Google Latitude data. The exact location will be estimated by using the
 proportion of time passed between the two points either side of the time that
 the photo was taken. This app will never overwrite existing location data and
-will add a tag to any photos that it geo-tags, this might see like spam, but is
+will tag any photos that it geo-tags with <code>geotaggedfromlatitude</code>, this might see like spam, but is
 there to help you in case anything should go wrong and hence cannot be disabled. You
 can add search criteria in step 3 such as tags, sets, etc. By default this app
 will not write data back to Flickr but will show you what it will try to do and
@@ -197,7 +197,7 @@ sort=date-posted-asc
 
 <h1 class="page-header" id="go">4. Go</h1>
 <p>
-This app will geo-tag a maximum 500 photos at a time and will not write the
+This app will geo-tag a maximum 250 photos at a time and will not write the
 data back to Flickr unless you check the checkbox below. This app can be quite
 slow, especially when writing back to Flickr. The biggest factor is the
 duration that the pictures were taken over, so for example 100 photos taken
@@ -244,7 +244,7 @@ Google authentication).
 
 <h1 class="page-header" id="source">7. Source code</h1>
 <a href="https://github.com/JamieKitson/GeoTagger">On GitHub</a>. This is also the place to 
-<a href="https://github.com/JamieKitson/GeoTagger/issues">report bugs</a>.
+<a href="https://github.com/JamieKitson/GeoTagger/issues">report</a> bugs, corrections and feature requests.
 </form>
 </body>
 </html>

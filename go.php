@@ -34,8 +34,6 @@ $fc = unserialize(flickrCall($fp));
 // but from now on we should use the user's time zone
 date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
 
-flush();
-
 $photos = $fc['photos']['photo'];
 
 if (count($photos) == 0)
@@ -72,8 +70,6 @@ while (($count > 1) && ($locks !== FALSE))
 
   list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last".
       "&fields=items(timestampMs,latitude,longitude)");
-
-  flush();
 
   if ($count > 0)
   {
@@ -144,10 +140,10 @@ while (($count > 1) && ($locks !== FALSE))
         statToMessage($rsp);
       }
       else
-        echo "<td>N</td>";
+        echo "<td>✗</td>";
     }
     else
-      echo "<td>N</td><td>N</td>";
+      echo "<td>✗</td><td>✗</td>";
 
     echo "</tr>\n";
     $photo++;
@@ -165,7 +161,7 @@ function statToMessage($rsp)
   $p = unserialize($rsp);
   if ($p['stat'] == 'ok')
   {
-    echo "<td>Y</td>";
+    echo "<td>✓</td>";
     return true;
   }
   echo "<td>".$p['message']."</td>";
