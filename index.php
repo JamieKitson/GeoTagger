@@ -20,7 +20,7 @@ $latitude = testLatitude();
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <style> #lblCount { display: inline } </style>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- script src="bootstrap/js/bootstrap.min.js"></script -->
   <script>
     $(document).ready(function(){
 
@@ -62,7 +62,7 @@ $latitude = testLatitude();
               return 'Leaving this page will clear your results table.'; 
             };
           }
-          $('#result table:last-child').attr("id", "current");
+          $('#result :last-child').attr("id", "current");
           document.getElementById('current').scrollIntoView();
         });
 
