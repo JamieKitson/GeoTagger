@@ -188,10 +188,12 @@ could also be useful if you don't want to geo-tag public photos, see the
 previous link for possible values. Note that you cannot override <code>has_geo</code>, this
 app will never overwrite existing location data. Unfortunately
 <code>flickr.photos.search</code> does not seem to have a sets setting.
+<code>min_taken_date</code> and <code>max_taken_date</code> will be useful if you have gaps in your Latitude data.
 <pre>
 tags=mongolia,mongolrally
 privacy_filter=4
-sort=date-posted-asc
+sort=date-taken-asc
+min_taken_date=2012-05-28
 </pre>
 <textarea rows=5 cols=40 name="criteria"></textarea>
 
