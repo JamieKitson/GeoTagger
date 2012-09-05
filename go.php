@@ -65,7 +65,7 @@ echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th>
 $photo = 0;
 $locks= true;
 $count = 100;
-while (($count > 1) && ($locks !== FALSE))
+while (($count > 0) && ($locks !== FALSE))
 {
 
   list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last".
@@ -73,12 +73,12 @@ while (($count > 1) && ($locks !== FALSE))
 
   if ($count > 0)
   {
-    $first = end($locks->data->items)->timestampMs;
+    $first = end($locks->data->items)->timestampMs - 1;
   }
   else
   {
-    echo '</table><div class="alert alert-error">No data returned from latitude for '.
-      formatDate($last / 1000).' to '.formatDate($first / 1000).'.</div>';
+    echo '</table><div class="alert alert-error">Google Latitude returned no data for <strong>'.
+      formatDate($last / 1000).'</strong> to <strong>'.formatDate($first / 1000).'</strong>.</div>';
     break;
   }
 
