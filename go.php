@@ -70,7 +70,8 @@ $count = 100;
 while (($count > 1) && ($locks !== FALSE))
 {
 
-  list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last");
+  list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last".
+      "&fields=items(timestampMs,latitude,longitude)");
 
   flush();
 
