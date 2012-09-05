@@ -169,7 +169,7 @@ if (!$flickr)
   echo '<a class="btn btn-primary" href="getFlickr.php">Authorise Flickr</a>'."\n";
 
 if (!$latitude)
-  echo '<a class="btn btn-primary" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>'."\n";
+  echo googleAuthLink("btn btn-primary")."\n";
 
 if ($flickr || $latitude)
   echo '<a class="btn" href="disconnect.php">Disconnect</a>'."\n";

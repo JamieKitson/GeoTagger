@@ -7,7 +7,7 @@ include('flickrCall.php');
 include('googleCall.php');
 
 if (!(testFlickr() && testLatitude()))
-  exit('<div class="alert alert-error">Please <a href="index.php">re-authenticate</a>.</div>');
+  exit('<div class="alert alert-error">Please re-'.googleAuthLink('').'.</div>');
 
 $fp = array(
     
