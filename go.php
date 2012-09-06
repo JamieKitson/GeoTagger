@@ -45,7 +45,7 @@ if (count($photos) == 0)
 }
 else
 {
-  // else record flickr user for prosperity
+  // record flickr user for prosperity
   touch('stats/'.str_replace('@', '_', $photos[0]['owner']));
 }
 
@@ -62,7 +62,7 @@ usort($photos, function($a, $b) {
     return ($a['udatetaken'] < $b['udatetaken']) ? 1 : -1; 
   }); 
 
-// get the initial max/min dates
+// get the initial max/min dates, +- 24 hours
 $first = ($photos[0]['udatetaken'] + 24 * 60 * 60) * 1000;
 $last = (end($photos)['udatetaken'] - 24 * 60 * 60) * 1000;
 
@@ -126,6 +126,14 @@ while (($count > 0) && ($locks !== false))
     if (($geo == 0) || ($dTime > 24 * 60 * 60))
     {
       echo '<td colspan=5>No Latitude data for '.formatDate($pDate)."</td></tr>\n";
+      $photo++;
+      continue;
+    }
+
+    // double check that photo doesn't have geo-data
+    if (($photos[$photo]['latitude'] != 0) || ($photos[$photo]['longitude'] != 0))
+    {
+      echo "<td colspan=5>Photo already has geo data!</td></tr>\n";
       $photo++;
       continue;
     }
