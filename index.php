@@ -245,9 +245,8 @@ the location will not be attempted.
 <ul>
 <li><a href="http://latitude2flickr.be-q.com/">Latitude2Flickr</a> has a very nice
 interface, but I don't think does anything automatically, or even in batches.
-It also dynamically loads all of your photos so can be quite slow if you have a
-lot of photos and is a little buggy (currently it's returning an error on
-Google authentication). 
+It also dynamically loads all of your non-geo-tagged photos every time you go back, so can be quite slow if you have a
+lot of them.
 <li>A few desktop non-Flickr apps are discussed in 
 <a href="http://www.quora.com/Is-there-a-way-to-geotag-photos-using-Google-Latitude-history">this thread</a>.
 </ul>
