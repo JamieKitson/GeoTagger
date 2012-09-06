@@ -226,7 +226,7 @@ if (!($flickr && $latitude))
   echo ' disabled="disabled" ';
 
 ?>>
-<img src="loading.gif" id="loading" style="display: none">
+<img src="loading.gif" id="loading" style="display: none" alt="loading">
 </p>
 
 <h1 class="page-header">5. Results</h1>
