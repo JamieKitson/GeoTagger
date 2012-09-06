@@ -75,6 +75,7 @@ $photo = 0;   // number of current photo
 $locks= true; // location points returned by google
 $count = 100; // number of returned latitude points
 
+// loop through pages of google latitude points
 while (($count > 0) && ($locks !== false))
 {
 
@@ -93,8 +94,9 @@ while (($count > 0) && ($locks !== false))
     break;
   }
 
-  // go through photos
-  $geo = 0;
+  $geo = 0; // latitude point index
+
+  // loop through photos
   while (($photo < count($photos)) && (($pDate = $photos[$photo]['udatetaken']) > $first / 1000))
   {
     // go through latitude points
@@ -109,9 +111,7 @@ while (($count > 0) && ($locks !== false))
 
     // start processing photo
     $id = $photos[$photo]['id'];
-    $title = /*utf8_decode(*/$photos[$photo]['title'];//);
-    if ($title == "")
-      $title = $id;
+    $title = $photos[$photo]['title'] ?: $id;
     
     echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://flickr.com/photos/".$photos[$photo]['owner']."/$id\">$title</a></td>\n";
 
@@ -122,18 +122,19 @@ while (($count > 0) && ($locks !== false))
       $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
     }
 
+    $msg = "";
+
     // either we have a photo before any geo data or we have a photo in a gap of > 24 hours of geo data, so skip photo
     if (($geo == 0) || ($dTime > 24 * 60 * 60))
-    {
-      echo '<td colspan=5>No Latitude data for '.formatDate($pDate)."</td></tr>\n";
-      $photo++;
-      continue;
-    }
+      $msg = "No Latitude data for ".formatDate($pDate);
 
     // double check that photo doesn't have geo-data
     if (($photos[$photo]['latitude'] != 0) || ($photos[$photo]['longitude'] != 0))
+      $msg = "Photo already has geo data!";
+
+    if ($msg > "")
     {
-      echo "<td colspan=5>Photo already has geo data!</td></tr>\n";
+      echo "<td colspan=5>$msg</td></tr>\n";
       $photo++;
       continue;
     }
