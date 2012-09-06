@@ -35,4 +35,28 @@ function baseHttpPath()
   return 'http://'.$_SERVER['HTTP_HOST'].substr($uri, 0, $p).'/';
 }
 
+function gzipCall($url)
+{
+  $opts = array(
+      'http'=>array(
+      'method'=>"GET",
+      'header'=>"Accept-Encoding: gzip\r\n" .
+                "User-Agent: my program (gzip)\r\n"
+                                )
+    );
+
+  $context = stream_context_create($opts);
+
+  $xmlresponse = @file_get_contents($url, false, $context);
+
+  if ($xmlresponse !== false)
+  {
+    $xmlresponse = gzdecode($xmlresponse);
+  }
+
+  return $xmlresponse;
+}
+
+
+
 ?>

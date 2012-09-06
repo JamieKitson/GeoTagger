@@ -47,7 +47,7 @@ function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
         $url .= "?$p&oauth_signature=$sig";
 
         if ($docall)
-          $rsp = @file_get_contents($url);
+          $rsp = gzipCall($url);
         else
         {
           echo "<div>$url</div>\n";
