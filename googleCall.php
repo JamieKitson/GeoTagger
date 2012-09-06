@@ -1,6 +1,6 @@
 <?PHP
 
-include_once('cookies.php');
+include_once('common.php');
 
 function googleCall($params)
 {

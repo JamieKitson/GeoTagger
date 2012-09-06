@@ -1,6 +1,6 @@
 <?php  
  
-include('cookies.php');
+include('common.php');
 
   $f      = file(dirname(__FILE__).'/googlesecret.php');
   $secret = trim($f[1]);

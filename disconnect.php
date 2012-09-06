@@ -1,6 +1,6 @@
 <?PHP
 
-include('cookies.php');
+include('common.php');
 
 clearCookies(array(FLICKR_TOKEN, FLICKR_SECRET, GOOGLE_TOKEN));
 
