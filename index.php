@@ -243,6 +243,22 @@ the location will not be attempted.
 </p>
 <div id="result"></div>
 
+<h1 class="page-header" id="alt">. Tips</h1>
+<p>
+Obviously the more readings that Google Latitude saves the more accurate this
+tool will be. I believe that you can deliberately get Google to start logging
+your location by specifically starting Google Maps on your phone. So do this
+for example before and after shooting, or leave it running for the duration.
+<a href="http://www.flickr.com/photos/jamiekitson/7822494392/">Google Maps does
+not need a data connection</a> to remember locations, it should upload 
+remembered locations when it can. I've personally found that the biggest
+discrepancies come from situations where location (a) is logged in the evening,
+I take a photo in the morning, and then only after travelling some distance 
+another location (b) is logged. The large discrepancy is due to the photo
+time being a lot closer to point (b) than point (a). Again, if you can it's
+best to log more locations.
+</p>
+
 <h1 class="page-header" id="alt">. Alternatives</h1>
 <ul>
 <li><a href="http://latitude2flickr.be-q.com/">Latitude2Flickr</a> has a very nice
