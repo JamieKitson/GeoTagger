@@ -5,13 +5,13 @@ include_once('common.php');
 function googleCall($params)
 {
   $url = 'https://www.googleapis.com/latitude/v1/location?oauth_token='.$_COOKIE[GOOGLE_TOKEN].
-        "&granularity=best&$params"; // max-results=1000&max-time=$first&min-time=$last";
+        "&granularity=best&$params";
 
   $xmlresponse = gzipCall($url); 
 
   $count = 0;
   $locks = false;
-  if ($xmlresponse !== FALSE)
+  if ($xmlresponse !== false)
   {
     $locks = json_decode($xmlresponse);
     if (property_exists($locks->data, 'items'))
