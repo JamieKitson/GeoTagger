@@ -23,6 +23,8 @@ $latitude = testLatitude();
   <style> 
     #lblCount { display: inline } 
     .criteria { width: 40em }
+    body { counter-reset: headings -1 }
+    h1:before { content: counter(headings); counter-increment: headings; }
   </style>
   <!-- script src="bootstrap/js/bootstrap.min.js"></script -->
   <script>
@@ -119,7 +121,7 @@ function getCookie(c_name, def)
 <body>
 <form class="container">
 
-<h1 class="page-header">0. About</h1>
+<h1 class="page-header">. About</h1>
 <p>
 This app will attempt to automatically geo-tag your Flickr photos using your
 Google Latitude data. The exact location will be estimated by using the
@@ -132,7 +134,7 @@ will not write data back to Flickr but will show you what it will try to do and
 why.
 </p>
 
-<h1 class="page-header" id="settz">1. Set your time zone</h1>
+<h1 class="page-header" id="settz">. Set your time zone</h1>
 <p>
 <a href="http://www.flickr.com/services/api/misc.dates.html">Flickr does not
 record the time zone</a> that your camera is set to, so to maximise accuracy it
@@ -159,7 +161,7 @@ being one of the few that does.
 <select id="timezone" name="timezone">
 </select>
 
-<h1 class="page-header" id="auth">2. Authenticate Google and Flickr</h1>
+<h1 class="page-header" id="auth">. Authenticate Google and Flickr</h1>
 <p>
 The respective tokens will be held only as cookies in your browser and can be
 removed at any time by clicking the Disconnect button. The Goolge token has a
@@ -181,7 +183,7 @@ if ($flickr || $latitude)
 ?>
 </p>
 
-<h1 class="page-header">3. Flickr search criteria (optional)</h1>
+<h1 class="page-header">. Flickr search criteria (optional)</h1>
 <P>
 Here you can add any criteria that exist for 
 <code><a href="http://www.flickr.com/services/api/flickr.photos.search.html">flickr.photos.search</a></code>
@@ -205,7 +207,7 @@ min_taken_date=2012-05-28
 </pre>
 <textarea rows=5 class="criteria" name="criteria"></textarea>
 
-<h1 class="page-header" id="go">4. Go</h1>
+<h1 class="page-header" id="go">. Go</h1>
 <p>
 This app will geo-tag a maximum of 250 photos at a time and will not write the
 data back to Flickr unless you check the checkbox below. This app can be quite
@@ -229,7 +231,7 @@ if (!($flickr && $latitude))
 <img src="loading.gif" id="loading" style="display: none" alt="loading">
 </p>
 
-<h1 class="page-header">5. Results</h1>
+<h1 class="page-header">. Results</h1>
 <p>
 The results will be presented here as a table, mainly of links. The Prior and
 Next links display the times closest to the time that the photo was taken and
@@ -241,7 +243,7 @@ the location will not be attempted.
 </p>
 <div id="result"></div>
 
-<h1 class="page-header" id="alt">6. Alternatives</h1>
+<h1 class="page-header" id="alt">. Alternatives</h1>
 <ul>
 <li><a href="http://latitude2flickr.be-q.com/">Latitude2Flickr</a> has a very nice
 interface, but I don't think does anything automatically, or even in batches.
@@ -251,7 +253,7 @@ lot of them.
 <a href="http://www.quora.com/Is-there-a-way-to-geotag-photos-using-Google-Latitude-history">this thread</a>.
 </ul>
 
-<h1 class="page-header" id="source">7. Source code</h1>
+<h1 class="page-header" id="source">. Source code</h1>
 <a href="https://github.com/JamieKitson/GeoTagger">On GitHub</a>. This is also the place to 
 <a href="https://github.com/JamieKitson/GeoTagger/issues">report</a> bugs, corrections and feature requests.
 In the <a href="http://www.flickr.com/services/apps/72157631292787722/?action=screenshots_added">App Garden</a>.
