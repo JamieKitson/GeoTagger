@@ -249,14 +249,25 @@ Obviously the more readings that Google Latitude saves the more accurate this
 tool will be. I believe that you can deliberately get Google to start logging
 your location by specifically starting Google Maps on your phone. So do this
 for example before and after shooting, or leave it running for the duration.
+Note that
 <a href="http://www.flickr.com/photos/jamiekitson/7822494392/">Google Maps does
 not need a data connection</a> to remember locations, it should upload 
-remembered locations when it can. I've personally found that the biggest
+remembered locations when it can. 
+</p><p>
+I've personally found that the biggest
 discrepancies come from situations where location (a) is logged in the evening,
-I take a photo in the morning, and then only after travelling some distance 
+I take a photo in the morning in the same location, and then only after travelling some distance 
 another location (b) is logged. The large discrepancy is due to the photo
 time being a lot closer to point (b) than point (a). Again, if you can it's
 best to log more locations.
+</p><p>
+Remember that you can delete spurious locations using Google's 
+<a href="https://maps.google.com/locationhistory/b/0">Location history manager</a>. 
+If it appears that the delete function is not working, it may just be that there
+are many points in exactly the same location.
+</p><p>
+Due to Flickr's nasty habit of ignoring time zone data it might actually be better
+to not change the time or time zone on your camera when you go abroad.
 </p>
 
 <h1 class="page-header" id="alt">Alternatives</h1>
