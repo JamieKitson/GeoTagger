@@ -71,4 +71,9 @@ function testFlickr()
   return false; 
 }
 
+function flickrAuthLink($class)
+{
+  return "<a class=\"$class\" href=\"getFlickr.php\">Authorise Flickr</a>";
+}
+
 ?>
