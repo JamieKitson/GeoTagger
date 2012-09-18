@@ -172,7 +172,7 @@ regularly.
 <?php
 
 if (!$flickr)
-  echo '<a class="btn btn-primary" href="getFlickr.php">Authorise Flickr</a>'."\n";
+  echo flickrAuthLink("btn btn-primary")."\n";
 
 if (!$latitude)
   echo googleAuthLink("btn btn-primary")."\n";
