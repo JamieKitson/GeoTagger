@@ -269,7 +269,9 @@ If it appears that the delete function is not working, it may just be that there
 are many points in exactly the same location.
 </p><p>
 Due to Flickr's nasty habit of ignoring time zone data it might actually be better
-to not change the time or time zone on your camera when you go abroad.
+to not change the time or time zone on your camera when you go abroad. Remember
+though that it is quite easy to change taken times, using Flickr's Organiser you
+can shift a selection of photos by a certain number of hours.
 </p>
 
 <h1 class="page-header" id="alt">Alternatives</h1>
