@@ -7,7 +7,10 @@ include('flickrCall.php');
 include('googleCall.php');
 
 // test we're still authenticated with flickr and google
-if (!(testFlickr() && testLatitude()))
+if (!testFlickr())
+  exit('<div class="alert alert-error">Please re-'.flickrAuthLink('').'.</div>');
+
+if (!testLatitude())
   exit('<div class="alert alert-error">Please re-'.googleAuthLink('').'.</div>');
 
 // set user adjustable flickr settings
