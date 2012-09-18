@@ -73,7 +73,7 @@ $latitude = testLatitude();
               return 'Leaving this page will clear your results table.'; 
             };
           }
-          $('#result table:last-child').attr("id", "current");
+          $('#result > :last-child').attr("id", "current");
           document.getElementById('current').scrollIntoView();
         });
 
