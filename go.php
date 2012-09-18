@@ -13,7 +13,7 @@ define("LONGITUDE", 2);
 
 // test we're still authenticated with flickr 
 if (!testFlickr())
-  exit('<div class="alert alert-error">Please re-'.flickrAuthLink('').'.</div>');
+  errorExit('Please re-'.flickrAuthLink(''));
 
 // set user adjustable flickr settings
 $fp = array(
@@ -46,7 +46,7 @@ $photos = $fc['photos']['photo'];
 // bail if we've got no photos
 if (count($photos) == 0)
 {
-  exit('<div class="alert alert-error">No Flickr photos found.</div>');
+  errorExit('No Flickr photos found.');
 }
 else
 {
@@ -71,33 +71,19 @@ usort($photos, function($a, $b) {
 $first = ($photos[0]['udatetaken'] + 24 * 60 * 60);
 $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
 
-// start result table
-echo '<table class="table">';
-echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th><th>Best Guess</th>".
-  "<th>Tag</th><th>Geo</th></tr>";
-
-$photo = 0;   // number of current photo 
-
   $rsp = trim(getLatPoints($first, $last));
-//  echo "rsp: $rsp <br>\n";
   $data = explode("\n", $rsp);
 
   if ($rsp == "")
-  {
-    $msg = 'No data for <strong>'.formatDate($last).'</strong> to <strong>'.formatDate($first).'</strong>.';
-  }
-  if (count($data) == 1)
-  {
-    // assuming this is a warning
-    $msg = $data[0];
-  }
-  if ($msg != "")
-  {
-    echo "</table><div class=\"alert alert-error\">$msg</div>";
-    exit;
-  }
+    errorExit('No geo-data for <strong>'.formatDate($last).'</strong> to <strong>'.formatDate($first).'</strong>.');
 
-//echo "count: ".count($data)." <br>\n";
+  // assuming this is a warning
+  if (count($data) == 1)
+    errorExit($data[0]);
+
+  // start result table
+  echo "<table class=\"table\">\n";
+  echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th><th>Best Guess</th><th>Tag</th><th>Geo</th></tr>\n";
 
   $geo = 0; // latitude point index
   $next = explode(" ", $data[$geo]);
@@ -106,13 +92,17 @@ $photo = 0;   // number of current photo
   foreach ($photos as $photo)
   {
     $pDate = $photo['udatetaken'];
+//echo "pDate: $pDate<br>\n";
 
+//echo "UTIME: ".$next[UTIME]."<br>\n";
     // go through latitude points
-    while ($next[UTIME] < $pDate)
+    while (($next[UTIME] > $pDate) && ($geo < count($data)))
     {
+//echo "UTIME: ".$next[UTIME]."<br>\n";
       $geo++;
       if ($geo == count($data))
-        exit("Ran out of geo points.");
+        break;
+        // exit("Ran out of geo points.");
       $next = explode(" ", $data[$geo]);
     }
 
@@ -131,17 +121,16 @@ $photo = 0;   // number of current photo
     $msg = "";
 
     // either we have a photo before any geo data or we have a photo in a gap of > 24 hours of geo data, so skip photo
-    if (($geo == 0) || ($dTime > 24 * 60 * 60))
-      $msg = "No Latitude data for ".formatDate($pDate);
+    if (($geo == 0) || ($dTime > 24 * 60 * 60) || ($geo == count($data)))
+      $msg = "No geo-data for ".formatDate($pDate);
 
     // double check that photo doesn't have geo-data
     if (($photo['latitude'] != 0) || ($photo['longitude'] != 0))
-      $msg = "Photo already has geo data!";
+      $msg = "Photo already has geo-data!";
 
     if ($msg > "")
     {
       echo "<td colspan=5>$msg</td></tr>\n";
-      $photo++;
       continue;
     }
 
@@ -186,6 +175,8 @@ $photo = 0;   // number of current photo
 
 }
 
+echo "</table>";
+
 function statToMessage($rsp)
 {
   $p = unserialize($rsp);
@@ -214,6 +205,12 @@ function formatDate($adate)
 function geoCell($lat, $long, $desc)
 {
   echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">".formatDate($desc)."</a></td>\n";
+}
+
+function errorExit($msg)
+{
+  echo "<div class=\"alert alert-error\">$msg</div>";
+  exit;
 }
 
 ?>
