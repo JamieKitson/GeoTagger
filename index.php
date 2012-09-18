@@ -25,6 +25,8 @@ $latitude = testLatitude();
     .criteria { width: 40em }
     body { counter-reset: headings -1 }
     h1:before { content: counter(headings) ". "; counter-increment: headings; }
+    table{ counter-reset: ids 0 }
+    td.ids:before { content: counter(ids) ; counter-increment: ids; }
   </style>
   <!-- script src="bootstrap/js/bootstrap.min.js"></script -->
   <script>
@@ -71,7 +73,7 @@ $latitude = testLatitude();
               return 'Leaving this page will clear your results table.'; 
             };
           }
-          $('#result :last-child').attr("id", "current");
+          $('#result table:last-child').attr("id", "current");
           document.getElementById('current').scrollIntoView();
         });
 

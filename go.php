@@ -4,11 +4,16 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 include('flickrCall.php');
-include('googleCall.php');
+include('getLatPoints.php');
 
-// test we're still authenticated with flickr and google
-if (!(testFlickr() && testLatitude()))
-  exit('<div class="alert alert-error">Please re-'.googleAuthLink('').'.</div>');
+// Field indexes
+define("UTIME", 0);
+define("LATITUDE", 1);
+define("LONGITUDE", 2);
+
+// test we're still authenticated with flickr 
+if (!testFlickr())
+  exit('<div class="alert alert-error">Please re-'.flickrAuthLink('').'.</div>');
 
 // set user adjustable flickr settings
 $fp = array(
@@ -63,8 +68,8 @@ usort($photos, function($a, $b) {
   }); 
 
 // get the initial max/min dates, +- 24 hours
-$first = ($photos[0]['udatetaken'] + 24 * 60 * 60) * 1000;
-$last = (end($photos)['udatetaken'] - 24 * 60 * 60) * 1000;
+$first = ($photos[0]['udatetaken'] + 24 * 60 * 60);
+$last = (end($photos)['udatetaken'] - 24 * 60 * 60);
 
 // start result table
 echo '<table class="table">';
@@ -72,54 +77,55 @@ echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th>
   "<th>Tag</th><th>Geo</th></tr>";
 
 $photo = 0;   // number of current photo 
-$locks= true; // location points returned by google
-$count = 100; // number of returned latitude points
 
-// loop through pages of google latitude points
-while (($count > 0) && ($locks !== false))
-{
+  $rsp = trim(getLatPoints($first, $last));
+//  echo "rsp: $rsp <br>\n";
+  $data = explode("\n", $rsp);
 
-  list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last".
-      "&fields=items(timestampMs,latitude,longitude)");
-
-  if ($count > 0)
+  if ($rsp == "")
   {
-    // max-time for next page of latitude data
-    $first = end($locks->data->items)->timestampMs - 1;
+    $msg = 'No data for <strong>'.formatDate($last).'</strong> to <strong>'.formatDate($first).'</strong>.';
   }
-  else
+  if (count($data) == 1)
   {
-    echo '</table><div class="alert alert-error">Google Latitude returned no data for <strong>'.
-      formatDate($last / 1000).'</strong> to <strong>'.formatDate($first / 1000).'</strong>.</div>';
-    break;
+    // assuming this is a warning
+    $msg = $data[0];
   }
+  if ($msg != "")
+  {
+    echo "</table><div class=\"alert alert-error\">$msg</div>";
+    exit;
+  }
+
+//echo "count: ".count($data)." <br>\n";
 
   $geo = 0; // latitude point index
+  $next = explode(" ", $data[$geo]);
 
   // loop through photos
-  while (($photo < count($photos)) && (($pDate = $photos[$photo]['udatetaken']) > $first / 1000))
+  foreach ($photos as $photo)
   {
+    $pDate = $photo['udatetaken'];
+
     // go through latitude points
-    while (($geo < count($locks->data->items)) && ($pDate < $locks->data->items[$geo]->timestampMs / 1000))
+    while ($next[UTIME] < $pDate)
     {
       $geo++;
+      if ($geo == count($data))
+        exit("Ran out of geo points.");
+      $next = explode(" ", $data[$geo]);
     }
 
-    // all geo points are before photo, get next points
-    if ($pDate < $locks->data->items[$geo]->timestampMs / 1000)
-      break;
-
     // start processing photo
-    $id = $photos[$photo]['id'];
-    $title = $photos[$photo]['title'] ?: $id;
+    $id = $photo['id'];
+    $title = $photo['title'] ?: $id;
     
-    echo "<tr><td>".($photo + 1)."</td><td><a href=\"http://www.flickr.com/photo.gne?id=$id\">$title</a></td>\n";
+    echo "<tr><td class=\"ids\"></td><td><a href=\"http://www.flickr.com/photo.gne?id=$id\">$title</a></td>\n";
 
     if ($geo > 0)
     {
-      $prior = $locks->data->items[$geo - 1];
-      $next = $locks->data->items[$geo];
-      $dTime = ($prior->timestampMs - $next->timestampMs) / 1000; 
+      $prior = explode(" ", $data[$geo - 1]);
+      $dTime = ($prior[UTIME] - $next[UTIME]); 
     }
 
     $msg = "";
@@ -129,7 +135,7 @@ while (($count > 0) && ($locks !== false))
       $msg = "No Latitude data for ".formatDate($pDate);
 
     // double check that photo doesn't have geo-data
-    if (($photos[$photo]['latitude'] != 0) || ($photos[$photo]['longitude'] != 0))
+    if (($photo['latitude'] != 0) || ($photo['longitude'] != 0))
       $msg = "Photo already has geo data!";
 
     if ($msg > "")
@@ -142,13 +148,13 @@ while (($count > 0) && ($locks !== false))
     latCell($next);
     latCell($prior);
     
-    $dLat = $prior->latitude - $next->latitude;
-    $dLong = $prior->longitude - $next->longitude;
+    $dLat = $prior[LATITUDE] - $next[LATITUDE];
+    $dLong = $prior[LONGITUDE] - $next[LONGITUDE];
 
     // calculate location from proportion of difference in time
-    $multi = ($pDate - $prior->timestampMs / 1000) / $dTime; 
-    $lat = $multi * $dLat + $prior->latitude;
-    $long = $multi * $dLong + $prior->longitude;
+    $multi = ($pDate - $prior[UTIME]) / $dTime; 
+    $lat = $multi * $dLat + $prior[LATITUDE];
+    $long = $multi * $dLong + $prior[LONGITUDE];
     geoCell($lat, $long, $pDate);
 
     // write data to flickr, if we've been told to
@@ -176,15 +182,8 @@ while (($count > 0) && ($locks !== false))
 
     // complete row
     echo "</tr>\n";
-    $photo++;
     flush();
 
-    // don't bother continuing when we reach the end of the photos
-    if ($photo == count($photos))
-    {
-      exit("</table>");
-    }
-  }
 }
 
 function statToMessage($rsp)
@@ -202,9 +201,9 @@ function statToMessage($rsp)
 
 function latCell($loc)
 {
-  $lat = $loc->latitude;
-  $long = $loc->longitude;
-  geoCell($lat, $long, $loc->timestampMs / 1000);
+  $lat = $loc[LATITUDE];
+  $long = $loc[LONGITUDE];
+  geoCell($lat, $long, $loc[UTIME]);
 }
 
 function formatDate($adate)
