@@ -62,7 +62,7 @@ function getLatPoints($first, $last)
       // go through latitude points
       foreach ($locks->data->items as $item)
       {
-          $rsp = ($item->timestampMs / 1000)." ".$item->latitude." ".$item->longitude."\n";
+          $rsp .= ($item->timestampMs / 1000)." ".$item->latitude." ".$item->longitude."\n";
       }
     }
     else
