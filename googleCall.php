@@ -38,4 +38,38 @@ function googleAuthLink($class)
   return '<a class="'.$class.'" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>';
 }
 
+function getLatPoints($first, $last)
+{
+  if (!testLatitude())
+    return 'Please re-'.googleAuthLink('').'.';
+
+  $first *= 1000;
+  $last *= 1000;
+  $rsp = "";
+
+  // loop through pages of google latitude points
+  while (true)
+  {
+
+    list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last".
+        "&fields=items(timestampMs,latitude,longitude)");
+
+    if (($count > 0) && ($locks !== false))
+    {
+      // max-time for next page of latitude data
+      $first = end($locks->data->items)->timestampMs - 1;
+
+      // go through latitude points
+      foreach ($locks->data->items as $item)
+      {
+          $rsp = ($item->timestampMs / 1000)." ".$item->latitude." ".$item->longitude."\n";
+      }
+    }
+    else
+    {
+      return $rsp;
+    }
+  }
+}
+
 ?>

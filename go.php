@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 include('flickrCall.php');
-include('getLatPoints.php');
+include('googleCall.php');
 
 // Field indexes
 define("UTIME", 0);
