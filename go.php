@@ -11,6 +11,8 @@ define("UTIME", 0);
 define("LATITUDE", 1);
 define("LONGITUDE", 2);
 
+date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
+
 // test we're still authenticated with flickr 
 if (!testFlickr())
   errorExit('Please re-'.flickrAuthLink(''));
@@ -36,10 +38,6 @@ $fp['method'] = 'flickr.photos.search';
 $fp['extras'] = 'date_taken,geo';
 
 $fc = unserialize(flickrCall($fp));
-
-// The flickrCall above will use the local time zone, 
-// but from now on we should use the user's time zone
-date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
 
 $photos = $fc['photos']['photo'];
 

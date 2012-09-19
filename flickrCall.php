@@ -5,8 +5,6 @@ include_once('common.php');
 function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
 {
 
-        date_default_timezone_set('Europe/London');
-
         $f      = file(dirname(__FILE__).'/flickrsecret.php');
         $secret = trim($f[1]);
         $params['oauth_consumer_key']     = '3b72b2a6e62cc3a06de7eef62646d81c';
