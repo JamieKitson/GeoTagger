@@ -45,7 +45,7 @@ function getLatPoints($first, $last)
 
   $first *= 1000;
   $last *= 1000;
-  $rsp = "";
+  $rsp = array();
 
   // loop through pages of google latitude points
   while (true)
@@ -62,7 +62,7 @@ function getLatPoints($first, $last)
       // go through latitude points
       foreach ($locks->data->items as $item)
       {
-          $rsp .= ($item->timestampMs / 1000)." ".$item->latitude." ".$item->longitude."\n";
+          $rsp[] = array(($item->timestampMs / 1000), $item->latitude, $item->longitude);
       }
     }
     else

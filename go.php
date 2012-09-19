@@ -65,23 +65,22 @@ usort($photos, function($a, $b) {
     return ($a['udatetaken'] < $b['udatetaken']) ? 1 : -1; 
   }); 
 
-// get the initial max/min dates, +- 24 hours
-$first = ($photos[0]['udatetaken'] + 24 * 60 * 60);
-$last = (end($photos)['udatetaken'] - 24 * 60 * 60);
+  // get the initial max/min dates, +- 24 hours
+  $first = ($photos[0]['udatetaken'] + 24 * 60 * 60);
+  $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
 
-  $rsp = trim(getLatPoints($first, $last));
-  $data = explode("\n", $rsp);
+  $data = getLatPoints($first, $last);
 
-  // assuming this is a warning, but display photos even if nothing has been returned
-  if ((count($data) == 1) && ($rsp > ""))
-    errorExit($data[0]);
+  // returned a warning if not an array
+  if (!is_array($data))
+    errorExit($data);
 
   // start result table
   echo "<table class=\"table\">\n";
   echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th><th>Best Guess</th><th>Tag</th><th>Geo</th></tr>\n";
 
   $geo = 0; // latitude point index
-  $next = explode(" ", $data[$geo]);
+  $next = $data[$geo];
 
   // loop through photos
   foreach ($photos as $photo)
@@ -98,7 +97,7 @@ $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
       if ($geo == count($data))
         break;
         // exit("Ran out of geo points.");
-      $next = explode(" ", $data[$geo]);
+      $next = $data[$geo];
     }
 
     // start processing photo
@@ -109,7 +108,7 @@ $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
 
     if ($geo > 0)
     {
-      $prior = explode(" ", $data[$geo - 1]);
+      $prior = $data[$geo - 1];
       $dTime = ($prior[UTIME] - $next[UTIME]); 
     }
 
