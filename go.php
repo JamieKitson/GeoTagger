@@ -85,13 +85,10 @@ usort($photos, function($a, $b) {
   foreach ($photos as $photo)
   {
     $pDate = $photo['udatetaken'];
-//echo "pDate: $pDate<br>\n";
 
-//echo "UTIME: ".$next[UTIME]."<br>\n";
     // go through latitude points
     while (($geo < count($data)) && ($pDate < $data[$geo][UTIME]))
     {
-//echo "UTIME: ".$next[UTIME]."<br>\n";
       $geo++;
     }
     $next = $data[$geo];
