@@ -13,9 +13,11 @@ define("LONGITUDE", 2);
 
 date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
 
-// test we're still authenticated with flickr 
-if (!testFlickr())
+$flickrId = $_GET['flickrId'];
+if ($flickrId == "")
   errorExit('Please re-'.flickrAuthLink(''));
+$statFile = "stats/$flickrId";
+writeStat("Getting photos from Flickr.", $statFile);
 
 // set user adjustable flickr settings
 $fp = array(
@@ -39,17 +41,15 @@ $fp['extras'] = 'date_taken,geo';
 
 $fc = unserialize(flickrCall($fp));
 
+if ($fc['stat'] != 'ok')
+  errorExit('Please re-'.flickrAuthLink(''));
+
 $photos = $fc['photos']['photo'];
 
 // bail if we've got no photos
 if (count($photos) == 0)
 {
   errorExit('No Flickr photos found.');
-}
-else
-{
-  // record flickr user for prosperity
-  touch('stats/'.str_replace('@', '_', $photos[0]['owner']));
 }
 
 // do expensive str date processing just once
@@ -69,11 +69,13 @@ usort($photos, function($a, $b) {
   $first = ($photos[0]['udatetaken'] + 24 * 60 * 60);
   $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
 
-  $data = getLatPoints($first, $last);
+  $data = getLatPoints($first, $last, $statFile);
 
   // returned a warning if not an array
   if (!is_array($data))
     errorExit($data);
+
+  writeStat("Processing geo-data.", $statFile);
 
   // start result table
   echo "<table class=\"table\">\n";
@@ -82,7 +84,7 @@ usort($photos, function($a, $b) {
   $geo = 0; // latitude point index
 
   // loop through photos
-  foreach ($photos as $photo)
+  foreach ($photos as $pos => $photo)
   {
     $pDate = $photo['udatetaken'];
 
@@ -91,13 +93,14 @@ usort($photos, function($a, $b) {
     {
       $geo++;
     }
-    $next = $data[$geo];
+    if ($geo < count($data))
+      $next = $data[$geo];
 
     // start processing photo
     $id = $photo['id'];
     $title = $photo['title'] ?: $id;
     
-    echo "<tr><td class=\"ids\"></td><td><a href=\"http://www.flickr.com/photo.gne?id=$id\">$title</a></td>\n";
+    echo "<tr><td>".($pos + 1)."</td><td><a href=\"http://www.flickr.com/photo.gne?id=$id\">$title</a></td>\n";
 
     if ($geo > 0)
     {
@@ -136,6 +139,7 @@ usort($photos, function($a, $b) {
     // write data to flickr, if we've been told to
     if (array_key_exists('write', $_GET) && ($_GET['write'] == true))
     {
+      writeStat("Writing back to Flickr photo ".($pos + 1).".", $statFile);
       $rsp = flickrCall(array(
             'method' => 'flickr.photos.addTags', 
             'photo_id' => $id, 
@@ -163,6 +167,7 @@ usort($photos, function($a, $b) {
 }
 
 echo "</table>";
+writeStat("Finished.", $statFile);
 
 function statToMessage($rsp)
 {
@@ -182,11 +187,6 @@ function latCell($loc)
   $lat = $loc[LATITUDE];
   $long = $loc[LONGITUDE];
   geoCell($lat, $long, $loc[UTIME]);
-}
-
-function formatDate($adate)
-{
-  return date('d M Y H:i', $adate);
 }
 
 function geoCell($lat, $long, $desc)

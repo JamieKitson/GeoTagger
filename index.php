@@ -8,7 +8,7 @@ ini_set('display_errors', '1');
 include('flickrCall.php');
 include('googleCall.php');
 
-$flickr = testFlickr();
+$flickrId = testFlickr();
 $latitude = testLatitude();
 
 ?>
@@ -27,11 +27,16 @@ $latitude = testLatitude();
     h1:before { content: counter(headings) ". "; counter-increment: headings; }
     table{ counter-reset: ids 0 }
     td.ids:before { content: counter(ids) ; counter-increment: ids; }
+    #loading, #stat { display: none; }
   </style>
   <!-- script src="bootstrap/js/bootstrap.min.js"></script -->
   <script>
     $(document).ready(function(){
 
+      var doStat;
+
+      if ($("#flickrId").val() == "")
+        $("#gobtn").attr("disabled", true);
       $("#region").val(getCookie('region', 'Europe'));
       $("textarea.criteria").val(getCookie('criteria', ''));
 
@@ -60,6 +65,9 @@ $latitude = testLatitude();
         $('#gobtn').attr('disabled', 'disabled');
         $('#current').removeAttr("id");
         $('#loading').show();
+        doStat = true;
+        $('#stat').text('Getting photos from Flickr.').show();
+        setTimeout(readStat, 1000);
         $.ajax({
           url: "go.php?" + $(this).serialize(),
           context: document.body
@@ -67,6 +75,7 @@ $latitude = testLatitude();
           $('#result').append(data);
           $('#gobtn').removeAttr('disabled');
           $('#loading').hide();
+          doStat = false;
           if ($('#result table').length)
           {
             window.onbeforeunload = function(e) { 
@@ -80,16 +89,18 @@ $latitude = testLatitude();
         return false;
       });
 
-
-      /*
-      function saveValue(id) {
-        setCookie(id, $("#" + id).val(), 100);
+      function readStat()
+      {
+        $('#stat').load('stats/<?php echo $flickrId; ?>');
+        if (doStat)
+        {
+          setTimeout(readStat, 1000);
+        }
+        else
+        {
+//          $('#stat').hide();
+        }
       }
-
-      function getValue(id, def) {
-        getCookie(id, $("#" + id).val(), def);
-      } 
-      */
 
     });
 
@@ -122,6 +133,7 @@ function getCookie(c_name, def)
 </head>
 <body>
 <form class="container">
+<input type="hidden" name="flickrId" id="flickrId" value="<?php echo $flickrId; ?>">
 
 <h1 class="page-header">About</h1>
 <p>
@@ -173,13 +185,13 @@ regularly.
 <p>
 <?php
 
-if (!$flickr)
+if ($flickrId === false)
   echo flickrAuthLink("btn btn-primary")."\n";
 
 if (!$latitude)
   echo googleAuthLink("btn btn-primary")."\n";
 
-if ($flickr || $latitude)
+if (($flickrId !== false) || $latitude)
   echo '<a class="btn" href="disconnect.php">Disconnect</a>'."\n";
 
 ?>
@@ -226,11 +238,12 @@ over an hour may be processed quicker than 10 photos taken over a week.
 <p>
 <input type="submit" value="Go" class="btn btn-primary btn-large" id="gobtn"<?php
 
-if (!($flickr && $latitude))
+if (($flickrId === false) || !$latitude)
   echo ' disabled="disabled" ';
 
 ?>>
-<img src="loading.gif" id="loading" style="display: none" alt="loading">
+<img id="loading" src="loading.gif" alt="loading">
+<div id="stat" class="alert alert-info"></div>
 </p>
 
 <h1 class="page-header">Results</h1>

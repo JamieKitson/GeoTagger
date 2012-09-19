@@ -38,10 +38,15 @@ function googleAuthLink($class)
   return '<a class="'.$class.'" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>';
 }
 
-function getLatPoints($first, $last)
+function getLatPoints($first, $last, $statFile)
 {
+  
+  writeStat("Confirming still connected to Google Latitude.", $statFile);
+
   if (!testLatitude())
     return 'Please re-'.googleAuthLink('').'.';
+
+  writeStat("Getting Google Latitude data for <strong>".formatDate($first)."</stong> to <strong>".formatDate($last)."</strong>.", $statFile);
 
   $first *= 1000;
   $last *= 1000;
@@ -59,6 +64,8 @@ function getLatPoints($first, $last)
       // max-time for next page of latitude data
       $first = end($locks->data->items)->timestampMs - 1;
 
+      writeStat("Got Google Latitude data to <strong>".formatDate($first / 1000)."</strong>.", $statFile);
+
       // go through latitude points
       foreach ($locks->data->items as $item)
       {
@@ -67,6 +74,8 @@ function getLatPoints($first, $last)
     }
     else
     {
+      writeStat("Got all Google Latitude data.", $statFile);
+
       return $rsp;
     }
   }

@@ -57,6 +57,14 @@ function gzipCall($url)
   return $xmlresponse;
 }
 
+function writeStat($msg, $file)
+{
+  file_put_contents($file, /* date("d-H:i:s "). */ "$msg"); // \n", FILE_APPEND);
+}
 
+function formatDate($adate)
+{
+  return date('d M Y H:i', $adate);
+}
 
 ?>

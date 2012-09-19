@@ -2,7 +2,7 @@
 
 include_once('common.php');
 
-function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
+function flickrCall($params, $uri = "rest")
 {
 
         $f      = file(dirname(__FILE__).'/flickrsecret.php');
@@ -16,14 +16,10 @@ function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
         if (array_key_exists(FLICKR_TOKEN, $_COOKIE) && ($_COOKIE[FLICKR_TOKEN] != ''))
           $params['oauth_token'] = $_COOKIE[FLICKR_TOKEN];
 
-//        if ($sign)
-//                $params['auth_token'] = trim(file_get_contents(dirname(__FILE__).'/token'));
-
         $encoded_params = array();
         foreach ($params as $k => $v)
         {
                 $encoded_params[] = urlencode($k).'='.urlencode($v); // "$k=$v"; //  
-//                $unencoded_params[] = "$k=$v"; //  
         }
 
         sort($encoded_params);
@@ -32,8 +28,6 @@ function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
         $url = "http://api.flickr.com/services/$uri";
 
         $base = "GET&".urlencode($url)."&".urlencode($p);
-
-//        echo "<div>$base</div>\n";
 
         if (array_key_exists(FLICKR_SECRET, $_COOKIE))
           $tokensecret = $_COOKIE[FLICKR_SECRET];
@@ -44,15 +38,7 @@ function flickrCall($params, /* $sign = false, */ $uri = "rest", $docall = true)
 
         $url .= "?$p&oauth_signature=$sig";
 
-        if ($docall)
-          $rsp = gzipCall($url);
-        else
-        {
-          echo "<div>$url</div>\n";
-          print($rsp);
-          $p = unserialize($rsp);
-          print_r($p);
-        }
+        $rsp = gzipCall($url);
   
         return $rsp;
 
@@ -64,7 +50,8 @@ function testFlickr()
   {
     $rsp = flickrCall(Array('method' => 'flickr.test.login'));
     $p = unserialize($rsp);
-    return (array_key_exists('stat', $p) && ($p['stat'] == 'ok'));
+    if (array_key_exists('stat', $p) && ($p['stat'] == 'ok'))
+      return str_replace("@", "_", $p['user']['id']);
   }
   return false; 
 }
