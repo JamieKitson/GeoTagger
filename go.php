@@ -80,7 +80,6 @@ usort($photos, function($a, $b) {
   echo "<tr><th>#</th><th>Flickr Photo</th><th>Prior Point</th><th>Next Point</th><th>Best Guess</th><th>Tag</th><th>Geo</th></tr>\n";
 
   $geo = 0; // latitude point index
-  $next = $data[$geo];
 
   // loop through photos
   foreach ($photos as $photo)
@@ -90,15 +89,12 @@ usort($photos, function($a, $b) {
 
 //echo "UTIME: ".$next[UTIME]."<br>\n";
     // go through latitude points
-    while (($next[UTIME] > $pDate) && ($geo < count($data)))
+    while (($geo < count($data)) && ($pDate < $data[$geo][UTIME]))
     {
 //echo "UTIME: ".$next[UTIME]."<br>\n";
       $geo++;
-      if ($geo == count($data))
-        break;
-        // exit("Ran out of geo points.");
-      $next = $data[$geo];
     }
+    $next = $data[$geo];
 
     // start processing photo
     $id = $photo['id'];
