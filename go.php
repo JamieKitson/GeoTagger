@@ -74,11 +74,8 @@ $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
   $rsp = trim(getLatPoints($first, $last));
   $data = explode("\n", $rsp);
 
-  if ($rsp == "")
-    errorExit('No geo-data for <strong>'.formatDate($last).'</strong> to <strong>'.formatDate($first).'</strong>.');
-
-  // assuming this is a warning
-  if (count($data) == 1)
+  // assuming this is a warning, but display photos even if nothing has been returned
+  if ((count($data) == 1) && ($rsp > ""))
     errorExit($data[0]);
 
   // start result table
