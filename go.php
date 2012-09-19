@@ -121,7 +121,7 @@ $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
     if (($geo == 0) || ($dTime > 24 * 60 * 60) || ($geo == count($data)))
       $msg = "No geo-data for ".formatDate($pDate);
 
-    // double check that photo doesn't have geo-data
+    // double check that photo doesn't have geo-data, this can happen if a search is done very soon after it's set
     if (($photo['latitude'] != 0) || ($photo['longitude'] != 0))
       $msg = "Photo already has geo-data!";
 
