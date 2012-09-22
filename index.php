@@ -25,8 +25,6 @@ $latitude = testLatitude();
     .criteria { width: 40em }
     body { counter-reset: headings -1 }
     h1:before { content: counter(headings) ". "; counter-increment: headings; }
-    table{ counter-reset: ids 0 }
-    td.ids:before { content: counter(ids) ; counter-increment: ids; }
     #loading, #stat { display: none; }
   </style>
   <!-- script src="bootstrap/js/bootstrap.min.js"></script -->
