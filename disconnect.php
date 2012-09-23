@@ -2,8 +2,15 @@
 
 include('common.php');
 
-clearCookies(array(FLICKR_TOKEN, FLICKR_SECRET, GOOGLE_TOKEN));
+switch ($_GET['s']) {
+  case 'flickr':
+    clearCookies(array(FLICKR_TOKEN, FLICKR_SECRET));
+    break;
+  case 'google':
+    clearCookies(array(GOOGLE_TOKEN));
+    break;
+  }
 
-header("Location: index.php#auth");
+header("Location: index.php#".$_GET['s']);
 
 ?>

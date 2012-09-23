@@ -36,7 +36,7 @@ if (property_exists($response, 'access_token'))
   $accesstoken = $response->access_token;
   echo $accesstoken;
   setcookie(GOOGLE_TOKEN, $accesstoken);
-  header("Location: index.php#auth");
+  header("Location: index.php#google");
 }
 else
 {

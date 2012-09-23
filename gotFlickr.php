@@ -13,7 +13,7 @@ function getToken()
   print_r($q);
   setcookie(FLICKR_SECRET, $q['oauth_token_secret']);
   setcookie(FLICKR_TOKEN, $q['oauth_token']);
-  header("Location: index.php#auth");
+  header("Location: index.php#flickr");
 }
 
 getToken();

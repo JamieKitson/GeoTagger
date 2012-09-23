@@ -11,24 +11,48 @@ define("UTIME", 0);
 define("LATITUDE", 1);
 define("LONGITUDE", 2);
 
-date_default_timezone_set($_GET['region'].'/'.$_GET['timezone']);
+date_default_timezone_set($_POST['region'].'/'.$_POST['timezone']);
 
-$flickrId = $_GET['flickrId'];
+$flickrId = $_POST['flickrId'];
 if ($flickrId == "")
   errorExit('Please re-'.flickrAuthLink(''));
 $statFile = "stats/$flickrId";
+
+if (array_key_exists('input', $_FILES))
+  $data = file($_FILES['input']['tmp_name']);
+elseif (!array_key_exists('input', $_POST))
+  errorExit("No input data found.");
+elseif ($_POST['input'] != 'google')
+  $data = explode("\n", $_POST['input']);
+
+if (isset($data))
+{
+  writeStat("Sorting data.", $statFile);
+  foreach($data as &$line)
+  {
+    // validate each line here?
+    $line = explode(" ", $line);
+    $line[UTIME] = strtotime($line[UTIME]);
+  }
+  unset($line);
+  sort_array_by_utime($data);
+  $first = $data[0][UTIME];
+  $last = end($data)[UTIME];
+  $_POST['criteria'] .= "\nmax_taken_date=$first\nmin_taken_date=$last";
+}
+
 writeStat("Getting photos from Flickr.", $statFile);
 
 // set user adjustable flickr settings
 $fp = array(
     'sort' => 'date-taken-desc',
-    'per_page' => $_GET['count'],
+    'per_page' => $_POST['count'],
     );
 
 // get user settings for flickr
-foreach(explode("\n", $_GET['criteria']) as $a)
+foreach(explode("\n", $_POST['criteria']) as $line)
 {
-  $q = explode('=', $a);
+  $q = explode('=', $line);
   if (count($q) == 2)
     $fp[$q[0]] = $q[1];
 }
@@ -55,25 +79,27 @@ if (count($photos) == 0)
 // do expensive str date processing just once
 foreach($photos as &$p)
 {
-  $p['udatetaken'] = strtotime($p['datetaken']);
+  $p[UTIME] = strtotime($p['datetaken']);
 }
 
 // sort photos by date taken in case flickr has fucked up or the user has overridden sort
-usort($photos, function($a, $b) { 
-    if ($a['udatetaken'] == $b['udatetaken']) 
-      return 0; 
-    return ($a['udatetaken'] < $b['udatetaken']) ? 1 : -1; 
-  }); 
+sort_array_by_utime($photos);
 
+if (!isset($data))
+{
   // get the initial max/min dates, +- 24 hours
-  $first = ($photos[0]['udatetaken'] + 24 * 60 * 60);
-  $last = (end($photos)['udatetaken'] - 24 * 60 * 60);
+  $first = ($photos[0][UTIME] + 24 * 60 * 60);
+  $last = (end($photos)[UTIME] - 24 * 60 * 60);
 
   $data = getLatPoints($first, $last, $statFile);
 
   // returned a warning if not an array
   if (!is_array($data))
     errorExit($data);
+
+sort_array_by_utime($data);
+
+}
 
   writeStat("Processing geo-data.", $statFile);
 
@@ -86,7 +112,7 @@ usort($photos, function($a, $b) {
   // loop through photos
   foreach ($photos as $pos => $photo)
   {
-    $pDate = $photo['udatetaken'];
+    $pDate = $photo[UTIME];
 
     // go through latitude points
     while (($geo < count($data)) && ($pDate < $data[$geo][UTIME]))
@@ -95,7 +121,6 @@ usort($photos, function($a, $b) {
     }
     if ($geo < count($data))
       $next = $data[$geo];
-
     // start processing photo
     $id = $photo['id'];
     $title = $photo['title'] ?: $id;
@@ -114,7 +139,8 @@ usort($photos, function($a, $b) {
     if (($geo == 0) || ($dTime > 24 * 60 * 60) || ($geo == count($data)))
       $msg = "No geo-data for ".formatDate($pDate);
 
-    // double check that photo doesn't have geo-data, this can happen if a search is done very soon after it's set
+    // double check that photo doesn't have geo-data, I *have* seen FLickr returned geo-teagged photos to has_geo=0 searches!
+    // See: http://tech.groups.yahoo.com/group/yws-flickr/message/7777
     if (($photo['latitude'] != 0) || ($photo['longitude'] != 0))
       $msg = "Photo already has geo-data!";
 
@@ -137,7 +163,7 @@ usort($photos, function($a, $b) {
     geoCell($lat, $long, $pDate);
 
     // write data to flickr, if we've been told to
-    if (array_key_exists('write', $_GET) && ($_GET['write'] == true))
+    if (array_key_exists('write', $_POST) && ($_POST['write'] == true))
     {
       writeStat("Writing back to Flickr photo <strong>".($pos + 1)."</strong>.", $statFile);
       $rsp = flickrCall(array(
@@ -198,6 +224,15 @@ function errorExit($msg)
 {
   echo "<div class=\"alert alert-error\">$msg</div>";
   exit;
+}
+
+function sort_array_by_utime(&$anArray)
+{
+  usort($anArray, function($a, $b) { 
+    if ($a[UTIME] == $b[UTIME]) 
+      return 0; 
+    return ($a[UTIME] < $b[UTIME]) ? 1 : -1; 
+  });
 }
 
 ?>
