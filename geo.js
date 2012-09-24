@@ -154,6 +154,7 @@
           myXhr = $.ajaxSettings.xhr();
           if(myXhr.upload){
             myXhr.upload.addEventListener('progress',progressHandlerFunction, false);
+            myXhr.upload.addEventListener('loadend',loadEndHandlerFunction, false);
           }
           return myXhr;
       }
@@ -164,14 +165,15 @@
           if (evt.lengthComputable) 
           {  
             var p = Math.round(evt.loaded / evt.total * 100);
-            if (p < 100)
               $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: ' + p + '%;"></div></div>')
-            else
-            {
+          }  
+      }  
+
+      function loadEndHandlerFunction(evt)
+      {  
+              $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: 100%;"></div></div>');
               doStat = true;
               setTimeout(readStat, 1000);
-            }
-         }  
       }  
 
     });
