@@ -82,6 +82,7 @@ $latitude = testLatitude();
       else
       {
         $('#browseInput').addClass('disabled');
+        $('#fakeFile').attr('disabled', 'disabled');
       }
 
       function tabChange(aTab)
