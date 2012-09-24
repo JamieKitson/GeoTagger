@@ -161,19 +161,25 @@
 
       function progressHandlerFunction(evt)
       {  
-          doStat = false;
           if (evt.lengthComputable) 
           {  
+            doStat = false;
             var p = Math.round(evt.loaded / evt.total * 100);
-              $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: ' + p + '%;"></div></div>')
+              $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: ' + p + '%;"></div></div>');
+              // firefox fix
+              if (p > 50)
+                loadEndHandlerFunction(evt);
           }  
       }  
 
       function loadEndHandlerFunction(evt)
       {  
               $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: 100%;"></div></div>');
+              if (!doStat)
+              {
               doStat = true;
               setTimeout(readStat, 1000);
+              }
       }  
 
     });
