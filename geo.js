@@ -63,7 +63,7 @@
         $('#loading').show();
         doStat = true;
         $('#stat').text('Starting...').show();
-        setTimeout(readStat, 500);
+        setTimeout(readStat, 1000);
 
         if (typeof FormData != 'undefined')
         {
@@ -116,7 +116,7 @@
         if (doStat)
         {
           $('#stat').load('stats/' + flickrId);
-          setTimeout(readStat, 500);
+          setTimeout(readStat, 1000);
         }
         //else
         //  $('#stat').hide();
@@ -169,9 +169,8 @@
             else
             {
               doStat = true;
-              setTimeout(readStat, 500);
+              setTimeout(readStat, 1000);
             }
-
          }  
       }  
 
