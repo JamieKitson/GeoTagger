@@ -18,23 +18,25 @@ if ($flickrId == "")
   errorExit('Please re-'.flickrAuthLink(''));
 $statFile = "stats/$flickrId";
 
+writeStat("Starting...", $statFile);
+
 if (array_key_exists('input', $_FILES))
-  $data = file($_FILES['input']['tmp_name']);
+  $sData = file($_FILES['input']['tmp_name']);
 elseif (!array_key_exists('input', $_POST))
   errorExit("No input data found.");
 elseif ($_POST['input'] != 'google')
-  $data = explode("\n", $_POST['input']);
+  $sData = explode("\n", $_POST['input']);
 
-if (isset($data))
+if (isset($sData))
 {
   writeStat("Sorting data.", $statFile);
-  foreach($data as &$line)
+  $data = array();
+  foreach($sData as $line)
   {
-    // validate each line here?
-    $line = explode(" ", $line);
-    $line[UTIME] = strtotime($line[UTIME]);
+    $aline = explode(" ", $line);
+    if ((count($aline) >= 3) && (($aline[UTIME] = strtotime($aline[UTIME])) !== false))
+      $data[] = $aline;
   }
-  unset($line);
   sort_array_by_utime($data);
   $first = $data[0][UTIME];
   $last = end($data)[UTIME];
