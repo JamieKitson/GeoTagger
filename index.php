@@ -131,7 +131,7 @@ else
       for a list of supported browsers. Please try the text input on the next tab.
     </div>
     <p>
-    Files must consist of lines of three space delimited fields containing a unix 
+    Files must consist of lines of three space delimited fields containing a  
     time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
     will be adjusted to search only within the data supplied, ie, no photos will be 
     returned which were taken outside the time stamps supplied in the geo-data file.
