@@ -46,11 +46,12 @@ function getLatPoints($first, $last, $statFile)
   if (!testLatitude())
     return 'Please re-'.googleAuthLink('').'.';
 
-  writeStat("Getting Google Latitude data for <strong>".formatDate($first)."</stong> to <strong>".formatDate($last)."</strong>.", $statFile);
+  writeStat("Getting Google Latitude data for ".strong(formatDate($first))." to ".strong(formatDate($last)).".", $statFile);
 
   $first *= 1000;
   $last *= 1000;
   $rsp = array();
+  $diff = $first - $last;
 
   // loop through pages of google latitude points
   while (true)
@@ -63,8 +64,9 @@ function getLatPoints($first, $last, $statFile)
     {
       // max-time for next page of latitude data
       $first = end($locks->data->items)->timestampMs - 1;
+      $p = 100 * ($last - $first + $diff) / $diff;
 
-      writeStat("Got Google Latitude data to <strong>".formatDate($first / 1000)."</strong>.", $statFile);
+      writeStat('<p>Getting Google Latitude data:</p><div class="progress"><div class="bar" style="width: '.$p.'%;"></div></div>', $statFile);
 
       // go through latitude points
       foreach ($locks->data->items as $item)

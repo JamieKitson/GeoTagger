@@ -113,7 +113,7 @@
       {
         $('#stat').load('stats/' + flickrId);
         if (doStat)
-          setTimeout(readStat, 1000);
+          setTimeout(readStat, 500);
         //else
         //  $('#stat').hide();
       }

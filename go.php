@@ -165,7 +165,7 @@ sort_array_by_utime($data);
     // write data to flickr, if we've been told to
     if (array_key_exists('write', $_POST) && ($_POST['write'] == true))
     {
-      writeStat("Writing back to Flickr photo <strong>".($pos + 1)."</strong>.", $statFile);
+      writeStat("Writing back to Flickr photo ".strong($pos + 1).".", $statFile);
       $rsp = flickrCall(array(
             'method' => 'flickr.photos.addTags', 
             'photo_id' => $id, 

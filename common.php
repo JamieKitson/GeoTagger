@@ -67,4 +67,9 @@ function formatDate($adate)
   return date('d M Y H:i', $adate);
 }
 
+function strong($s)
+{
+  return "<strong>$s</strong>";
+}
+
 ?>
