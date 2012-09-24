@@ -84,11 +84,13 @@
           type: 'POST',
           cache: false,
           contentType: contType,
-          processData: procData
+          processData: procData,
+          xhr: getXhr
         }).done(function( data ) { 
           $('#result').append(data);
           $('#gobtn').removeAttr('disabled');
           $('#loading').hide();
+          readStat();
           doStat = false;
           if ($('#result table').length)
           {
@@ -111,9 +113,11 @@
 
       function readStat()
       {
-        $('#stat').load('stats/' + flickrId);
         if (doStat)
+        {
+          $('#stat').load('stats/' + flickrId);
           setTimeout(readStat, 500);
+        }
         //else
         //  $('#stat').hide();
       }
@@ -145,6 +149,32 @@
         return ''; 
       }
 
+      function getXhr() 
+      {
+          myXhr = $.ajaxSettings.xhr();
+          if(myXhr.upload){
+            myXhr.upload.addEventListener('progress',progressHandlerFunction, false);
+          }
+          return myXhr;
+      }
+
+      function progressHandlerFunction(evt)
+      {  
+          doStat = false;
+          if (evt.lengthComputable) 
+          {  
+            var p = Math.round(evt.loaded / evt.total * 100);
+            if (p < 100)
+              $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: ' + p + '%;"></div></div>')
+            else
+            {
+              doStat = true;
+              setTimeout(readStat, 500);
+            }
+
+         }  
+      }  
+
     });
 
     function setCookie(c_name, value)
@@ -171,3 +201,5 @@
       }
       return def;
     }
+
+
