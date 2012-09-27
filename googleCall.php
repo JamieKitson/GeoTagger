@@ -46,7 +46,8 @@ function getLatPoints($first, $last, $statFile)
   if (!testLatitude())
     return 'Please re-'.googleAuthLink('').'.';
 
-  writeStat("Getting Google Latitude data for ".strong(formatDate($first))." to ".strong(formatDate($last)).".", $statFile);
+  $msg = '<p>Getting Google Latitude data from '.strong(formatDate($last)).' to '.strong(formatDate($first)).':</p><div class="progress"><div class="bar" style="width: %f%%;"></div></div>';
+  writeStat(sprintf($msg, 0), $statFile);
 
   $first *= 1000;
   $last *= 1000;
@@ -66,7 +67,8 @@ function getLatPoints($first, $last, $statFile)
       $first = end($locks->data->items)->timestampMs - 1;
       $p = 100 * ($last - $first + $diff) / $diff;
 
-      writeStat('<p>Getting Google Latitude data:</p><div class="progress"><div class="bar" style="width: '.$p.'%;"></div></div>', $statFile);
+      $s = sprintf($msg, $p);
+      writeStat($s, $statFile);
 
       // go through latitude points
       foreach ($locks->data->items as $item)
