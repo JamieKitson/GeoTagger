@@ -65,10 +65,21 @@ $fp['has_geo'] = 0;
 $fp['method'] = 'flickr.photos.search';
 $fp['extras'] = 'date_taken,geo';
 
-$fc = unserialize(flickrCall($fp));
+$rsp = flickrCall($fp);
+$fc = unserialize($rsp);
 
 if ($fc['stat'] != 'ok')
-  errorExit('Please re-'.flickrAuthLink(''));
+{
+  if (is_array($fc) && array_key_exists('message', $fc))
+  {
+    $msg = $fc['message'];
+  }
+  else
+  {
+    $msg = $rsp;
+  }
+  errorExit('Flickr call failed with: '.$msg); // , you may need to re-'.flickrAuthLink(''));
+}
 
 $photos = $fc['photos']['photo'];
 
@@ -167,7 +178,7 @@ sort_array_by_utime($data);
     // write data to flickr, if we've been told to
     if (array_key_exists('write', $_POST) && ($_POST['write'] == true))
     {
-      writeStat('<p>Writing back to Flickr:</p><div class="progress"><div class="bar" style="width: '.round(100 * $pos / count($photos)).'%;"></div></div>', $statFile);
+      writeStat("<p>Writing back to Flickr: $title".'</p><div class="progress"><div class="bar" style="width: '.round(100 * $pos / count($photos)).'%;"></div></div>', $statFile);
       $rsp = flickrCall(array(
             'method' => 'flickr.photos.addTags', 
             'photo_id' => $id, 
