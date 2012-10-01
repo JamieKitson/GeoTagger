@@ -112,8 +112,6 @@ if (!isset($data))
   if (!is_array($data))
     errorExit($data);
 
-sort_array_by_utime($data);
-
 }
 
   writeStat("Processing geo-data.", $statFile);
