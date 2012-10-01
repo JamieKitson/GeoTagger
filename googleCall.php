@@ -38,7 +38,7 @@ function googleAuthLink($class)
   return '<a class="'.$class.'" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>';
 }
 
-function getLatPoints($first, $last, $statFile)
+function getLatPoints($first, $last, $statFile, $accuracy)
 {
   
   writeStat("Confirming still connected to Google Latitude.", $statFile);
@@ -58,8 +58,7 @@ function getLatPoints($first, $last, $statFile)
   while (true)
   {
 
-    list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last".
-        "&fields=items(timestampMs,latitude,longitude)");
+    list($locks, $count) = googleCall("max-results=1000&max-time=$first&min-time=$last&fields=items(timestampMs,latitude,longitude,accuracy)");
 
     if (($count > 0) && ($locks !== false))
     {
@@ -73,6 +72,7 @@ function getLatPoints($first, $last, $statFile)
       // go through latitude points
       foreach ($locks->data->items as $item)
       {
+        if ($item->accuracy < $accuracy)
           $rsp[] = array(($item->timestampMs / 1000), $item->latitude, $item->longitude);
       }
     }

@@ -45,13 +45,13 @@ if (isset($sData))
 
 writeStat("Getting photos from Flickr.", $statFile);
 
-// set user adjustable flickr settings
+// set user adjustable flickr parameters
 $fp = array(
     'sort' => 'date-taken-desc',
     'per_page' => $_POST['count'],
     );
 
-// get user settings for flickr
+// get user set flickr parameters
 foreach(explode("\n", $_POST['criteria']) as $line)
 {
   $q = explode('=', $line);
@@ -59,7 +59,7 @@ foreach(explode("\n", $_POST['criteria']) as $line)
     $fp[$q[0]] = $q[1];
 }
 
-// set non user adjustable flickr settings
+// set non user adjustable flickr parameters
 $fp['user_id'] = 'me';
 $fp['has_geo'] = 0;
 $fp['method'] = 'flickr.photos.search';
@@ -104,7 +104,7 @@ if (!isset($data))
   $first = ($photos[0][UTIME] + 24 * 60 * 60);
   $last = (end($photos)[UTIME] - 24 * 60 * 60);
 
-  $data = getLatPoints($first, $last, $statFile);
+  $data = getLatPoints($first, $last, $statFile, $_POST['latAccuracy']);
 
   // returned a warning if not an array
   if (!is_array($data))

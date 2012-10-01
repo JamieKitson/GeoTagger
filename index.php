@@ -21,7 +21,8 @@ $latitude = testLatitude();
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <style> 
-    #lblCount { display: inline } 
+    form.form-horizontal label.control-label { width: auto; margin-right: 0.5em; }
+    input.number {text-align: right }
     textarea { width: 40em }
     body { counter-reset: headings -1 }
     h1:before { content: counter(headings) ". "; counter-increment: headings; }
@@ -39,7 +40,7 @@ $latitude = testLatitude();
   </script>
 </head>
 <body>
-<form class="container" enctype="multipart/form-data">
+<form class="container form-horizontal" enctype="multipart/form-data">
 <input type="hidden" name="flickrId" id="flickrId" value="<?php echo $flickrId; ?>">
 
 <h1 class="page-header">About</h1>
@@ -115,6 +116,10 @@ else
   regularly.
   <input type="hidden" value="google" class="input" name="">
   </p>
+  <p>
+  <label class="control-label" for="latAccuracy">Ignore points less than accurate than:</label>
+  <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" value="100"><span class="add-on">m</span></span>
+  </p>
   <?php
 
   if (!$latitude)
@@ -182,13 +187,13 @@ min_taken_date=2012-05-28
 <p>
 This app will geo-tag a maximum of 250 photos at a time and will not write the
 data back to Flickr unless you check the checkbox below. This app can be quite
-slow, especially when writing back to Flickr. The biggest factor is the
-duration that the pictures were taken over, so for example 100 photos taken
-over an hour may be processed quicker than 10 photos taken over a week.
+slow, especially when writing back to Flickr. The biggest factor can be the
+amount of data returned from Google Latitude, so for example 100 photos taken
+over an hour may be processed more quickly than 10 photos taken over a week.
 </p>
 <p>
-<label class="control-label" for="count" id="lblCount">Number of pictures to tag: </label>
-<input type="text" name="count" id="count" value="10">
+<label class="control-label" for="count" id="lblCount">Number of pictures to tag:</label>
+<input type="text" name="count" id="count" value="10" class="input-small number">
 <label class="checkbox">Write data to Flickr<input type="checkbox" name="write" value="true"></label>
 </p>
 

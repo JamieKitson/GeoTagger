@@ -5,6 +5,7 @@
 
       $("#region").val(getCookie('region', 'Europe'));
       $("textarea.criteria").val(getCookie('criteria', ''));
+      $("#latAccuracy").val(getCookie('accuracy', '100'));
 
       loadTimezones();
 
@@ -19,6 +20,10 @@
 
       $("textarea.criteria").focusout(function() {
         setCookie('criteria', $("textarea.criteria").val());
+      });
+
+      $("#latAccuracy").focusout(function() {
+        setCookie('accuracy', $("#latAccuracy").val());
       });
 
       //clearFiles();
