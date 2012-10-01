@@ -13,6 +13,8 @@ define("LONGITUDE", 2);
 
 date_default_timezone_set($_POST['region'].'/'.$_POST['timezone']);
 
+$maxGap = $_POST['maxGap'];
+
 $flickrId = $_POST['flickrId'];
 if ($flickrId == "")
   errorExit('Please re-'.flickrAuthLink(''));
@@ -101,8 +103,8 @@ sort_array_by_utime($photos);
 if (!isset($data))
 {
   // get the initial max/min dates, +- 24 hours
-  $first = ($photos[0][UTIME] + 24 * 60 * 60);
-  $last = (end($photos)[UTIME] - 24 * 60 * 60);
+  $first = ($photos[0][UTIME] + $maxGap * 60 * 60);
+  $last = (end($photos)[UTIME] - $maxGap * 60 * 60);
 
   $data = getLatPoints($first, $last, $statFile, $_POST['latAccuracy']);
 
@@ -149,7 +151,7 @@ sort_array_by_utime($data);
     $msg = "";
 
     // either we have a photo before any geo data or we have a photo in a gap of > 24 hours of geo data, so skip photo
-    if (($geo == 0) || ($dTime > 24 * 60 * 60) || ($geo == count($data)))
+    if (($geo == 0) || ($dTime > $maxGap * 60 * 60) || ($geo == count($data)))
       $msg = "No geo-data for ".formatDate($pDate);
 
     // double check that photo doesn't have geo-data, I *have* seen FLickr returned geo-teagged photos to has_geo=0 searches!

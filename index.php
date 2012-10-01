@@ -31,6 +31,7 @@ $latitude = testLatitude();
     .tab-content { border: 1px solid #DDDDDD; border-top: none; padding: 20px }
     #myTab { margin-bottom: 0 }
     #fileChoice .alert { margin-bottom: 10px }
+    .tab-pane { margin-bottom: 1em; }
   </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
@@ -118,7 +119,7 @@ else
   </p>
   <p>
   <label class="control-label" for="latAccuracy">Ignore points less than accurate than:</label>
-  <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" value="100"><span class="add-on">m</span></span>
+  <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" value="100"><span class="add-on">metres</span></span>
   </p>
   <?php
 
@@ -156,8 +157,12 @@ else
     </p>
     <textarea id="inputText" name="" class="input"></textarea>
   </div>
+
+  <label class="control-label" for="maxGap">Ignore photos in gaps of more than:</label>
+  <span class="input-append"><input type="text" name="maxGap" id="maxGap" class="input-mini number" value="24"><span class="add-on">hours</span></span>
+
 </div>
-     
+    
 <h1 class="page-header">Flickr search criteria (optional)</h1>
 <P>
 Here you can add any criteria that exist for 
