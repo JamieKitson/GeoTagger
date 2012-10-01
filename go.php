@@ -102,11 +102,7 @@ sort_array_by_utime($photos);
 
 if (!isset($data))
 {
-  // get the initial max/min dates, +- 24 hours
-  $first = ($photos[0][UTIME] + $maxGap * 60 * 60);
-  $last = (end($photos)[UTIME] - $maxGap * 60 * 60);
-
-  $data = getLatPoints($first, $last, $statFile, $_POST['latAccuracy']);
+  $data = getLatPoints($statFile, $_POST['latAccuracy'], $maxGap, $photos);
 
   // returned a warning if not an array
   if (!is_array($data))

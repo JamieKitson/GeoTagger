@@ -38,22 +38,49 @@ function googleAuthLink($class)
   return '<a class="'.$class.'" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>';
 }
 
-function getLatPoints($first, $last, $statFile, $accuracy)
+function getLatPoints($statFile, $accuracy, $maxGap, $photos)
 {
-  
   writeStat("Confirming still connected to Google Latitude.", $statFile);
 
   if (!testLatitude())
     return 'Please re-'.googleAuthLink('').'.';
 
+  $first = $photos[0][UTIME];
+  $last = end($photos)[UTIME];
+
   $msg = '<p>Getting Google Latitude data from '.strong(formatDate($last)).' to '.strong(formatDate($first)).':</p><div class="progress"><div class="bar" style="width: %f%%;"></div></div>';
   writeStat(sprintf($msg, 0), $statFile);
 
-  $first *= 1000;
-  $last *= 1000;
-  $rsp = array();
-  $diff = $first - $last;
+  $realLast = $last * 1000;
+  $diff = $first * 1000 - $realLast;
 
+  $allPoints = array();
+  for ($i = 0; $i < count($photos); $i++)
+  {
+    // get the initial date, +- 24 hours
+    $first = ($photos[$i][UTIME] + $maxGap * 60 * 60) * 1000;
+    // while the gap between photos is less than 2 * maxGap
+    while (($i < count($photos) - 1) && ($photos[$i][UTIME] - $photos[$i + 1][UTIME] < $maxGap * 60 * 60 * 2))
+      $i ++;
+
+    // get the last date before the gap
+    $last = ($photos[$i][UTIME] - $maxGap * 60 * 60) * 1000;
+
+    $points = getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff, $msg);
+
+    // returned a warning if not an array
+    if (!is_array($points))
+      return $points;
+
+    $allPoints = array_merge($allPoints, $points);
+  }
+  writeStat("Got all Google Latitude data.", $statFile);
+  return $allPoints;
+}
+
+function getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff, $msg) 
+{
+  $rsp = array();
   // loop through pages of google latitude points
   while (true)
   {
@@ -64,7 +91,7 @@ function getLatPoints($first, $last, $statFile, $accuracy)
     {
       // max-time for next page of latitude data
       $first = end($locks->data->items)->timestampMs - 1;
-      $p = 100 * ($last - $first + $diff) / $diff;
+      $p = 100 * ($realLast - $first + $diff) / $diff;
 
       $s = sprintf($msg, $p);
       writeStat($s, $statFile);
@@ -78,8 +105,6 @@ function getLatPoints($first, $last, $statFile, $accuracy)
     }
     else
     {
-      writeStat("Got all Google Latitude data.", $statFile);
-
       return $rsp;
     }
   }
