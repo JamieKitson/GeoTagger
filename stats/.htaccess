@@ -1,1 +1,3 @@
 Options -Indexes
+Header set Cache-Control no-cache
+Header set Expires 0
