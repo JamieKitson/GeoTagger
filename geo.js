@@ -3,10 +3,15 @@
 
       var doStat = false;
 
-      $("#region").val(getCookie('region', 'Europe'));
-      $("textarea.criteria").val(getCookie('criteria', ''));
-      $("#latAccuracy").val(getCookie('accuracy', '100'));
+      $.each($('input[type=text], textarea'), function() { 
+        var id = $(this).attr('id');
+        $(this).val(getCookie(id, $(this).val()));
+        $(this).focusout(function() {
+          setCookie(id, $(this).val());
+        });
+      });
 
+      $("#region").val(getCookie('region', 'Europe'));
       loadTimezones();
 
       $("#region").change(function(event){
@@ -18,29 +23,18 @@
         setCookie('timezone', $("#timezone").val());
       });
 
-      $("textarea.criteria").focusout(function() {
-        setCookie('criteria', $("textarea.criteria").val());
-      });
-
-      $("#latAccuracy").focusout(function() {
-        setCookie('accuracy', $("#latAccuracy").val());
-      });
-
-      //clearFiles();
       $('#fakeFile').val($('#inputFile').val());
 
       var cho = getCookie('choice', '#latChoice');
       tabChange('#myTab a[href=' + cho + ']');
       $('#myTab a').click(function (e) {
         e.preventDefault();
-        // clearFiles();
         tabChange(this);
         setCookie('choice', $(this).attr('href'));
         tabChange();
       });
 
       if (typeof FormData != 'undefined')
-      //if (false)
       {
         $('#inputFile').change(function() { $('#fakeFile').val($(this).val()); goBtnEnable(); });
         $('#fakeFile').click(function() { $('input#inputFile').click(); });
@@ -123,16 +117,8 @@
           $('#stat').load('stats/' + flickrId);
           setTimeout(readStat, 1000);
         }
-        //else
-        //  $('#stat').hide();
       }
-/*
-      function clearFiles()
-      {
-        $('#inputFile').val('');
-        $('#fakeFile').val('');
-      }
-*/
+
       function goBtnEnable()
       {
         if (validateInput() == '')

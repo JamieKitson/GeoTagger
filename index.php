@@ -186,7 +186,7 @@ privacy_filter=4
 sort=date-taken-asc
 min_taken_date=2012-05-28
 </pre>
-<textarea rows=5 class="criteria" name="criteria"></textarea>
+<textarea rows=5 class="criteria" name="criteria" id="criteria"></textarea>
 
 <h1 class="page-header" id="go">Go</h1>
 <p>
