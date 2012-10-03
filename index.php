@@ -81,7 +81,7 @@ being one of the few that does.
 <option>Pacific</option>
 </select>
 
-<select id="timezone" name="timezone">
+<select id="city" name="city">
 </select>
 
 <h1 class="page-header" id="flickr">Authenticate Flickr</h1>

@@ -7,7 +7,7 @@ include('flickrCall.php');
 include('googleCall.php');
 include_once('common.php');
 
-date_default_timezone_set($_POST['region'].'/'.$_POST['timezone']);
+date_default_timezone_set($_POST['region'].'/'.$_POST['city']);
 
 $maxGap = $_POST['maxGap'];
 

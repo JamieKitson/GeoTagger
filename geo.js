@@ -19,8 +19,8 @@
         loadTimezones();
       });
 
-      $("#timezone").change(function(event){
-        setCookie('timezone', $("#timezone").val());
+      $("#city").change(function(event){
+        setCookie('city', $("#city").val());
       });
 
       $('#fakeFile').val($('#inputFile').val());
@@ -105,8 +105,8 @@
       });
 
       function loadTimezones() {
-        $("#timezone").load("timezones/" + $("#region").val(), function() { 
-          $("#timezone").val(getCookie('timezone', 'London')); 
+        $("#city").load("timezones/" + $("#region").val(), function() { 
+          $("#city").val(getCookie('city', 'London')); 
         });
       }
 
