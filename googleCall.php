@@ -43,7 +43,7 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
   writeStat("Confirming still connected to Google Latitude.", $statFile);
 
   if (!testLatitude())
-    return 'Please re-'.googleAuthLink('').'.';
+    errorExit('Please re-'.googleAuthLink('').'.');
 
   $first = $photos[0][UTIME];
   $last = end($photos)[UTIME];
@@ -67,10 +67,6 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
     $last = ($photos[$i][UTIME] - $maxGap * 60 * 60) * 1000;
 
     $points = getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff, $msg);
-
-    // returned a warning if not an array
-    if (!is_array($points))
-      return $points;
 
     $allPoints = array_merge($allPoints, $points);
   }

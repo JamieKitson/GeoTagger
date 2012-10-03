@@ -61,4 +61,64 @@ function flickrAuthLink($class)
   return "<a class=\"$class\" href=\"getFlickr.php\">Authorise Flickr</a>";
 }
 
+function getPhotos($count, $criteria)
+{
+
+  // set user adjustable flickr parameters
+  $fp = array(
+      'sort' => 'date-taken-desc',
+      'per_page' => $count,
+      );
+
+  // get user set flickr parameters
+  foreach(explode("\n", $criteria) as $line)
+  {
+    $q = explode('=', $line);
+    if (count($q) == 2)
+      $fp[$q[0]] = $q[1];
+  }
+
+  // set non user adjustable flickr parameters
+  $fp['user_id'] = 'me';
+  $fp['has_geo'] = 0;
+  $fp['method'] = 'flickr.photos.search';
+  $fp['extras'] = 'date_taken,geo';
+
+  $rsp = flickrCall($fp);
+  $fc = unserialize($rsp);
+
+  if ($fc['stat'] != 'ok')
+  {
+    if (is_array($fc) && array_key_exists('message', $fc))
+    {
+      $msg = $fc['message'];
+    }
+    else
+    {
+      $msg = $rsp;
+    }
+    errorExit('Flickr call failed with: '.$msg); // , you may need to re-'.flickrAuthLink(''));
+  }
+
+  $photos = $fc['photos']['photo'];
+
+  // bail if we've got no photos
+  if (count($photos) == 0)
+  {
+    errorExit('No Flickr photos found.');
+  }
+
+  // do expensive str date processing just once
+  foreach($photos as &$p)
+  {
+    $p[UTIME] = strtotime($p['datetaken']);
+  }
+
+  // sort photos by date taken in case flickr has fucked up or the user has overridden sort
+  sort_array_by_utime($photos);
+
+  return $photos;
+
+}
+
 ?>

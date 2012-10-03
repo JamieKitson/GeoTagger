@@ -5,11 +5,7 @@ ini_set('display_errors', '1');
 
 include('flickrCall.php');
 include('googleCall.php');
-
-// Field indexes
-define("UTIME", 0);
-define("LATITUDE", 1);
-define("LONGITUDE", 2);
+include_once('common.php');
 
 date_default_timezone_set($_POST['region'].'/'.$_POST['timezone']);
 
@@ -47,67 +43,11 @@ if (isset($sData))
 
 writeStat("Getting photos from Flickr.", $statFile);
 
-// set user adjustable flickr parameters
-$fp = array(
-    'sort' => 'date-taken-desc',
-    'per_page' => $_POST['count'],
-    );
-
-// get user set flickr parameters
-foreach(explode("\n", $_POST['criteria']) as $line)
-{
-  $q = explode('=', $line);
-  if (count($q) == 2)
-    $fp[$q[0]] = $q[1];
-}
-
-// set non user adjustable flickr parameters
-$fp['user_id'] = 'me';
-$fp['has_geo'] = 0;
-$fp['method'] = 'flickr.photos.search';
-$fp['extras'] = 'date_taken,geo';
-
-$rsp = flickrCall($fp);
-$fc = unserialize($rsp);
-
-if ($fc['stat'] != 'ok')
-{
-  if (is_array($fc) && array_key_exists('message', $fc))
-  {
-    $msg = $fc['message'];
-  }
-  else
-  {
-    $msg = $rsp;
-  }
-  errorExit('Flickr call failed with: '.$msg); // , you may need to re-'.flickrAuthLink(''));
-}
-
-$photos = $fc['photos']['photo'];
-
-// bail if we've got no photos
-if (count($photos) == 0)
-{
-  errorExit('No Flickr photos found.');
-}
-
-// do expensive str date processing just once
-foreach($photos as &$p)
-{
-  $p[UTIME] = strtotime($p['datetaken']);
-}
-
-// sort photos by date taken in case flickr has fucked up or the user has overridden sort
-sort_array_by_utime($photos);
+$photos = getPhotos($_POST['count'], $_POST['criteria']);
 
 if (!isset($data))
 {
   $data = getLatPoints($statFile, $_POST['latAccuracy'], $maxGap, $photos);
-
-  // returned a warning if not an array
-  if (!is_array($data))
-    errorExit($data);
-
 }
 
   writeStat("Processing geo-data.", $statFile);
@@ -155,7 +95,7 @@ if (!isset($data))
 
     if ($msg > "")
     {
-      echo "<td colspan=5>$msg</td></tr>\n";
+      echo "<td colspan=3>$msg</td><td>✗</td><td>✗</td></tr>\n";
       continue;
     }
 
@@ -229,19 +169,5 @@ function geoCell($lat, $long, $desc)
   echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">".formatDate($desc)."</a></td>\n";
 }
 
-function errorExit($msg)
-{
-  echo "<div class=\"alert alert-error\">$msg</div>";
-  exit;
-}
-
-function sort_array_by_utime(&$anArray)
-{
-  usort($anArray, function($a, $b) { 
-    if ($a[UTIME] == $b[UTIME]) 
-      return 0; 
-    return ($a[UTIME] < $b[UTIME]) ? 1 : -1; 
-  });
-}
 
 ?>

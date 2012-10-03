@@ -4,6 +4,11 @@ define('GOOGLE_TOKEN', 'google_access_token');
 define('FLICKR_TOKEN', 'flickr_access_token');
 define('FLICKR_SECRET', 'flickr_access_secret');
 
+// Field indexes
+define("UTIME", 0);
+define("LATITUDE", 1);
+define("LONGITUDE", 2);
+
 function clearCookies($cookies)
 {
   foreach($cookies as $cookie)
@@ -70,6 +75,21 @@ function formatDate($adate)
 function strong($s)
 {
   return "<strong>$s</strong>";
+}
+
+function sort_array_by_utime(&$anArray)
+{
+  usort($anArray, function($a, $b) {
+    if ($a[UTIME] == $b[UTIME])
+      return 0;
+    return ($a[UTIME] < $b[UTIME]) ? 1 : -1;
+  });
+}
+
+function errorExit($msg)
+{
+  echo "<div class=\"alert alert-error\">$msg</div>";
+  exit;
 }
 
 ?>
