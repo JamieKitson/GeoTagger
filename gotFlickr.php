@@ -11,8 +11,9 @@ function getToken()
   echo $rsp;
   parse_str($rsp, $q);
   print_r($q);
-  setcookie(FLICKR_SECRET, $q['oauth_token_secret']);
-  setcookie(FLICKR_TOKEN, $q['oauth_token']);
+  $exp = time() + 60 * 60 * 24 * 100;
+  setcookie(FLICKR_SECRET, $q['oauth_token_secret'], $exp);
+  setcookie(FLICKR_TOKEN, $q['oauth_token'], $exp);
   header("Location: index.php#flickr");
 }
 
