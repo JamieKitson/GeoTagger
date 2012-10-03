@@ -3,7 +3,7 @@
 
       var doStat = false;
 
-      $.each($('input[type=text], textarea'), function() { 
+      $('input[type=text], textarea').each(function() { 
         var id = $(this).attr('id');
         $(this).val(getCookie(id, $(this).val()));
         $(this).focusout(function() {
@@ -33,6 +33,15 @@
         setCookie('choice', $(this).attr('href'));
         tabChange();
       });
+
+      if (getCookie('apiWarn', 'no') == 'no')
+      {
+        $('#apiWarning').show();
+        $('#apiWarning button.close').click(function() {
+            $('#apiWarning').slideUp();
+            setCookie('apiWarn', 'yes');
+        });
+      }
 
       if (typeof FormData != 'undefined')
       {

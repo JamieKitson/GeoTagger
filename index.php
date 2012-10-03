@@ -21,7 +21,7 @@ $latitude = testLatitude();
   <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <style> 
+  <style>
     form.form-horizontal label.control-label { width: auto; margin-right: 0.5em; }
     input.number {text-align: right }
     textarea { width: 40em }
@@ -45,8 +45,15 @@ $latitude = testLatitude();
   </script>
 </head>
 <body>
+
 <form class="container form-horizontal" enctype="multipart/form-data">
 <input type="hidden" name="flickrId" id="flickrId" value="<?php echo $flickrId; ?>">
+
+<div class="alert alert-block alert-error" id="apiWarning" style="display: none">
+  <button class="close" type="button">×</button>
+  <strong>Please note</strong> that the Flickr API can be unreliable. Fewer photos than 
+  requested may be returned, occasionally none at all. If this happens please try again.
+</div>
 
 <h1 class="page-header">About</h1>
 <p>
@@ -122,7 +129,7 @@ else
   <input type="hidden" value="google" class="input" name="">
   </p>
   <p>
-  <label class="control-label" for="latAccuracy">Ignore points less than accurate than:</label>
+  <label class="control-label" for="latAccuracy">Ignore Latitude points less than accurate than:</label>
   <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" value="100"><span class="add-on">metres</span></span>
   </p>
   <?php
