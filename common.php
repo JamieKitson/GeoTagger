@@ -92,4 +92,14 @@ function errorExit($msg)
   exit;
 }
 
+function writeProgress($msg, $percent, $statFile)
+{
+  writeStat(progressBar($msg, $percent), $statFile);
+}
+
+function progressBar($msg, $percent)
+{
+  return "<p>$msg".'</p><div class="progress"><div class="bar" style="width: '.$percent.'%;"></div></div>';
+}
+
 ?>

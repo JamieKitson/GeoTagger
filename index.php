@@ -7,6 +7,7 @@ ini_set('display_errors', '1');
 
 include('flickrCall.php');
 include('googleCall.php');
+include_once('common.php');
 
 $flickrId = testFlickr();
 $latitude = testLatitude();
@@ -38,6 +39,9 @@ $latitude = testLatitude();
   <script>
     var latitude = <?php echo $latitude ? 'true' : 'false'; ?>;
     var flickrId = '<?php echo $flickrId; ?>';
+    function progressBar(msg, p) {
+      return '<?php echo progressBar("' + msg + '", "' + p + '"); ?>';
+    }
   </script>
 </head>
 <body>

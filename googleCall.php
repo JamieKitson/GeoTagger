@@ -48,8 +48,8 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
   $first = $photos[0][UTIME];
   $last = end($photos)[UTIME];
 
-  $msg = '<p>Getting Google Latitude data from '.strong(formatDate($last)).' to '.strong(formatDate($first)).':</p><div class="progress"><div class="bar" style="width: %f%%;"></div></div>';
-  writeStat(sprintf($msg, 0), $statFile);
+  $msg = 'Getting Google Latitude data from '.strong(formatDate($last)).' to '.strong(formatDate($first));
+  writeProgress($msg, 0, $statFile);
 
   $realLast = $last * 1000;
   $diff = $first * 1000 - $realLast;
@@ -87,10 +87,9 @@ function getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff,
     {
       // max-time for next page of latitude data
       $first = end($locks->data->items)->timestampMs - 1;
-      $p = 100 * ($realLast - $first + $diff) / $diff;
 
-      $s = sprintf($msg, $p);
-      writeStat($s, $statFile);
+      $p = round(100 * ($realLast - $first + $diff) / $diff);
+      writeProgress($msg, $p, $statFile);
 
       // go through latitude points
       foreach ($locks->data->items as $item)

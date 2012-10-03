@@ -156,16 +156,16 @@
         {  
           doStat = false;
           var p = Math.round(evt.loaded / evt.total * 100);
-            $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: ' + p + '%;"></div></div>');
+            $('#stat').html(progressBar('Uploading data:', p));
             // firefox fix
-            if (p > 50)
+            if (p > 75)
               loadEndHandlerFunction(evt);
         }  
       }  
 
       function loadEndHandlerFunction(evt)
       {  
-        $('#stat').html('<p>Uploading data:</p><div class="progress"><div class="bar" style="width: 100%;"></div></div>');
+        $('#stat').html(progressBar('Uploading data:', 100));
         if (!doStat)
         {
           doStat = true;
