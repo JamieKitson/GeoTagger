@@ -105,14 +105,16 @@ if (!isset($data))
     latCell($next);
     latCell($prior);
     
-    $dLat = $prior[LATITUDE] - $next[LATITUDE];
-    $dLong = $prior[LONGITUDE] - $next[LONGITUDE];
-
     // calculate location from proportion of difference in time
     $multi = ($pDate - $prior[UTIME]) / $dTime; 
-    $lat = $multi * $dLat + $prior[LATITUDE];
-    $long = $multi * $dLong + $prior[LONGITUDE];
-    geoCell($lat, $long, $pDate);
+    foreach([LATITUDE, LONGITUDE] as $ll)
+    {
+      $dll = $prior[$ll] - $next[$ll];
+      $point[$ll] = $multi * $dll + $prior[$ll];
+    }
+    $point[UTIME] = $pDate;
+    
+    latCell($point);
 
     // write data to flickr, if we've been told to
     if (array_key_exists('write', $_POST) && ($_POST['write'] == true))
@@ -165,12 +167,7 @@ function latCell($loc)
 {
   $lat = $loc[LATITUDE];
   $long = $loc[LONGITUDE];
-  geoCell($lat, $long, $loc[UTIME]);
-}
-
-function geoCell($lat, $long, $desc)
-{
-  echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">".formatDate($desc)."</a></td>\n";
+  echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">".formatDate($loc[UTIME])."</a></td>\n";
 }
 
 function geoDataFail($msg)
