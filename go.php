@@ -121,18 +121,11 @@ if (!isset($data))
     {
       $p = round(100 * $pos / count($photos));
       writeProgress("Writing back to Flickr: $title", $p, $statFile);
-      $rsp = flickrCall(array(
-            'method' => 'flickr.photos.addTags', 
-            'photo_id' => $id, 
-            'tags' => 'geotaggedfromlatitude'));
+      $rsp = flickrAddTags($id, 'geotaggedfromlatitude');
       // if the tagging fails, don't geo-tag
       if (statToMessage($rsp))
       {
-        $rsp = flickrCall(array(
-              'method' => 'flickr.photos.geo.setLocation', 
-              'photo_id' => $id, 
-              'lat' => $lat, 
-              'lon' => $long));
+        $rsp = flickrSetGeo($id, $point[LATITUDE], $point[LONGITUDE]);
         statToMessage($rsp);
       }
       else

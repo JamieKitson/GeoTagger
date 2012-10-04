@@ -121,4 +121,21 @@ function getPhotos($count, $criteria)
 
 }
 
+function flickrAddTags($photoId, $tags)
+{
+  return flickrCall(array(
+        'method' => 'flickr.photos.addTags',
+        'photo_id' => $photoId,
+        'tags' => $tags));
+}
+
+function flickrSetGeo($photoId, $lat, $long)
+{
+  return flickrCall(array(
+        'method' => 'flickr.photos.geo.setLocation',
+        'photo_id' => $photoId,
+        'lat' => $lat,
+        'lon' => $long));
+}
+
 ?>
