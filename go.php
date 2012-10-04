@@ -68,34 +68,37 @@ if (!isset($data))
     {
       $geo++;
     }
-    if ($geo < count($data))
-      $next = $data[$geo];
+
     // start processing photo
     $id = $photo['id'];
     $title = $photo['title'] ?: $id;
-    
+ 
+    // start table row
     echo "<tr><td>".($pos + 1)."</td><td><a href=\"http://www.flickr.com/photo.gne?id=$id\">$title</a></td>\n";
 
-    if ($geo > 0)
+    // we have a photo before any geo data or after all geo data so skip
+    if (($geo == 0) || ($geo == count($data)))
     {
-      $prior = $data[$geo - 1];
-      $dTime = ($prior[UTIME] - $next[UTIME]); 
+      echo geoDataFail("No geo-data for ".formatDate($pDate));
+      continue;
     }
 
-    $msg = "";
+    $next = $data[$geo];
+    $prior = $data[$geo - 1];
+    $dTime = ($prior[UTIME] - $next[UTIME]); 
 
-    // either we have a photo before any geo data or we have a photo in a gap of > 24 hours of geo data, so skip photo
-    if (($geo == 0) || ($dTime > $maxGap * 60 * 60) || ($geo == count($data)))
-      $msg = "No geo-data for ".formatDate($pDate);
+    // we have a photo in a gap of > 24 hours of geo data, so skip photo
+    if ($dTime > $maxGap * 60 * 60)
+    {
+      echo geoDataFail("No geo-data for ".formatDate($pDate));
+      continue;
+    }
 
     // double check that photo doesn't have geo-data, I *have* seen FLickr returned geo-teagged photos to has_geo=0 searches!
     // See: http://tech.groups.yahoo.com/group/yws-flickr/message/7777
     if (($photo['latitude'] != 0) || ($photo['longitude'] != 0))
-      $msg = "Photo already has geo-data!";
-
-    if ($msg > "")
     {
-      echo "<td colspan=3>$msg</td><td>✗</td><td>✗</td></tr>\n";
+      echo geoDataFail("Photo already has geo-data!");
       continue;
     }
 
@@ -170,5 +173,9 @@ function geoCell($lat, $long, $desc)
   echo "<td><a href=\"http://maps.google.co.uk/maps?q=$lat,$long\">".formatDate($desc)."</a></td>\n";
 }
 
+function geoDataFail($msg)
+{
+  return "<td colspan=3>$msg</td><td>✗</td><td>✗</td></tr>\n";
+}
 
 ?>
