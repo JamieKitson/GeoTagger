@@ -9,7 +9,7 @@ include_once('common.php');
 
 date_default_timezone_set($_POST['region'].'/'.$_POST['city']);
 
-$maxGap = $_POST['maxGap'];
+$maxGap = $_POST['maxGap'] * 60 * 60;
 
 $flickrId = $_POST['flickrId'];
 if ($flickrId == "")
@@ -88,7 +88,7 @@ if (!isset($data))
     $dTime = ($prior[UTIME] - $next[UTIME]); 
 
     // we have a photo in a gap of > 24 hours of geo data, so skip photo
-    if ($dTime > $maxGap * 60 * 60)
+    if ($dTime > $maxGap)
     {
       echo geoDataFail("No geo-data for ".formatDate($pDate));
       continue;

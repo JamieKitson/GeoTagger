@@ -45,8 +45,8 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
   if (!testLatitude())
     errorExit('Please re-'.googleAuthLink('').'.');
 
-  $first = $photos[0][UTIME];
-  $last = end($photos)[UTIME];
+  $first = $photos[0][UTIME] + $maxGap;
+  $last = end($photos)[UTIME] - $maxGap;
 
   $msg = 'Getting Google Latitude data from '.strong(formatDate($last)).' to '.strong(formatDate($first));
   writeProgress($msg, 0, $statFile);
@@ -58,13 +58,13 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
   for ($i = 0; $i < count($photos); $i++)
   {
     // get the initial date, +- 24 hours
-    $first = ($photos[$i][UTIME] + $maxGap * 60 * 60) * 1000;
+    $first = ($photos[$i][UTIME] + $maxGap) * 1000;
     // while the gap between photos is less than 2 * maxGap
-    while (($i < count($photos) - 1) && ($photos[$i][UTIME] - $photos[$i + 1][UTIME] < $maxGap * 60 * 60 * 2))
+    while (($i < count($photos) - 1) && ($photos[$i][UTIME] - $photos[$i + 1][UTIME] < $maxGap * 2))
       $i ++;
 
     // get the last date before the gap
-    $last = ($photos[$i][UTIME] - $maxGap * 60 * 60) * 1000;
+    $last = ($photos[$i][UTIME] - $maxGap) * 1000;
 
     $points = getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff, $msg);
 
