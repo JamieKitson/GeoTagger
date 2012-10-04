@@ -53,6 +53,10 @@ $latitude = testLatitude();
   <button class="close" type="button">×</button>
   <strong>Please note</strong> that the Flickr API can be unreliable. Fewer photos than 
   requested may be returned, occasionally none at all. If this happens please try again.
+  See the <a href="http://tech.groups.yahoo.com/group/yws-flickr/">Yahoo Flickr API Group</a> 
+  and <a href="http://www.flickr.com/groups/api/">Flickr API Group</a> for 
+  <a href="http://tech.groups.yahoo.com/group/yws-flickr/message/7809">various</a> 
+  <a href="http://www.flickr.com/groups/api/discuss/72157631638748470/">discussions</a>.
 </div>
 
 <h1 class="page-header">About</h1>
