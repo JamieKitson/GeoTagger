@@ -154,7 +154,7 @@
           myXhr = $.ajaxSettings.xhr();
           if(myXhr.upload){
             myXhr.upload.addEventListener('progress',progressHandlerFunction, false);
-            myXhr.upload.addEventListener('load',loadEndHandlerFunction, false);
+//            myXhr.upload.addEventListener('load',loadEndHandlerFunction, false);
           }
           return myXhr;
       }
@@ -174,9 +174,9 @@
 
       function loadEndHandlerFunction(evt)
       {  
-        $('#stat').html(progressBar('Uploading data:', 100));
         if (!doStat)
         {
+          $('#stat').html(progressBar('Uploading data:', 100));
           doStat = true;
           setTimeout(readStat, 1000);
         }
