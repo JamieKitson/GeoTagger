@@ -154,7 +154,7 @@
           myXhr = $.ajaxSettings.xhr();
           if(myXhr.upload){
             myXhr.upload.addEventListener('progress',progressHandlerFunction, false);
-//            myXhr.upload.addEventListener('load',loadEndHandlerFunction, false);
+            myXhr.upload.addEventListener('load',loadEndHandlerFunction, false);
           }
           return myXhr;
       }
