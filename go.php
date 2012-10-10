@@ -37,7 +37,8 @@ if (isset($sData))
   }
   sort_array_by_utime($data);
   $first = $data[0][UTIME];
-  $last = end($data)[UTIME];
+  $lastPoint = end($data);
+  $last = $lastPoint[UTIME];
   $_POST['criteria'] .= "\nmax_taken_date=$first\nmin_taken_date=$last";
 }
 
@@ -107,7 +108,7 @@ if (!isset($data))
     
     // calculate location from proportion of difference in time
     $multi = ($pDate - $prior[UTIME]) / $dTime; 
-    foreach([LATITUDE, LONGITUDE] as $ll)
+    foreach(array(LATITUDE, LONGITUDE) as $ll)
     {
       $dll = $prior[$ll] - $next[$ll];
       $point[$ll] = $multi * $dll + $prior[$ll];

@@ -46,7 +46,8 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
     errorExit('Please re-'.googleAuthLink('').'.');
 
   $first = $photos[0][UTIME] + $maxGap;
-  $last = end($photos)[UTIME] - $maxGap;
+  $lastPhoto = end($photos);
+  $last = $lastPhoto[UTIME] - $maxGap;
 
   $msg = 'Getting Google Latitude data from '.strong(formatDate($last)).' to '.strong(formatDate($first));
   writeProgress($msg, 0, $statFile);

@@ -35,9 +35,9 @@ function cookiesSet($cookies)
 
 function baseHttpPath()
 {
-  $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
-  $p = strrpos($uri, '/');
-  return 'http://'.$_SERVER['HTTP_HOST'].substr($uri, 0, $p).'/';
+  $uri = explode('?', $_SERVER['REQUEST_URI']);
+  $p = strrpos($uri[0], '/');
+  return 'http://'.$_SERVER['HTTP_HOST'].substr($uri[0], 0, $p).'/';
 }
 
 function gzipCall($url)
@@ -100,6 +100,14 @@ function writeProgress($msg, $percent, $statFile)
 function progressBar($msg, $percent)
 {
   return "<p>$msg".'</p><div class="progress"><div class="bar" style="width: '.$percent.'%;"></div></div>';
+}
+
+if (!function_exists('gzdecode'))
+{
+  function gzdecode($data)
+  {
+    return gzinflate(substr($data, 10, -8));
+  }
 }
 
 ?>
