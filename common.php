@@ -64,7 +64,8 @@ function gzipCall($url)
 
 function writeStat($msg, $file)
 {
-  file_put_contents($file, /* date("d-H:i:s "). */ "$msg"); // \n", FILE_APPEND);
+//  file_put_contents($file, date("d-H:i:s "). "$msg\n", FILE_APPEND);
+  file_put_contents($file, $msg);
 }
 
 function formatDate($adate)

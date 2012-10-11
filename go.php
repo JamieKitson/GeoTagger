@@ -42,9 +42,7 @@ if (isset($sData))
   $_POST['criteria'] .= "\nmax_taken_date=$first\nmin_taken_date=$last";
 }
 
-writeStat("Getting photos from Flickr.", $statFile);
-
-$photos = getPhotos($_POST['count'], $_POST['criteria']);
+$photos = getPhotos($_POST['count'], $_POST['criteria'], $statFile);
 
 if (!isset($data))
 {

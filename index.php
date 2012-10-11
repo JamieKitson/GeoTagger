@@ -205,14 +205,14 @@ min_taken_date=2012-05-28
 
 <h1 class="page-header" id="go">Go</h1>
 <p>
-This app will geo-tag a maximum of 250 photos at a time and will not write the
+This app will will not write
 data back to Flickr unless you check the checkbox below. This app can be quite
 slow, especially when writing back to Flickr. The biggest factor can be the
 amount of data returned from Google Latitude, so for example 100 photos taken
 over an hour may be processed more quickly than 10 photos taken over a week.
 </p>
 <p>
-<label class="control-label" for="count" id="lblCount">Number of pictures to tag:</label>
+<label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
 <input type="text" name="count" id="count" value="10" class="input-small number">
 <label class="checkbox">Write data to Flickr<input type="checkbox" name="write" value="true"></label>
 </p>

@@ -4,8 +4,7 @@ include_once('common.php');
 
 function googleCall($params)
 {
-  $url = 'https://www.googleapis.com/latitude/v1/location?oauth_token='.$_COOKIE[GOOGLE_TOKEN].
-        "&granularity=best&$params";
+  $url = 'https://www.googleapis.com/latitude/v1/location?oauth_token='.$_COOKIE[GOOGLE_TOKEN]."&granularity=best&$params";
 
   $xmlresponse = gzipCall($url); 
 
