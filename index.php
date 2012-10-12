@@ -194,32 +194,6 @@ else
 <input type="text" name="tags" id="tags" class="input">
 </div>
 
-<!--
-<p>
-Here you can add any criteria that exist for 
-<code><a href="http://www.flickr.com/services/api/flickr.photos.search.html">flickr.photos.search</a></code>
-to restrict the photos that will be geo-tagged. This will probably be
-by <code>tags</code>. Put each criteria on its own line and separate name and value with an
-equals sign as in the example below. You can also change the 
-<code><a href="http://www.flickr.com/services/api/flickr.photos.search.html#yui_3_5_1_1_1346613172850_475">sort</a></code>
-order, for example if you wanted to start by tagging your oldest photos first, rather than 
-your newest photos, ie, defaults to <code>date-taken-desc</code>. 
-<code><a href="http://www.flickr.com/services/api/flickr.photos.search.html#yui_3_5_1_1_1346613172850_465">privacy_filter</a></code>
-could also be useful if you don't want to geo-tag public photos, see the
-previous link for possible values. Note that you cannot override <code>has_geo</code>, this
-app will never overwrite existing location data. Unfortunately
-<code>flickr.photos.search</code> does not seem to have a <code>sets</code> parameter.
-<code>min_taken_date</code> and <code>max_taken_date</code> will be useful if
-you have gaps in your Latitude data.
-<pre class="criteria">
-tags=mongolia,mongolrally
-privacy_filter=4
-sort=date-taken-asc
-min_taken_date=2012-05-28
-</pre>
-<textarea rows=5 class="criteria" name="criteria" id="criteria"></textarea>
--->
-
 <h1 class="page-header" id="go">Go</h1>
 <p>
 This app will will not write
