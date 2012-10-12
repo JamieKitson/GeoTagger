@@ -39,10 +39,13 @@ if (isset($sData))
   $first = $data[0][UTIME];
   $lastPoint = end($data);
   $last = $lastPoint[UTIME];
-  $_POST['criteria'] .= "\nmax_taken_date=$first\nmin_taken_date=$last";
+  if ($_POST['max-date'] == "")
+    $_POST['max-date'] = date('Y-m-d', $first);
+  if ($_POST['min-date'] == "")
+    $_POST['min-date'] = date('Y-m-d', $last);
 }
 
-$photos = getPhotos($_POST['count'], $_POST['criteria'], $statFile);
+$photos = getPhotos($_POST['count'], $_POST['max-date'], $_POST['min-date'], $_POST['tags'], $statFile);
 
 if (!isset($data))
 {

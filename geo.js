@@ -6,7 +6,7 @@
       $('input[type=text], textarea, select').each(function() { 
         var id = $(this).attr('id');
         $(this).val(getCookie(id, $(this).val()));
-        $(this).focusout(function() {
+        $(this).change(function() {
           setCookie(id, $(this).val());
         });
       });
@@ -52,15 +52,41 @@
         $('#fakeFile').attr('disabled', 'disabled');
       }
 
+      $('input.date').datepicker({ dateFormat: 'yy-mm-dd' });
+      $('input.date').change(function() {
+          var id = $(this).attr('id');
+          setCookie(id, $(this).val());
+          if (!validateDates())
+          {
+            $('#max-date').val($('#min-date').val());
+//            $('input.date').parent().addClass('error');
+          }
+      });
+
+      function validateDates()
+      {
+        if (($('#max-date').val() == '') || ($('#min-date').val() == ''))
+          return true;
+        if (new Date($('#max-date').val()) >= new Date($('#min-date').val()))
+          return true;
+        alert('"After" date must be equal or prior to "before" date.');
+        return false;
+      }
+
       function tabChange(aTab)
       {
         $(aTab).tab('show');
         goBtnEnable();
-        $('.input').removeAttr('name');
-        $('#myTab-content :visible .input').attr('name', 'input');
+        $('.geoinput').removeAttr('name');
+        $('#myTab-content :visible .geoinput').attr('name', 'input');
       }
 
       $('form').submit(function() {
+        if (!validateDates())
+        {
+          document.getElementById('criteria').scrollIntoView();
+          return false;
+        }
         $('#gobtn').attr('disabled', 'disabled');
         $('#current').removeAttr("id");
         $('#loading').show();

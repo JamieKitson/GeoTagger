@@ -19,8 +19,10 @@ $latitude = testLatitude();
   <title>Geo-Tag Flickr photos using Google Latitude data</title>
   <meta charset="UTF-8">
   <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
   <style>
     form.form-horizontal label.control-label { width: auto; margin-right: 0.5em; }
     input.number {text-align: right }
@@ -130,7 +132,7 @@ else
   removed at any time by clicking the Disconnect button. The Goolge token has a
   fairly short life, so don't be surprised if you need to re-authenticate
   regularly.
-  <input type="hidden" value="google" class="input" name="">
+  <input type="hidden" value="google" class="geoinput" name="">
   </p>
   <p>
   <label class="control-label" for="latAccuracy">Ignore Latitude points less than accurate than:</label>
@@ -157,7 +159,7 @@ else
     will be adjusted to search only within the data supplied, ie, no photos will be 
     returned which were taken outside the time stamps supplied in the geo-data file.
     </p>
-    <input id="inputFile" type="file" style="display:none" name="" class="input">
+    <input id="inputFile" type="file" style="display:none" name="" class="geoinput">
     <div class="input-append">
        <input id="fakeFile" class="input-large" type="text" readonly="readonly">
        <a class="btn" id="browseInput">Browse</a>
@@ -170,7 +172,7 @@ else
     will be adjusted to search only within the data supplied, ie, no photos will be 
     returned which were taken outside the time stamps supplied in the geo-data file.
     </p>
-    <textarea id="inputText" name="" class="input"></textarea>
+    <textarea id="inputText" name="" class="geoinput"></textarea>
   </div>
 
   <label class="control-label" for="maxGap">Ignore photos in gaps of more than:</label>
@@ -178,8 +180,22 @@ else
 
 </div>
     
-<h1 class="page-header">Flickr search criteria (optional)</h1>
-<P>
+<h1 class="page-header" id="criteria">Flickr search criteria (optional)</h1>
+<div class="control-group">
+<label class="control-label" for="min-date" >Geo-tag photos taken after:</label>
+<input type="text" name="min-date" id="min-date" class="input-small date">
+</div>
+<div class="control-group">
+<label class="control-label" for="max-date" >Geo-tag photos taken before:</label>
+<input type="text" name="max-date" id="max-date" class="input-small date">
+</div>
+<div class="control-group">
+<label class="control-label" for="tags" >Geo-tag photos tagged:</label>
+<input type="text" name="tags" id="tags" class="input">
+</div>
+
+<!--
+<p>
 Here you can add any criteria that exist for 
 <code><a href="http://www.flickr.com/services/api/flickr.photos.search.html">flickr.photos.search</a></code>
 to restrict the photos that will be geo-tagged. This will probably be
@@ -202,6 +218,7 @@ sort=date-taken-asc
 min_taken_date=2012-05-28
 </pre>
 <textarea rows=5 class="criteria" name="criteria" id="criteria"></textarea>
+-->
 
 <h1 class="page-header" id="go">Go</h1>
 <p>

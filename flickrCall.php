@@ -61,6 +61,28 @@ function flickrAuthLink($class)
   return "<a class=\"$class\" href=\"getFlickr.php\">Authorise Flickr</a>";
 }
 
+function flickrCallWithRetry($params)
+{
+  $tries = 0;
+  while($tries < 3)
+  {
+    $rsp = flickrCall($params);
+    $fc = unserialize($rsp);
+
+    if ($fc['stat'] == 'ok')
+      return $fc;
+
+    $tries++;
+  }
+
+  if (is_array($fc) && array_key_exists('message', $fc)) {
+    $msg = $fc['message'];
+  } else {
+    $msg = $rsp;
+  }
+  errorExit('Flickr call failed with: '.$msg);
+}
+
 function pagePhotos($total, $params, $statFile)
 {
   $params['page'] = 1;
@@ -70,26 +92,7 @@ function pagePhotos($total, $params, $statFile)
   while((count($allPhotos) < $total) && (count($photos) > 0))
   {
     $params['per_page'] = $total - count($allPhotos);
-    $rsp = flickrCall($params);
-    $fc = unserialize($rsp);
-
-    if ($fc['stat'] != 'ok')
-    {
-      if ($tries >= 3)
-      {
-        if (is_array($fc) && array_key_exists('message', $fc)) {
-          $msg = $fc['message'];
-        } else {
-          $msg = $rsp;
-        }
-        errorExit('Flickr call failed with: '.$msg); 
-      }
-      else
-      {
-        $tries++;
-        continue;
-      }
-    }
+    $fc = flickrCallWithRetry($params);
     $photos = $fc['photos']['photo'];
     $allPhotos = array_merge($allPhotos, $photos);
     $tries = 0;
@@ -99,26 +102,22 @@ function pagePhotos($total, $params, $statFile)
   return $allPhotos;
 }
 
-function getPhotos($count, $criteria, $statFile)
+function getPhotos($count, $maxDate, $minDate, $tags, $statFile)
 {
   writeProgress("Getting photos from Flickr.", 0, $statFile);
 
-  // set user adjustable flickr parameters
-  $params = array('sort' => 'date-taken-desc');
-
-  // get user set flickr parameters
-  foreach(explode("\n", $criteria) as $line)
-  {
-    $q = explode('=', $line);
-    if (count($q) == 2)
-      $params[$q[0]] = $q[1];
-  }
-
-  // set non user adjustable flickr parameters
-  $params['user_id'] = 'me';
-  $params['has_geo'] = 0;
-  $params['method'] = 'flickr.photos.search';
-  $params['extras'] = 'date_taken,geo';
+  if ($maxDate > "")
+    $maxDate = strtotime($maxDate) + 24 * 60 * 60; // add a day to make it inclusive
+  $params = array(
+    'sort'            => 'date-taken-desc',
+    'user_id'         => 'me',
+    'has_geo'         =>  0,
+    'method'          => 'flickr.photos.search',
+    'extras'          => 'date_taken,geo',
+    'max_taken_date'  => $maxDate,
+    'min_taken_date'  => $minDate,
+    'tags'            => $tags
+  );
 
   $photos = pagePhotos($count, $params, $statFile);
 
