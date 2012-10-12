@@ -3,7 +3,7 @@
 
       var doStat = false;
 
-      $('input[type=text], textarea').each(function() { 
+      $('input[type=text], textarea, select').each(function() { 
         var id = $(this).attr('id');
         $(this).val(getCookie(id, $(this).val()));
         $(this).focusout(function() {
@@ -11,16 +11,11 @@
         });
       });
 
-      $("#region").val(getCookie('region', 'Europe'));
       loadTimezones();
 
       $("#region").change(function(event){
         setCookie('region', $("#region").val());
         loadTimezones();
-      });
-
-      $("#city").change(function(event){
-        setCookie('city', $("#city").val());
       });
 
       $('#fakeFile').val($('#inputFile').val());

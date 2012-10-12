@@ -91,7 +91,7 @@ being one of the few that does.
 <option>Asia</option>
 <option>Atlantic</option>
 <option>Australia</option>
-<option>Europe</option>
+<option selected="selected">Europe</option>
 <option>Indian</option>
 <option>Pacific</option>
 </select>
