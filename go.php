@@ -45,7 +45,14 @@ if (isset($sData))
     $_POST['min-date'] = date('Y-m-d', $last);
 }
 
-$photos = getPhotos($_POST['count'], $_POST['max-date'], $_POST['min-date'], $_POST['tags'], $statFile);
+if ($_POST['criteriaChoice'] == '#flickrSet')
+{
+  $photos = getSet($_POST['set'], $statFile);
+}
+else
+{
+  $photos = getPhotos($_POST['count'], $_POST['max-date'], $_POST['min-date'], $_POST['tags'], $statFile);
+}
 
 if (!isset($data))
 {

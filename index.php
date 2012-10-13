@@ -32,9 +32,10 @@ $latitude = testLatitude();
     #loading, #stat { display: none; }
     input#fakeFile { cursor: auto }
     .tab-content { border: 1px solid #DDDDDD; border-top: none; padding: 20px }
-    #myTab { margin-bottom: 0 }
+    .nav-tabs { margin-bottom: 0 }
     #fileChoice .alert { margin-bottom: 10px }
-    .tab-pane { margin-bottom: 1em; }
+    #inputTab-content .tab-pane { margin-bottom: 1em; }
+    #criteriaTab-content { padding-bottom: 0 }
   </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
@@ -119,13 +120,13 @@ else
 
 <h1 class="page-header" id="google">Choose your input method</h1>
 
-<ul class="nav nav-tabs" id="myTab">
+<ul class="nav nav-tabs" id="inputTab">
 <li class="active"><a href="#latChoice">Google Latitude</a></li>
 <li><a href="#fileChoice">Text File</a></li>
 <li><a href="#txtChoice">Text</a></li>
 </ul>
    
-<div class="tab-content" id="myTab-content">
+<div class="tab-content" id="inputTab-content">
   <div class="tab-pane active" id="latChoice">
   <p>
   Google tokens will be held only as cookies in your browser and can be
@@ -181,7 +182,16 @@ else
 </div>
     
 <h1 class="page-header" id="criteria">Flickr search criteria (optional)</h1>
-<div class="control-group">
+<input type="hidden" value="#flickrSearch" name="criteriaChoice" id="criteriaChoice">
+<ul class="nav nav-tabs" id="criteriaTab">
+<li class="active"><a href="#flickrSearch">Search</a></li>
+<li><a href="#flickrSet">Sets</a></li>
+</ul>
+   
+<div class="tab-content" id="criteriaTab-content">
+  <div class="tab-pane active" id="flickrSearch">
+
+ <div class="control-group">
 <label class="control-label" for="min-date" >Geo-tag photos taken after:</label>
 <input type="text" name="min-date" id="min-date" class="input-small date">
 </div>
@@ -193,6 +203,24 @@ else
 <label class="control-label" for="tags" >Geo-tag photos tagged:</label>
 <input type="text" name="tags" id="tags" class="input">
 </div>
+<div class="control-group">
+<label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
+<input type="text" name="count" id="count" value="10" class="input-small number">
+</div>
+
+</div>
+
+  <div class="tab-pane " id="flickrSet">
+<div class="control-group">
+  <label class="control-label" for="set">Geo-tag set:</label>
+  <select name="set" id="set"></select>
+  </div>
+  <p>
+  Note that this will return all photos from the chosen set, but only photos that are not already geo-tagged will be written to.
+  </p>
+  </div>
+
+</div>
 
 <h1 class="page-header" id="go">Go</h1>
 <p>
@@ -203,8 +231,6 @@ amount of data returned from Google Latitude, so for example 100 photos taken
 over an hour may be processed more quickly than 10 photos taken over a week.
 </p>
 <p>
-<label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
-<input type="text" name="count" id="count" value="10" class="input-small number">
 <label class="checkbox">Write data to Flickr<input type="checkbox" name="write" value="true"></label>
 </p>
 
@@ -252,6 +278,12 @@ Due to Flickr's nasty habit of ignoring time zone data it might actually be bett
 to not change the time or time zone on your camera when you go abroad. Remember
 though that it is quite easy to change taken times, using Flickr's Organiser you
 can shift a selection of photos by a certain number of hours.
+</p>
+<p>
+If you want to geo-tag photos which already have geo-data then you will need to
+remove that geo-data first using Flickr's Organiser. To remove the all 
+<code>geotaggedfromlatitude</code> tags from your photos you can do that 
+<a href="http://www.flickr.com/photos/<?php echo str_replace('_', '@', $flickrId); ?>/tags/geotaggedfromlatitude/delete/">here</a>.
 </p>
 
 <h1 class="page-header" id="alt">Alternatives</h1>

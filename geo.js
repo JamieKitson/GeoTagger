@@ -21,12 +21,20 @@
       $('#fakeFile').val($('#inputFile').val());
 
       var cho = getCookie('choice', '#latChoice');
-      tabChange('#myTab a[href=' + cho + ']');
-      $('#myTab a').click(function (e) {
+      inputTabChange('#inputTab a[href=' + cho + ']');
+      $('#inputTab a').click(function (e) {
         e.preventDefault();
-        tabChange(this);
+        inputTabChange(this);
         setCookie('choice', $(this).attr('href'));
-        tabChange();
+//        inputTabChange();
+      });
+
+      var crit = getCookie('criteriaTab', '#flickrSearch');
+      criteriaTabChange('#criteriaTab a[href=' + crit + ']');
+      $('#criteriaTab a').click(function(e) {
+          e.preventDefault();
+          criteriaTabChange(this);
+          setCookie('criteriaTab', $(this).attr('href'));
       });
 
       if (getCookie('apiWarn', 'no') == 'no')
@@ -73,12 +81,30 @@
         return false;
       }
 
-      function tabChange(aTab)
+      function inputTabChange(aTab)
       {
         $(aTab).tab('show');
         goBtnEnable();
         $('.geoinput').removeAttr('name');
-        $('#myTab-content :visible .geoinput').attr('name', 'input');
+        $('#inputTab-content :visible .geoinput').attr('name', 'input');
+      }
+
+      function criteriaTabChange(aTab)
+      {
+        $(aTab).tab('show');
+        var id = $(aTab).attr('href');
+        if (id == '#flickrSet') 
+        {
+          if ($('#set').html().length == 0)
+            $('#set').load('getSets.php', function() { 
+                if ($('#set').html().length != 0)
+                {
+                  $(this).width('auto');
+                  $(this).val(getCookie('set', 0));
+                }
+            });
+          $('#criteriaChoice').val(id);
+        }
       }
 
       $('form').submit(function() {

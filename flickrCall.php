@@ -120,7 +120,12 @@ function getPhotos($count, $maxDate, $minDate, $tags, $statFile)
   );
 
   $photos = pagePhotos($count, $params, $statFile);
+  addUTime($photos);
+  return $photos;
+}
 
+function addUTime(&$photos)
+{
   // bail if we've got no photos
   if (count($photos) == 0)
   {
@@ -155,6 +160,19 @@ function flickrSetGeo($photoId, $lat, $long)
         'photo_id' => $photoId,
         'lat' => $lat,
         'lon' => $long));
+}
+
+function getSet($setId)
+{
+  $params = array(
+      'method'      => 'flickr.photosets.getPhotos',
+      'extras'      => 'date_taken,geo',
+      'photoset_id' => $setId
+    );
+  $fc = flickrCallWithRetry($params);
+  $photos = $fc['photoset']['photo'];
+  addUTime($photos);
+  return $photos;
 }
 
 ?>
