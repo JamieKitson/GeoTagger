@@ -12,7 +12,7 @@ function listFlickrSets()
   {
     foreach($fc['photosets']['photoset'] as $set)
     {
-      $res .= '<option value="'.$set['id'].'">'.htmlentities($set['title']['_content']).'</option>';
+      $res .= '<option value="'.$set['id'].'">'.htmlentities($set['title']['_content'], 0, 'UTF-8').'</option>';
     }
   }
   return $res;
