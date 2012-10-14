@@ -101,6 +101,8 @@
                 if ($('#set').html().length != 0)
                 {
                   $(this).width('auto');
+                  $('#setGroup').show();
+                  $('#setLoading').hide();
                   $(this).val(getCookie('set', 0));
                 }
             });
@@ -117,7 +119,7 @@
         }
         $('#gobtn').attr('disabled', 'disabled');
         $('#current').removeAttr("id");
-        $('#loading').show();
+        $('#goLoading').show();
         doStat = true;
         $('#stat').text('Starting...').show();
         setTimeout(readStat, 1000);
@@ -146,7 +148,7 @@
         }).done(function( data ) { 
           $('#result').append(data);
           $('#gobtn').removeAttr('disabled');
-          $('#loading').hide();
+          $('#goLoading').hide();
           readStat();
           doStat = false;
           if ($('#result table').length)

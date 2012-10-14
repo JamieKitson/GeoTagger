@@ -29,13 +29,14 @@ $latitude = testLatitude();
     textarea { width: 40em }
     body { counter-reset: headings -1 }
     h1:before { content: counter(headings) ". "; counter-increment: headings; }
-    #loading, #stat { display: none; }
+    #goLoading, #stat { display: none; }
     input#fakeFile { cursor: auto }
     .tab-content { border: 1px solid #DDDDDD; border-top: none; padding: 20px }
     .nav-tabs { margin-bottom: 0 }
     #fileChoice .alert { margin-bottom: 10px }
     #inputTab-content .tab-pane { margin-bottom: 1em; }
     #criteriaTab-content { padding-bottom: 0 }
+    #setLoading { padding-bottom: 1em; }
   </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
@@ -211,7 +212,8 @@ else
 </div>
 
   <div class="tab-pane " id="flickrSet">
-<div class="control-group">
+<img id="setLoading" src="loading.gif" alt="loading" class="loading">
+<div class="control-group" id="setGroup" style="display: none">
   <label class="control-label" for="set">Geo-tag set:</label>
   <select name="set" id="set"></select>
   </div>
@@ -236,7 +238,7 @@ over an hour may be processed more quickly than 10 photos taken over a week.
 
 <p>
 <input type="submit" value="Go" class="btn btn-primary btn-large" id="gobtn">
-<img id="loading" src="loading.gif" alt="loading">
+<img id="goLoading" src="loading.gif" alt="loading" class="loading">
 <div id="stat" class="alert alert-info"></div>
 
 <h1 class="page-header">Results</h1>
