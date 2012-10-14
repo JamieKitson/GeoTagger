@@ -107,17 +107,22 @@ function getPhotos($count, $maxDate, $minDate, $tags, $statFile)
   writeProgress("Getting photos from Flickr.", 0, $statFile);
 
   if ($maxDate > "")
-    $maxDate = strtotime($maxDate) + 24 * 60 * 60; // add a day to make it inclusive
+    $maxDate = date('Y-m-d', strtotime($maxDate) + 24 * 60 * 60); // add a day to make it inclusive, change back to MySQL datestamp as getWithoutGeoData doesn't like Unix time stamps
   $params = array(
+    'method'          => 'flickr.photos.getWithoutGeoData',
     'sort'            => 'date-taken-desc',
-    'user_id'         => 'me',
-    'has_geo'         =>  0,
-    'method'          => 'flickr.photos.search',
     'extras'          => 'date_taken,geo',
     'max_taken_date'  => $maxDate,
-    'min_taken_date'  => $minDate,
-    'tags'            => $tags
+    'min_taken_date'  => $minDate
   );
+
+  if ($tags > "")
+  {
+    $params['method'] = 'flickr.photos.search';
+    $params['user_id']  = 'me';
+    $params['has_geo']  =  0;
+    $params['tags']     = $tags;
+  }
 
   $photos = pagePhotos($count, $params, $statFile);
   addUTime($photos);
