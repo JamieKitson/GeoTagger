@@ -96,6 +96,7 @@
         if (id == '#flickrSet') 
         {
           if ($('#set').html().length == 0)
+          {
             $('#set').load('getSets.php', function() { 
                 if ($('#set').html().length != 0)
                 {
@@ -103,8 +104,9 @@
                   $(this).val(getCookie('set', 0));
                 }
             });
-          $('#criteriaChoice').val(id);
+          }
         }
+        $('#criteriaChoice').val(id);
       }
 
       $('form').submit(function() {
