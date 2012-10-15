@@ -36,7 +36,7 @@ $latitude = testLatitude();
     #fileChoice .alert { margin-bottom: 10px }
     #inputTab-content .tab-pane { margin-bottom: 1em; }
     #criteriaTab-content { padding-bottom: 0 }
-    #setLoading { padding-bottom: 1em; }
+    #setLoading { padding-left: 1em; height: 2.5em; display: none }
   </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
@@ -185,41 +185,39 @@ else
 <h1 class="page-header" id="criteria">Flickr search criteria (optional)</h1>
 <input type="hidden" value="#flickrSearch" name="criteriaChoice" id="criteriaChoice">
 <ul class="nav nav-tabs" id="criteriaTab">
-<li class="active"><a href="#flickrSearch">Search</a></li>
-<li><a href="#flickrSet">Sets</a></li>
+  <li class="active"><a href="#flickrSearch">Search</a></li>
+  <li><a href="#flickrSet">Sets</a></li>
 </ul>
    
 <div class="tab-content" id="criteriaTab-content">
   <div class="tab-pane active" id="flickrSearch">
-
- <div class="control-group">
-<label class="control-label" for="min-date" >Geo-tag photos taken after:</label>
-<input type="text" name="min-date" id="min-date" class="input-small date">
-</div>
-<div class="control-group">
-<label class="control-label" for="max-date" >Geo-tag photos taken before:</label>
-<input type="text" name="max-date" id="max-date" class="input-small date">
-</div>
-<div class="control-group">
-<label class="control-label" for="tags" >Geo-tag photos tagged:</label>
-<input type="text" name="tags" id="tags" class="input">
-</div>
-<div class="control-group">
-<label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
-<input type="text" name="count" id="count" value="10" class="input-small number">
-</div>
-
-</div>
+    <div class="control-group">
+      <label class="control-label" for="min-date" >Geo-tag photos taken after:</label>
+      <input type="text" name="min-date" id="min-date" class="input-small date">
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="max-date" >Geo-tag photos taken before:</label>
+      <input type="text" name="max-date" id="max-date" class="input-small date">
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="tags" >Geo-tag photos tagged:</label>
+      <input type="text" name="tags" id="tags" class="input">
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
+      <input type="text" name="count" id="count" value="10" class="input-small number">
+    </div>
+  </div>
 
   <div class="tab-pane " id="flickrSet">
-<img id="setLoading" src="loading.gif" alt="loading" class="loading">
-<div class="control-group" id="setGroup" style="display: none">
-  <label class="control-label" for="set">Geo-tag set:</label>
-  <select name="set" id="set"></select>
-  </div>
-  <p>
-  Note that this will return all photos from the chosen set, but only photos that are not already geo-tagged will be written to.
-  </p>
+    <div class="control-group" id="setGroup">
+      <label class="control-label" for="set">Geo-tag set:</label>
+      <select name="set" id="set" disabled="disabled"></select>
+      <img id="setLoading" src="loading.gif" alt="loading" class="loading">
+    </div>
+    <p>
+      Note that this will return all photos from the chosen set, but only photos that are not already geo-tagged will be written to.
+    </p>
   </div>
 
 </div>

@@ -93,22 +93,20 @@
       {
         $(aTab).tab('show');
         var id = $(aTab).attr('href');
-        if (id == '#flickrSet') 
-        {
-          if ($('#set').html().length == 0)
-          {
-            $('#set').load('getSets.php', function() { 
-                if ($('#set').html().length != 0)
-                {
-                  $(this).width('auto');
-                  $('#setGroup').show();
-                  $('#setLoading').hide();
-                  $(this).val(getCookie('set', 0));
-                }
-            });
-          }
-        }
         $('#criteriaChoice').val(id);
+        if ((id == '#flickrSet') && ($('#set').html().length == 0) && (flickrId != ''))
+        {
+          $('#setLoading').show();
+          $('#set').load('getSets.php', function() { 
+            $('#setLoading').hide();
+            if ($('#set').html().length != 0)
+            {
+              $(this).width('auto');
+              $(this).removeAttr('disabled');
+              $(this).val(getCookie('set', 0));
+            }
+          });
+        }
       }
 
       $('form').submit(function() {
