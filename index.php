@@ -36,7 +36,7 @@ $latitude = testLatitude();
     #fileChoice .alert { margin-bottom: 10px }
     #inputTab-content .tab-pane { margin-bottom: 1em; }
     #criteriaTab-content { padding-bottom: 0 }
-    #setLoading { padding-left: 1em; height: 2.5em; display: none }
+    .loading { padding-left: 0.5em; height: 2.5em; display: none }
   </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
@@ -65,13 +65,13 @@ $latitude = testLatitude();
 
 <h1 class="page-header">About</h1>
 <p>
-This app will attempt to automatically geo-tag your Flickr photos using your
-Google Latitude or text data. The exact location will be estimated by using the
+This app will attempt to automatically geo-tag your Flickr photos using 
+Google Latitude or textual data. The exact location will be estimated by using the
 proportion of time passed between the two points either side of the time that
-the photo was taken, to a maximum of 24 hours. This app will never overwrite existing location data and
+the photo was taken. This app will never overwrite existing location data and
 will tag any photos that it geo-tags with <code>geotaggedfromlatitude</code>, this might seem like spam, but is
 there to help you in case anything should go wrong, and hence cannot be disabled. You
-can add search criteria in step 3 such as tags, dates, etc. By default this app
+can choose photos by tags, dates, or set in step 3. By default this app
 will not write data back to Flickr but will show you what it will try to do and
 why.
 </p>
@@ -82,10 +82,10 @@ why.
 record the time zone</a> that your camera is set to, so to maximise accuracy it
 is very important to get the time zone right. Choosing your exact location
 allows us to hopefully handle daylight saving correctly. Note that this should match you
-camera setting, not just where you happen to be right now. Yes, I could attempt
+camera setting, not just where you happen to be right now. <!-- Yes, I could attempt
 to get the time zone from the EXIF data, but from a brief and unscientific 
 survey it seems that this doesn't show up in Flickr for many cameras, my D7000
-being one of the few that does.
+being one of the few that does. -->
 </p>
 <select id="region" name="region">
 <option>Africa</option>
@@ -177,7 +177,7 @@ else
     <textarea id="inputText" name="" class="geoinput"></textarea>
   </div>
 
-  <label class="control-label" for="maxGap">Ignore photos in gaps of more than:</label>
+  <label class="control-label" for="maxGap">Skip photos in gaps of more than:</label>
   <span class="input-append"><input type="text" name="maxGap" id="maxGap" class="input-mini number" value="24"><span class="add-on">hours</span></span>
 
 </div>
@@ -283,7 +283,7 @@ can shift a selection of photos by a certain number of hours.
 If you want to geo-tag photos which already have geo-data then you will need to
 remove that geo-data first using Flickr's Organiser. To remove the all 
 <code>geotaggedfromlatitude</code> tags from your photos you can do that 
-<a href="http://www.flickr.com/photos/<?php echo str_replace('_', '@', $flickrId); ?>/tags/geotaggedfromlatitude/delete/">here</a>.
+<a href="http://www.flickr.com/photos/me/tags/geotaggedfromlatitude/delete/">here</a>.
 </p>
 
 <h1 class="page-header" id="alt">Alternatives</h1>
