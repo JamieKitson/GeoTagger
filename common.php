@@ -11,7 +11,7 @@ define("LATITUDE", 1);
 define("LONGITUDE", 2);
 
 // mandatory field defaults
-define("DEF_COUNT", 10);
+define("DEF_COUNT", 100);
 define("DEF_ACCURACY", 100);
 define("DEF_MAX_GAP", 24);
 
