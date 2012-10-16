@@ -100,6 +100,7 @@ function pagePhotos($total, $params, $statFile)
 
 function getPhotos($count, $maxDate, $minDate, $tags, $statFile)
 {
+  $count = $count ?: DEF_COUNT;
   writeProgress("Getting photos from Flickr.", 0, $statFile);
 
   if ($maxDate > "")

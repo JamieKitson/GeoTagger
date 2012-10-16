@@ -9,7 +9,7 @@ include_once('common.php');
 
 date_default_timezone_set($_POST['region'].'/'.$_POST['city']);
 
-$maxGap = $_POST['maxGap'] * 60 * 60;
+$maxGap = ($_POST['maxGap'] ?: DEF_MAX_GAP) * 60 * 60;
 
 $flickrId = $_POST['flickrId'];
 if ($flickrId == "")

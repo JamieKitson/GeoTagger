@@ -1,5 +1,6 @@
 <?PHP
 
+// cookie names
 define('GOOGLE_TOKEN', 'google_access_token');
 define('FLICKR_TOKEN', 'flickr_access_token');
 define('FLICKR_SECRET', 'flickr_access_secret');
@@ -8,6 +9,11 @@ define('FLICKR_SECRET', 'flickr_access_secret');
 define("UTIME", 0);
 define("LATITUDE", 1);
 define("LONGITUDE", 2);
+
+// mandatory field defaults
+define("DEF_COUNT", 10);
+define("DEF_ACCURACY", 100);
+define("DEF_MAX_GAP", 24);
 
 function clearCookies($cookies)
 {

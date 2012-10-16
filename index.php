@@ -138,7 +138,9 @@ else
   </p>
   <p>
   <label class="control-label" for="latAccuracy">Ignore Latitude points less than accurate than:</label>
-  <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" value="100"><span class="add-on">metres</span></span>
+  <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" placeholder="<?php echo DEF_ACCURACY; ?>">
+    <span class="add-on">metres</span>
+  </span>
   </p>
   <?php
 
@@ -178,7 +180,9 @@ else
   </div>
 
   <label class="control-label" for="maxGap">Skip photos in gaps of more than:</label>
-  <span class="input-append"><input type="text" name="maxGap" id="maxGap" class="input-mini number" value="24"><span class="add-on">hours</span></span>
+  <span class="input-append"><input type="text" name="maxGap" id="maxGap" class="input-mini number" placeholder="<?php echo DEF_MAX_GAP; ?>">
+    <span class="add-on">hours</span>
+  </span>
 
 </div>
     
@@ -205,7 +209,7 @@ else
     </div>
     <div class="control-group">
       <label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
-      <input type="text" name="count" id="count" value="10" class="input-small number">
+      <input type="text" name="count" id="count" placeholder="<?php echo DEF_COUNT; ?>" class="input-small number">
     </div>
   </div>
 

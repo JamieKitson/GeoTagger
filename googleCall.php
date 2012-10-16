@@ -44,6 +44,7 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
   if (!testLatitude())
     errorExit('Please re-'.googleAuthLink('').'.');
 
+  $accuracy = $accuracy ?: DEF_ACCURACY;
   $first = $photos[0][UTIME] + $maxGap;
   $lastPhoto = end($photos);
   $last = $lastPhoto[UTIME] - $maxGap;
