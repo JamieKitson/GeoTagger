@@ -3,7 +3,7 @@
 
       var doStat = false;
 
-      $('input[type=text], textarea, select').each(function() { 
+      $('input, textarea, select').each(function() { 
         var id = $(this).attr('id');
         $(this).val(getCookie(id, $(this).val()));
         $(this).change(function() {

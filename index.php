@@ -25,7 +25,7 @@ $latitude = testLatitude();
   <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
   <style>
     form.form-horizontal label.control-label { width: auto; margin-right: 0.5em; }
-    input.number {text-align: right }
+    input[type=number] { text-align: right }
     textarea { width: 40em }
     body { counter-reset: headings -1 }
     h1:before { content: counter(headings) ". "; counter-increment: headings; }
@@ -133,7 +133,8 @@ else
   Google tokens will be held only as cookies in your browser and can be
   removed at any time by clicking the Disconnect button. The Goolge token has a
   fairly short life, so don't be surprised if you need to re-authenticate
-  regularly. Points less accurate than <?php echo DEF_ACCURACY; ?> metres will be ignored.
+  regularly. Latitude points less accurate than <?php echo DEF_ACCURACY; ?> 
+  metres will be ignored.
   <input type="hidden" value="google" class="geoinput" name="">
   </p>
   <?php
@@ -174,7 +175,8 @@ else
   </div>
 
   <label class="control-label" for="maxGap">Skip photos in gaps of more than:</label>
-  <span class="input-append"><input type="text" name="maxGap" id="maxGap" class="input-mini number" placeholder="<?php echo DEF_MAX_GAP; ?>">
+  <span class="input-append">
+    <input type="number" name="maxGap" id="maxGap" class="input-mini" placeholder="<?php echo DEF_MAX_GAP; ?>" value="<?php echo DEF_MAX_GAP; ?>">
     <span class="add-on">hours</span>
   </span>
 
@@ -203,7 +205,7 @@ else
     </div>
     <div class="control-group">
       <label class="control-label" for="count" id="lblCount">Maximum number of photos to tag:</label>
-      <input type="text" name="count" id="count" placeholder="<?php echo DEF_COUNT; ?>" class="input-small number">
+      <input type="number" name="count" id="count" placeholder="<?php echo DEF_COUNT; ?>" value="<?php echo DEF_COUNT; ?>" class="input-small">
     </div>
   </div>
 
