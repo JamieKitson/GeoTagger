@@ -56,7 +56,7 @@ else
 
 if (!isset($data))
 {
-  $data = getLatPoints($statFile, $_POST['latAccuracy'], $maxGap, $photos);
+  $data = getLatPoints($statFile, $maxGap, $photos);
 }
 
   writeStat("Processing geo-data.", $statFile);

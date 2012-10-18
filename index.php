@@ -133,14 +133,8 @@ else
   Google tokens will be held only as cookies in your browser and can be
   removed at any time by clicking the Disconnect button. The Goolge token has a
   fairly short life, so don't be surprised if you need to re-authenticate
-  regularly.
+  regularly. Points less accurate than <?php echo DEF_ACCURACY; ?> metres will be ignored.
   <input type="hidden" value="google" class="geoinput" name="">
-  </p>
-  <p>
-  <label class="control-label" for="latAccuracy">Ignore Latitude points less than accurate than:</label>
-  <span class="input-append"><input type="text" name="latAccuracy" id="latAccuracy" class="input-mini number" placeholder="<?php echo DEF_ACCURACY; ?>">
-    <span class="add-on">metres</span>
-  </span>
   </p>
   <?php
 

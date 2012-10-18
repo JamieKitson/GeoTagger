@@ -37,14 +37,13 @@ function googleAuthLink($class)
   return '<a class="'.$class.'" href="https://accounts.google.com/o/oauth2/auth?client_id=60961182481.apps.googleusercontent.com&amp;redirect_uri='.baseHttpPath().'gotLatitude.php&amp;scope=https://www.googleapis.com/auth/latitude.all.best&amp;response_type=code">Authorise Google Latitude</a>';
 }
 
-function getLatPoints($statFile, $accuracy, $maxGap, $photos)
+function getLatPoints($statFile, $maxGap, $photos)
 {
   writeStat("Confirming still connected to Google Latitude.", $statFile);
 
   if (!testLatitude())
     errorExit('Please re-'.googleAuthLink('').'.');
 
-  $accuracy = $accuracy ?: DEF_ACCURACY;
   $first = $photos[0][UTIME] + $maxGap;
   $lastPhoto = end($photos);
   $last = $lastPhoto[UTIME] - $maxGap;
@@ -67,7 +66,7 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
     // get the last date before the gap
     $last = ($photos[$i][UTIME] - $maxGap) * 1000;
 
-    $points = getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff, $msg);
+    $points = getWholeDuration($first, $last, $statFile, $realLast, $diff, $msg);
 
     $allPoints = array_merge($allPoints, $points);
   }
@@ -75,7 +74,7 @@ function getLatPoints($statFile, $accuracy, $maxGap, $photos)
   return $allPoints;
 }
 
-function getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff, $msg) 
+function getWholeDuration($first, $last, $statFile, $realLast, $diff, $msg) 
 {
   $rsp = array();
   // loop through pages of google latitude points
@@ -95,7 +94,7 @@ function getWholeDuration($first, $last, $statFile, $accuracy, $realLast, $diff,
       // go through latitude points
       foreach ($locks->data->items as $item)
       {
-        if ($item->accuracy < $accuracy)
+        if ($item->accuracy < DEF_ACCURACY)
           $rsp[] = array(($item->timestampMs / 1000), $item->latitude, $item->longitude);
       }
     }
