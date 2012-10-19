@@ -37,6 +37,7 @@ $latitude = testLatitude();
     #inputTab-content .tab-pane { margin-bottom: 1em; }
     #criteriaTab-content { padding-bottom: 0 }
     .loading { padding-left: 0.5em; height: 2.5em; display: none }
+    .container { width: auto; max-width: 940px; padding: 0 20px }
   </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
