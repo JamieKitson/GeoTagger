@@ -1,0 +1,79 @@
+form.form-horizontal label.control-label
+{
+        margin-right: 0.5em;
+        width: auto;
+}
+
+input[type=number]
+{
+        text-align: right;
+}
+
+textarea
+{
+        width: 40em;
+}
+
+body
+{
+        counter-reset: headings -1;
+}
+
+h1:before
+{
+        content: counter(headings) ". ";
+        counter-increment: headings;
+}
+
+#goLoading, #stat
+{
+        display: none;
+}
+
+input#fakeFile
+{
+        cursor: auto;
+}
+
+.tab-content
+{
+        border: 1px solid #DDDDDD;
+        border-top: none;
+        padding: 20px;
+}
+
+.nav-tabs
+{
+        margin-bottom: 0;
+}
+
+#fileChoice .alert
+{
+        margin-bottom: 10px;
+}
+
+#inputTab-content .tab-pane
+{
+        margin-bottom: 1em;
+}
+
+#criteriaTab-content
+{
+        padding-bottom: 0;
+}
+
+.loading
+{
+        display: none;
+        height: 2.5em;
+        padding-left: 0.5em;
+}
+
+.container
+{
+        max-width: 940px;
+        padding: 0 20px;
+        width: auto;
+}
+
+

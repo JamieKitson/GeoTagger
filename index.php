@@ -20,25 +20,10 @@ $latitude = testLatitude();
   <meta charset="UTF-8">
   <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="geo.css" rel="stylesheet">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
   <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
   <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-  <style>
-    form.form-horizontal label.control-label { width: auto; margin-right: 0.5em; }
-    input[type=number] { text-align: right }
-    textarea { width: 40em }
-    body { counter-reset: headings -1 }
-    h1:before { content: counter(headings) ". "; counter-increment: headings; }
-    #goLoading, #stat { display: none; }
-    input#fakeFile { cursor: auto }
-    .tab-content { border: 1px solid #DDDDDD; border-top: none; padding: 20px }
-    .nav-tabs { margin-bottom: 0 }
-    #fileChoice .alert { margin-bottom: 10px }
-    #inputTab-content .tab-pane { margin-bottom: 1em; }
-    #criteriaTab-content { padding-bottom: 0 }
-    .loading { padding-left: 0.5em; height: 2.5em; display: none }
-    .container { width: auto; max-width: 940px; padding: 0 20px }
-  </style>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
   <script>
