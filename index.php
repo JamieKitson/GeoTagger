@@ -19,9 +19,9 @@ $latitude = testLatitude();
   <title>Geo-Tag Flickr photos using Google Latitude data</title>
   <meta charset="UTF-8">
   <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
-  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="geo.css" rel="stylesheet">
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" rel="stylesheet">
 </head>
 <body>
 
@@ -277,9 +277,9 @@ so can be quite slow if you have a lot of them.
 In the <a href="http://www.flickr.com/services/apps/72157631292787722/?action=screenshots_added">App Garden</a>.
 </form>
 
-  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js"></script>
   <script src="geo.js"></script>
   <script>
     var latitude = <?php echo $latitude ? 'true' : 'false'; ?>;
