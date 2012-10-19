@@ -163,7 +163,7 @@
       });
 
       function loadTimezones() {
-        $("#city").load("timezones/" + $("#region").val(), function() { 
+        $("#city").load("timezones/" + $("#region").val() + '.html', function() { 
           $("#city").val(getCookie('city', 'London')); 
         });
       }

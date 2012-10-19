@@ -20,7 +20,7 @@ foreach ($regions as $name => $mask) {
       $sub = substr($bah, strpos($bah, '/') + 1);
         $s .= '<option value="'.$sub.'">'.str_replace("_", " ", $sub)."</option>\n";
     }
-    file_put_contents($name, $s);
+    file_put_contents($name.'.html', $s);
 }
 
 ?>
