@@ -13,7 +13,8 @@ static $regions = array(
     'Pacific' => DateTimeZone::PACIFIC
 );
 
-foreach ($regions as $name => $mask) {
+foreach ($regions as $name => $mask) 
+{
     $s = "";
     foreach( DateTimeZone::listIdentifiers($mask) as $bah)
     {
