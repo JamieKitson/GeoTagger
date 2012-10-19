@@ -22,17 +22,6 @@ $latitude = testLatitude();
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="geo.css" rel="stylesheet">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-  <script src="geo.js"></script>
-  <script>
-    var latitude = <?php echo $latitude ? 'true' : 'false'; ?>;
-    var flickrId = '<?php echo $flickrId; ?>';
-    function progressBar(msg, p) {
-      return '<?php echo progressBar("' + msg + '", "' + p + '"); ?>';
-    }
-  </script>
 </head>
 <body>
 
@@ -287,6 +276,19 @@ so can be quite slow if you have a lot of them.
 <a href="https://github.com/JamieKitson/GeoTagger/issues">report</a> bugs, corrections and feature requests.
 In the <a href="http://www.flickr.com/services/apps/72157631292787722/?action=screenshots_added">App Garden</a>.
 </form>
+
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="geo.js"></script>
+  <script>
+    var latitude = <?php echo $latitude ? 'true' : 'false'; ?>;
+    var flickrId = '<?php echo $flickrId; ?>';
+    function progressBar(msg, p) {
+      return '<?php echo progressBar("' + msg + '", "' + p + '"); ?>';
+    }
+  </script>
+
 </body>
 </html>
 
