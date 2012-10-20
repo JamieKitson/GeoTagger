@@ -115,10 +115,11 @@ function getPhotos($count, $maxDate, $minDate, $tags, $statFile)
 
   if ($tags > "")
   {
-    $params['method'] = 'flickr.photos.search';
-    $params['user_id']  = 'me';
-    $params['has_geo']  =  0;
-    $params['tags']     = $tags;
+    $params['method']       = 'flickr.photos.search';
+    $params['user_id']      = 'me';
+    $params['has_geo']      =  0;
+    $params['tags']         = $tags;
+    $params['content_type'] = 7;
   }
 
   $photos = pagePhotos($count, $params, $statFile);
