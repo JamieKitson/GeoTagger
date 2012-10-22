@@ -42,7 +42,7 @@ input#fakeFile
         padding: 20px;
 }
 
-.nav-tabs
+ul.nav-tabs
 {
         margin-bottom: 0;
 }
