@@ -90,11 +90,10 @@ function pagePhotos($total, $params, $statFile)
   do {
     $params['per_page'] = $total - count($allPhotos);
     $fc = flickrCallWithRetry($params);
-    $photos = $fc['photos']['photo'];
-    $allPhotos = array_merge($allPhotos, $photos);
+    $allPhotos = array_merge($allPhotos, $fc['photos']['photo']);
     writeProgress("Getting photos from Flickr.", (100 * count($allPhotos) / $total), $statFile);
     $params['page'] += 1;
-  } while((count($allPhotos) < $total) && (count($photos) > 0));
+  } while((count($allPhotos) < $total) && ($params['page'] <= $fc['photos']['pages']));
   return $allPhotos;
 }
 
