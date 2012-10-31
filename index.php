@@ -19,9 +19,9 @@ $latitude = testLatitude();
   <title>Geo-Tag Flickr photos using Google Latitude data</title>
   <meta charset="UTF-8">
   <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
-  <link href="geo.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
   <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" rel="stylesheet">
+  <link href="geo.css" rel="stylesheet">
 </head>
 <body>
 
@@ -167,11 +167,11 @@ else
 <div class="tab-content" id="criteriaTab-content">
   <div class="tab-pane active" id="flickrSearch">
     <div class="control-group">
-      <label class="control-label" for="min-date" >Geo-tag photos taken after:</label>
+      <label class="control-label" for="min-date" >Geo-tag photos taken on or after:</label>
       <input type="text" name="min-date" id="min-date" class="input-small date">
     </div>
     <div class="control-group">
-      <label class="control-label" for="max-date" >Geo-tag photos taken before:</label>
+      <label class="control-label" for="max-date" >Geo-tag photos taken on or before:</label>
       <input type="text" name="max-date" id="max-date" class="input-small date">
     </div>
     <div class="control-group">
