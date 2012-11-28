@@ -205,9 +205,9 @@ slow, especially when writing back to Flickr. The biggest factor can be the
 amount of data returned from Google Latitude, so for example 100 photos taken
 over an hour may be processed more quickly than 10 photos taken over a week.
 </p>
-<p>
-<label class="checkbox">Write data to Flickr<input type="checkbox" name="write" value="true"></label>
-</p>
+<div class="write">
+<label class="checkbox"><strong>Write data to Flickr</strong><input type="checkbox" name="write" value="true"></label>
+</div>
 
 <p>
 <input type="submit" value="Go" class="btn btn-primary btn-large" id="gobtn">
