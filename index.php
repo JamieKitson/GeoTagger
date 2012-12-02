@@ -106,7 +106,7 @@ else
   <div class="tab-pane active" id="latChoice">
   <p>
   Google tokens will be held only as cookies in your browser and can be
-  removed at any time by clicking the Disconnect button. The Goolge token has a
+  removed at any time by clicking the Disconnect button. The Google token has a
   fairly short life, so don't be surprised if you need to re-authenticate
   regularly. Latitude points less accurate than <?php echo DEF_ACCURACY; ?> 
   metres will be ignored.
