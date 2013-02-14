@@ -94,7 +94,7 @@ function getWholeDuration($first, $last, $statFile, $realLast, $diff, $msg)
       // go through latitude points
       foreach ($locks->data->items as $item)
       {
-        if (@$item->accuracy < DEF_ACCURACY)
+        if (property_exists($item, 'accuracy') && $item->accuracy < DEF_ACCURACY)
           $rsp[] = array(($item->timestampMs / 1000), $item->latitude, $item->longitude);
       }
     }
