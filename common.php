@@ -7,12 +7,13 @@ define('FLICKR_SECRET', 'flickr_access_secret');
 
 // Field indexes
 define("UTIME", 0);
-define("LATITUDE", 1);
-define("LONGITUDE", 2);
+// For some reason Google returns Longitude first in coords, but takes it vice versa in map searches
+define("LATITUDE", 2);
+define("LONGITUDE", 1);
 
 // mandatory field defaults
 define("DEF_COUNT", 100);
-define("DEF_ACCURACY", 100);
+define("DEF_ACCURACY", 5000);
 define("DEF_MAX_GAP", 24);
 
 function clearCookies($cookies)
@@ -62,15 +63,17 @@ function gzipCall($url)
 
   if ($xmlresponse !== false)
   {
-    $xmlresponse = gzdecode($xmlresponse);
+    $response = @gzdecode($xmlresponse);
+    if ($response !== false)
+        return $response;
   }
-
   return $xmlresponse;
 }
 
 function writeStat($msg, $file)
 {
 //  file_put_contents($file, date("d-H:i:s "). "$msg\n", FILE_APPEND);
+    if ($file != '')
   file_put_contents($file, $msg);
 }
 
