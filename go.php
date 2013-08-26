@@ -1,7 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+// error_reporting(E_ALL);
+// ini_set('display_errors', '1');
 
 include('flickrCall.php');
 include('googleCall.php');
@@ -19,7 +19,28 @@ $statFile = "stats/$flickrId";
 writeStat("Starting...", $statFile);
 
 if (array_key_exists('input', $_FILES))
-  $sData = file($_FILES['input']['tmp_name']);
+{
+    if ($_FILES['input']['error'] != UPLOAD_ERR_OK)
+        errorExit('File upload failed, check <a href="http://php.net/manual/en/features.file-upload.errors.php">PHP error code</a>: '.$_FILES['input']['error']);
+    if (pathinfo($_FILES['input']['name'], PATHINFO_EXTENSION) == 'kml')
+    {
+        writeStat("Reading file.", $statFile);
+/*
+    xmlstarlet is incredibly fast compared to this.
+        $xml = simplexml_load_file($_FILES['input']['tmp_name']);
+        $points = $xml->Document->Placemark->children('gx', true)->Track;
+        for ($i = 0; $i < count($points->children()->when); $i++)
+        {
+            $sData[] = $points->children()->when[$i]." ".$points->children('gx', true)->coord[$i];
+        }
+*/
+        $l = exec('/usr/bin/xmlstarlet sel -N n="http://www.opengis.net/kml/2.2" -N g="http://www.google.com/kml/ext/2.2" -T -t '.
+            '-m //n:kml/n:Document/n:Placemark/g:Track/* -i "name()=\"when\"" -v . -o " " -b -i "name()=\"gx:coord\"" -v . -n -b '.
+            $_FILES['input']['tmp_name'], $sData, $ret);
+    }
+    else
+        $sData = file($_FILES['input']['tmp_name']);
+}
 elseif (!array_key_exists('input', $_POST))
   errorExit("No input data found.");
 elseif ($_POST['input'] != 'google')
@@ -45,14 +66,7 @@ if (isset($sData))
     $_POST['min-date'] = date('Y-m-d', $last);
 }
 
-if ($_POST['criteriaChoice'] == '#flickrSet')
-{
-  $photos = getSet($_POST['set'], $statFile);
-}
-else
-{
-  $photos = getPhotos($_POST['count'], $_POST['max-date'], $_POST['min-date'], $_POST['tags'], $statFile);
-}
+$photos = getPhotos($_POST);
 
 if (!isset($data))
 {

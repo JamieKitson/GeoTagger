@@ -50,7 +50,7 @@ function testFlickr()
   {
     $rsp = flickrCall(Array('method' => 'flickr.test.login'));
     $p = unserialize($rsp);
-    if (array_key_exists('stat', $p) && ($p['stat'] == 'ok'))
+    if (is_array($p) && array_key_exists('stat', $p) && ($p['stat'] == 'ok'))
       return str_replace("@", "_", $p['user']['id']);
   }
   return false; 
@@ -97,7 +97,19 @@ function pagePhotos($total, $params, $statFile)
   return $allPhotos;
 }
 
-function getPhotos($count, $maxDate, $minDate, $tags, $statFile)
+function getPhotos($data, $statFile = '')
+{
+    if ($data['criteriaChoice'] == '#flickrSet')
+    {
+          return getSet($data['set'], $statFile);
+    }
+    else
+    {
+          return getPhotosSearch($data['count'], $data['max-date'], $data['min-date'], $data['tags'], $statFile);
+    }
+}
+
+function getPhotosSearch($count, $maxDate, $minDate, $tags, $statFile)
 {
   $count = $count ?: DEF_COUNT;
   writeProgress("Getting photos from Flickr.", 0, $statFile);

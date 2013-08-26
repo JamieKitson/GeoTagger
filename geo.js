@@ -3,7 +3,7 @@
 
       var doStat = false;
 
-      $('input, textarea, select').each(function() { 
+      $('input[type!=file], textarea, select').each(function() {
         var id = $(this).attr('id');
         $(this).val(getCookie(id, $(this).val()));
         $(this).change(function() {
@@ -20,13 +20,12 @@
 
       $('#fakeFile').val($('#inputFile').val());
 
-      var cho = getCookie('choice', '#latChoice');
+      var cho = getCookie('choice', '#kmlChoice');
       inputTabChange('#inputTab a[href=' + cho + ']');
       $('#inputTab a').click(function (e) {
         e.preventDefault();
         inputTabChange(this);
         setCookie('choice', $(this).attr('href'));
-//        inputTabChange();
       });
 
       var crit = getCookie('criteriaTab', '#flickrSearch');
@@ -87,6 +86,11 @@
         goBtnEnable();
         $('.geoinput').removeAttr('name');
         $('#inputTab-content :visible .geoinput').attr('name', 'input');
+        if ($('.filecontainer').is(':visible'))
+        {
+            $('.filecontainer:visible').append($('#fileUpload'));
+            $('#fileUpload').show();
+        }
       }
 
       function criteriaTabChange(aTab)
@@ -117,36 +121,56 @@
         }
         $('#gobtn').attr('disabled', 'disabled');
         $('#current').removeAttr("id");
-        $('#goLoading').show();
         doStat = true;
         $('#stat').text('Starting...').show();
         setTimeout(readStat, 1000);
+        return doCall('go.php', '#goLoading', goDone);
+      });
 
+      $('#btnKml').click(function() {
+        if (!validateDates())
+        {
+          document.getElementById('criteria').scrollIntoView();
+          return;
+        }
+        doCall('kmlURL.php', '#kmlLoading', function(data) { $('#kmlLink').html(data); } );
+      });
+
+      function doCall(aURL, aLoad, aDone) {
+
+        $(aLoad).show();
         if (typeof FormData != 'undefined')
         {
-          aData = new FormData($(this)[0]);
+          aData = new FormData($('form')[0]);
           contType = false;
           procData = false;
         }
         else
         {
-          aData = $(this).serialize();
+          aData = $('form').serialize();
           contType = 'application/x-www-form-urlencoded; charset=UTF-8';
           procData = true;
         }
 
         $.ajax({
-          url: "go.php", 
+          url: aURL,
           data: aData,
           type: 'POST',
           cache: false,
           contentType: contType,
           processData: procData,
           xhr: getXhr
-        }).done(function( data ) { 
+        }).done(function(data){
+            $(aLoad).hide();
+            aDone(data);
+          });
+
+        return false;
+      }
+
+    function goDone( data ) {
           $('#result').append(data);
           $('#gobtn').removeAttr('disabled');
-          $('#goLoading').hide();
           readStat();
           doStat = false;
           if ($('#result table').length)
@@ -157,10 +181,7 @@
           }
           $('#result > :last-child').attr("id", "current");
           document.getElementById('current').scrollIntoView();
-        });
-
-        return false;
-      });
+        }
 
       function loadTimezones() {
         $("#city").load("timezones/" + $("#region").val() + '.html', function() { 
@@ -191,7 +212,7 @@
           return 'Please authorise Flickr.';
         if ($('#latChoice').is(':visible') && !latitude)
           return 'Please authorise Google Latitude.';
-        if ($('#fileChoice').is(':visible') && ($('#inputFile').val() == ''))
+        if (($('#fileChoice').is(':visible') || $('#kmlChoice').is(':visible'))&& ($('#inputFile').val() == ''))
           return 'Please choose a file.';
         if ($('#txtChoice').is(':visible') && ($('#inputText').val() == ''))
           return 'Please enter some input text.';

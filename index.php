@@ -2,8 +2,8 @@
 
 // Might need to alter header
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+// error_reporting(E_ALL);
+// ini_set('display_errors', '1');
 
 include('flickrCall.php');
 include('googleCall.php');
@@ -16,9 +16,10 @@ $latitude = testLatitude();
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Geo-Tag Flickr photos using Google Latitude data</title>
+  <title>Geo-Tag Flickr photos using Google Location History (Latitude) or other GPS data</title>
   <meta charset="UTF-8">
-  <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude">
+  <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude or other GPS data.">
+  <meta name="keywords" content="flickr, geotag, geotagging, google, latitude, location history, location, geo-tag, geo-tagging, gps">
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
   <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" rel="stylesheet">
   <link href="geo.css" rel="stylesheet">
@@ -94,76 +95,13 @@ else
 ?>
 </p>
 
-<h1 class="page-header" id="google">Choose your input method</h1>
-
-<ul class="nav nav-tabs" id="inputTab">
-<li class="active"><a href="#latChoice">Google Latitude</a></li>
-<li><a href="#fileChoice">Text File</a></li>
-<li><a href="#txtChoice">Text</a></li>
-</ul>
-   
-<div class="tab-content" id="inputTab-content">
-  <div class="tab-pane active" id="latChoice">
-  <p>
-  Google tokens will be held only as cookies in your browser and can be
-  removed at any time by clicking the Disconnect button. The Google token has a
-  fairly short life, so don't be surprised if you need to re-authenticate
-  regularly. Latitude points less accurate than <?php echo DEF_ACCURACY; ?> 
-  metres will be ignored.
-  <input type="hidden" value="google" class="geoinput" name="">
-  </p>
-  <?php
-
-  if (!$latitude)
-    echo googleAuthLink("btn btn-primary")."\n";
-  else
-    echo '<a class="btn" href="disconnect.php?s=google">Disconnect</a>'."\n";
-
-  ?>
-  </div>
-  <div class="tab-pane" id="fileChoice">
-    <div class="alert alert-error">
-      <strong>Error:</strong> Your browser is not compatible with uploading files as 
-      it does not support the FormData type. See <a href="http://caniuse.com/xhr2">this page</a>
-      for a list of supported browsers. Please try the text input on the next tab.
-    </div>
-    <p>
-    Files must consist of lines of three space delimited fields containing a  
-    time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
-    will be adjusted to search only within the data supplied, ie, no photos will be 
-    returned which were taken outside the time stamps supplied in the geo-data file.
-    </p>
-    <input id="inputFile" type="file" style="display:none" name="" class="geoinput">
-    <div class="input-append">
-       <input id="fakeFile" class="input-large" type="text" readonly="readonly">
-       <a class="btn" id="browseInput">Browse</a>
-    </div>
-  </div>
-  <div class="tab-pane" id="txtChoice">
-    <p>
-    Text must consist of lines of three space delimited fields containing a unix 
-    time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
-    will be adjusted to search only within the data supplied, ie, no photos will be 
-    returned which were taken outside the time stamps supplied in the geo-data file.
-    </p>
-    <textarea id="inputText" name="" class="geoinput"></textarea>
-  </div>
-
-  <label class="control-label" for="maxGap">Skip photos in gaps of more than:</label>
-  <span class="input-append">
-    <input type="number" name="maxGap" id="maxGap" class="input-mini" placeholder="<?php echo DEF_MAX_GAP; ?>" value="<?php echo DEF_MAX_GAP; ?>">
-    <span class="add-on">hours</span>
-  </span>
-
-</div>
-    
 <h1 class="page-header" id="criteria">Flickr search criteria (optional)</h1>
 <input type="hidden" value="#flickrSearch" name="criteriaChoice" id="criteriaChoice">
 <ul class="nav nav-tabs" id="criteriaTab">
   <li class="active"><a href="#flickrSearch">Search</a></li>
   <li><a href="#flickrSet">Sets</a></li>
 </ul>
-   
+
 <div class="tab-content" id="criteriaTab-content">
   <div class="tab-pane active" id="flickrSearch">
     <div class="control-group">
@@ -197,6 +135,93 @@ else
 
 </div>
 
+<h1 class="page-header" id="google">Choose your input method</h1>
+
+<ul class="nav nav-tabs" id="inputTab">
+<li class="active"><a href="#kmlChoice">Google Location History</a></li>
+<li><a href="#latChoice">Google Latitude</a></li>
+<li><a href="#fileChoice">Text File</a></li>
+<li><a href="#txtChoice">Text</a></li>
+</ul>
+   
+<div class="tab-content" id="inputTab-content">
+  <div class="tab-pane active" id="kmlChoice">
+    <div class="alert">
+        <strong>Warning:</strong> location history file downloads covering periods of more than a few days can be quite large, eg, 4megs per month. 
+        It may be better to processes a single set of photos from one event at one time.
+    </div>
+    <ol>
+        <li>
+            <p><button id="btnKml" class="btn btn-primary" type="button" <?php echo $flickrId === false ? 'disabled="disalbed"' : '' ?>>Generate URL</button>
+            <img id="kmlLoading" src="loading.gif" alt="loading" class="loading"></p>
+        </li>
+        <li><p>Download File: <span id="kmlLink"></span></p></li>
+        <li><p>Upload File: <span id="kmlFile" class="filecontainer"></span></p></li>
+    </ol>
+  </div>
+
+  <div class="tab-pane" id="latChoice">
+    <div class="alert alert-error">
+        <strong>Warning:</strong> the Google Latitude API <a href="https://developers.google.com/latitude/">has been retired</a>, 
+        so this input method will not work. Use the two step Location History download and upload process.
+    </div>
+  <p>
+  Google tokens will be held only as cookies in your browser and can be
+  removed at any time by clicking the Disconnect button. The Google token has a
+  fairly short life, so don't be surprised if you need to re-authenticate
+  regularly. Latitude points less accurate than <?php echo DEF_ACCURACY; ?> 
+  metres will be ignored.
+  <input type="hidden" value="google" class="geoinput" name="">
+  </p>
+  <?php
+
+  if (!$latitude)
+    echo googleAuthLink("btn btn-primary")."\n";
+  else
+    echo '<a class="btn" href="disconnect.php?s=google">Disconnect</a>'."\n";
+
+  ?>
+  </div>
+  <div class="tab-pane" id="fileChoice">
+    <div class="alert alert-error">
+      <strong>Error:</strong> Your browser is not compatible with uploading files as 
+      it does not support the FormData type. See <a href="http://caniuse.com/xhr2">this page</a>
+      for a list of supported browsers. Please try the text input on the next tab.
+    </div>
+    <p>
+    Files must consist of lines of three space delimited fields containing a  
+    time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
+    will be adjusted to search only within the data supplied, ie, no photos will be 
+    returned which were taken outside the time stamps supplied in the geo-data file.
+    </p>
+    <div id="textFile" class="filecontainer"></div>
+  </div>
+  <div class="tab-pane" id="txtChoice">
+    <p>
+    Text must consist of lines of three space delimited fields containing a unix 
+    time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
+    will be adjusted to search only within the data supplied, ie, no photos will be 
+    returned which were taken outside the time stamps supplied in the geo-data file.
+    </p>
+    <textarea id="inputText" name="" class="geoinput"></textarea>
+  </div>
+
+  <span id="fileUpload" style="display:none">
+    <input id="inputFile" type="file" style="display:none" name="" class="geoinput">
+    <div class="input-append">
+       <input id="fakeFile" class="input-large" type="text" readonly="readonly">
+       <a class="btn" id="browseInput">Browse</a>
+    </div>
+  </span>
+
+  <label class="control-label" for="maxGap">Skip photos in gaps of more than:</label>
+  <span class="input-append">
+    <input type="number" name="maxGap" id="maxGap" class="input-mini" placeholder="<?php echo DEF_MAX_GAP; ?>" value="<?php echo DEF_MAX_GAP; ?>">
+    <span class="add-on">hours</span>
+  </span>
+
+</div>
+    
 <h1 class="page-header" id="go">Go</h1>
 <p>
 This app will will not write

@@ -13,7 +13,7 @@ function googleCall($params)
   if ($xmlresponse !== false)
   {
     $locks = json_decode($xmlresponse);
-    if (property_exists($locks->data, 'items'))
+    if (is_object($locks) && property_exists($locks->data, 'items'))
     {
       $count = count($locks->data->items);
     }
@@ -95,7 +95,7 @@ function getWholeDuration($first, $last, $statFile, $realLast, $diff, $msg)
       foreach ($locks->data->items as $item)
       {
         if (isset($item->accuracy) && $item->accuracy < DEF_ACCURACY)
-          $rsp[] = array(($item->timestampMs / 1000), $item->latitude, $item->longitude);
+          $rsp[] = array(($item->timestampMs / 1000), $item->longitude, $item->latitude);
       }
     }
     else

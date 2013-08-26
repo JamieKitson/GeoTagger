@@ -81,3 +81,7 @@ div.write
   margin: 10px;
 }
 
+div.ui-datepicker
+{
+ font-size:12px;
+}
