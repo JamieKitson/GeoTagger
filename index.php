@@ -30,6 +30,7 @@ $latitude = testLatitude();
 <input type="hidden" name="flickrId" id="flickrId" value="<?php echo $flickrId; ?>">
 
 <div class="alert alert-block alert-error" id="apiWarning" style="display: none">
+  <p>
   <button class="close" type="button">×</button>
   <strong>Please note</strong> that the Flickr API can be unreliable. Fewer photos than 
   requested may be returned, occasionally none at all. If this happens please try again.
@@ -37,6 +38,11 @@ $latitude = testLatitude();
   and <a href="http://www.flickr.com/groups/api/">Flickr API Group</a> for 
   <a href="http://tech.groups.yahoo.com/group/yws-flickr/message/7809">various</a> 
   <a href="http://www.flickr.com/groups/api/discuss/72157631638748470/">discussions</a>.
+  </p>
+  <p>
+  <strong>Additionally</strong> the Flickr API has been acting irratically when used with min and max dates,
+  so it might be best to just tag you latest x photos.
+  </p>
 </div>
 
 <h1 class="page-header">About</h1>
@@ -163,7 +169,7 @@ else
   <div class="tab-pane" id="latChoice">
     <div class="alert alert-error">
         <strong>Warning:</strong> the Google Latitude API <a href="https://developers.google.com/latitude/">has been retired</a>, 
-        so this input method will not work. Use the two step Location History download and upload process.
+        so this input method will not work. Use the two step Location History download and upload process on the prior tab.
     </div>
   <p>
   Google tokens will be held only as cookies in your browser and can be
@@ -190,7 +196,7 @@ else
     </div>
     <p>
     Files must consist of lines of three space delimited fields containing a  
-    time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
+    time stamp, longitude and latitude, in that order. <strong>Note</strong> that the Flickr search
     will be adjusted to search only within the data supplied, ie, no photos will be 
     returned which were taken outside the time stamps supplied in the geo-data file.
     </p>
@@ -199,7 +205,7 @@ else
   <div class="tab-pane" id="txtChoice">
     <p>
     Text must consist of lines of three space delimited fields containing a unix 
-    time stamp, latitude and longitude. <strong>Note</strong> that the Flickr search 
+    time stamp, longitude and latitude, in that order. <strong>Note</strong> that the Flickr search
     will be adjusted to search only within the data supplied, ie, no photos will be 
     returned which were taken outside the time stamps supplied in the geo-data file.
     </p>
