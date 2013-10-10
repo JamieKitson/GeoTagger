@@ -85,12 +85,12 @@
         $(aTab).tab('show');
         goBtnEnable();
         $('.geoinput').removeAttr('name');
-        $('#inputTab-content :visible .geoinput').attr('name', 'input');
         if ($('.filecontainer').is(':visible'))
         {
             $('.filecontainer:visible').append($('#fileUpload'));
             $('#fileUpload').show();
         }
+        $('#inputTab-content :visible .geoinput').attr('name', 'input');
       }
 
       function criteriaTabChange(aTab)
