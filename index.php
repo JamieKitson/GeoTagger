@@ -153,8 +153,8 @@ else
 <div class="tab-content" id="inputTab-content">
   <div class="tab-pane active" id="kmlChoice">
     <div class="alert">
-        <strong>Warning:</strong> location history file downloads covering periods of more than a few days can be quite large, eg, 4megs per month. 
-        It may be better to processes a single set of photos from one event at one time.
+        <strong>Warning:</strong> Location history file downloads covering periods of more than a few days can be quite large, eg, 4megs per month. 
+        For best results add date parameter(s) above to limit the time span of points downloaded.
     </div>
     <ol>
         <li>
@@ -162,13 +162,13 @@ else
             <img id="kmlLoading" src="loading.gif" alt="loading" class="loading"></p>
         </li>
         <li><p>Download File: <span id="kmlLink"></span></p></li>
-        <li><p>Upload File: <span id="kmlFile" class="filecontainer"></span></p></li>
+        <li><p class="filecontainer">Upload File:</p></li>
     </ol>
   </div>
 
   <div class="tab-pane" id="latChoice">
     <div class="alert alert-error">
-        <strong>Warning:</strong> the Google Latitude API <a href="https://developers.google.com/latitude/">has been retired</a>, 
+        <strong>Warning:</strong> The Google Latitude API <a href="https://developers.google.com/latitude/">has been retired</a>, 
         so this input method will not work. Use the two step Location History download and upload process on the prior tab.
     </div>
   <p>
