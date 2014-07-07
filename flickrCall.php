@@ -25,7 +25,7 @@ function flickrCall($params, $uri = "rest")
         sort($encoded_params);
         $p = implode('&', $encoded_params);
 
-        $url = "http://api.flickr.com/services/$uri";
+        $url = "https://api.flickr.com/services/$uri";
 
         $base = "GET&".urlencode($url)."&".urlencode($p);
 
