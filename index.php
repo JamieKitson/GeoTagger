@@ -287,7 +287,7 @@ can shift a selection of photos by a certain number of hours.
 </p>
 <p>
 If you want to geo-tag photos which already have geo-data then you will need to
-remove that geo-data first using Flickr's Organiser. To remove the all 
+remove that geo-data first using Flickr's Organiser. To remove all the
 <code>geotaggedfromlatitude</code> tags from your photos you can do that 
 <a href="http://www.flickr.com/photos/me/tags/geotaggedfromlatitude/delete/">here</a>.
 </p>
