@@ -59,7 +59,7 @@
         $('#fakeFile').attr('disabled', 'disabled');
       }
 
-      $('input.date').datepicker({ dateFormat: 'yy-mm-dd' });
+      $('input.date').datepicker({ dateFormat: 'yy-mm-dd', showButtonPanel: true });
       $('input.date').change(function() {
           var id = $(this).attr('id');
           setCookie(id, $(this).val());
