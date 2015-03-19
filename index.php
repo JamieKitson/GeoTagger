@@ -146,7 +146,7 @@ else
 <ul class="nav nav-tabs" id="inputTab">
 <li class="active"><a href="#kmlChoice">Google Location History</a></li>
 <li><a href="#latChoice">Google Latitude</a></li>
-<li><a href="#fileChoice">Text File</a></li>
+<li><a href="#fileChoice">File Upload</a></li>
 <li><a href="#txtChoice">Text</a></li>
 </ul>
    
@@ -195,8 +195,8 @@ else
       for a list of supported browsers. Please try the text input on the next tab.
     </div>
     <p>
-    Files must consist of lines of three space delimited fields containing a  
-    time stamp, longitude and latitude, in that order. <strong>Note</strong> that the Flickr search
+    kml files and text files consisting of lines of three space delimited fields containing a  
+    time stamp, longitude and latitude, in that order are accepted. <strong>Note</strong> that the Flickr search
     will be adjusted to search only within the data supplied, ie, no photos will be 
     returned which were taken outside the time stamps supplied in the geo-data file.
     </p>
