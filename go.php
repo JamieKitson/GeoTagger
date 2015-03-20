@@ -7,6 +7,13 @@ include('flickrCall.php');
 include('googleCall.php');
 include_once('common.php');
 
+// start output to let firefox know that we have received the upload
+// http://stackoverflow.com/questions/12566801
+ob_implicit_flush(true);
+for ($i = 0; $i < ob_get_level(); $i++)
+  ob_end_clean();
+echo ' ';
+
 date_default_timezone_set($_POST['region'].'/'.$_POST['city']);
 
 $maxGap = ($_POST['maxGap'] ?: DEF_MAX_GAP) * 60 * 60;
