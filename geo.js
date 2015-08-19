@@ -236,6 +236,9 @@
           doStat = false;
           var p = Math.round(evt.loaded / evt.total * 100);
             $('#stat').html(progressBar('Uploading data:', p));
+            // firefox fix
+            if (p > 75)
+              loadEndHandlerFunction(evt);
         }  
       }  
 
