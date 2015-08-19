@@ -20,6 +20,7 @@ $latitude = testLatitude();
   <meta charset="UTF-8">
   <meta name="description" content="Geo-tag your Flickr photos using your location history from Google Latitude or other GPS data.">
   <meta name="keywords" content="flickr, geotag, geotagging, google, latitude, location history, location, geo-tag, geo-tagging, gps">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
   <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" rel="stylesheet">
   <link href="geo.css" rel="stylesheet">
@@ -230,14 +231,14 @@ else
     
 <h1 class="page-header" id="go">Go</h1>
 <p>
-This app will will not write
-data back to Flickr unless you check the checkbox below. This app can be quite
+If you just want to do a test run to see what this app would do uncheck the checkbox below.
+This app can be quite
 slow, especially when writing back to Flickr. The biggest factor can be the
 amount of data returned from Google Latitude, so for example 100 photos taken
 over an hour may be processed more quickly than 10 photos taken over a week.
 </p>
 <div class="write">
-<label class="checkbox"><strong>Write data to Flickr</strong><input type="checkbox" name="write" value="true"></label>
+<label class="checkbox"><strong>Write data to Flickr</strong><input type="checkbox" checked="checked" name="write" value="true"></label>
 </div>
 
 <p>
