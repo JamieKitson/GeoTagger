@@ -154,8 +154,11 @@ else
 <div class="tab-content" id="inputTab-content">
   <div class="tab-pane active" id="kmlChoice">
     <div class="alert">
-        <strong>Warning:</strong> Location history file downloads covering periods of more than a few days can be quite large, eg, 4megs per month. 
-        For best results add date parameter(s) above to limit the time span of points downloaded.
+        <strong>Warning:</strong>
+        Google seems to be limiting the amount of data that can be downloaded in one file.
+        If you see lots of "No geo-data for..." in your results regenerate the URL once you
+        have written the data back to Flickr and reupload the data. This should decrease the
+        timespan of the file and bring back the more specific, relevant data.
     </div>
     <ol>
         <li>
